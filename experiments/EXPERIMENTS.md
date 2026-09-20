@@ -22,7 +22,7 @@
 | EXP02 | H19 全局线性方向是否可因果 steering？ | 完成，NULL | effect≈+0.00086；不优于控制 | `20dba87` |
 | EXP03 | 单 token exact interchange 是否可转移状态？ | 完成，NULL/负 | H19 弱；深层负效应；部分深层结果受 capture/patch 位置错位影响 | `e98dade` |
 | EXP04 | 多 token × 多层一致恢复是否恢复因果效应？ | 完成，POSITIVE | `common_H19_H28=+0.0579 [0.0523,0.0636]`；`H15_H28=+0.0796`；控制≈0 | `bbabe94` 等 |
-| EXP05 | H15–H20 是否作为 selector，重配置后续 attention/MLP？ | 完成，POSITIVE | `early_H15_H20=+0.0784 [0.0717,0.0849]`；selector=98.4% 全效应；late≈0；**MLP recovery 0.875 >> attn 0.700** | 待提交 |
+| EXP05 | H15–H20 是否作为 selector，重配置后续 attention/MLP？ | 完成，POSITIVE | `early_H15_H20=+0.0784 [0.0717,0.0849]`；selector=98.4% 全效应；late≈0；**MLP recovery 0.875 >> attn 0.700** | `8e70ce0` |
 
 ---
 
@@ -810,7 +810,7 @@ Token：     1 个 token → 0.001     公共后缀 → 0.058
 2026-09-21
 
 ## 提交
-（待提交）
+`8e70ce0`
 
 ## 科学动机
 
