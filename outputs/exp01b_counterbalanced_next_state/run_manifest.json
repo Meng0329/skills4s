@@ -1,0 +1,20 @@
+{
+  "experiment": "EXP01b",
+  "git_commit": "5f1ab7f1f046ae95e7cfb69536d8b044039f03c7",
+  "seed": 42,
+  "num_tasks": 48,
+  "confirmatory_layer": 19,
+  "model_dir": "/data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct",
+  "model_name": "Qwen2.5-Coder-7B-Instruct",
+  "model_config_sha256": "c0242402ad6a13b331ea320feea8c7e3776ffb7a4eff0757b9cd667e116d9a28",
+  "script_sha256": "d475d7b06b6edd118079639e0d15e1d36cae28419ed62f451b769e4a1316af6f",
+  "python": "3.13.12",
+  "platform": "Linux-6.17.0-40-generic-x86_64-with-glibc2.39",
+  "torch": "2.14.0+cu130",
+  "transformers": "4.57.6",
+  "sklearn": "1.9.1",
+  "cuda_available": true,
+  "cuda_version": "13.0",
+  "gpu": "NVIDIA RTX A6000",
+  "offline_only": true
+}

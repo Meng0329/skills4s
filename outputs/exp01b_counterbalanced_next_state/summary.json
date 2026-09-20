@@ -1,0 +1,22 @@
+{
+  "experiment": "EXP01b_counterbalanced_next_state",
+  "num_tasks": 48,
+  "chance_binary_macro_f1": 0.5,
+  "confirmatory_layer": 19,
+  "confirmatory_cross_wording_macro_f1": 0.7093816935599029,
+  "confirmatory_cross_wording_accuracy": 0.7239583333333334,
+  "confirmatory_within_wording_macro_f1": 1.0,
+  "exploratory_best_layer": 21,
+  "exploratory_best_cross_wording_macro_f1": 0.7333333333333334,
+  "random_mapping_control_macro_f1_mean": 0.45779415490048186,
+  "random_mapping_control_macro_f1_std": 0.04649987787697904,
+  "behavior_action_accuracy_all": 0.6510416666666666,
+  "behavior_action_accuracy_canonical": 0.71875,
+  "behavior_action_accuracy_paraphrase": 0.5833333333333334,
+  "behavior_mean_signed_logprob_margin": 0.09214607408891122,
+  "no_skill_impl_choice_rate": 0.9791666666666666,
+  "no_skill_mean_impl_minus_test_margin": 0.222856342792511,
+  "probe_behavior_margin_pearson_r": 0.3451191488273658,
+  "primary_tool_control": "read_file for both labels",
+  "primary_endpoint_preregistered_from_exp01": true
+}

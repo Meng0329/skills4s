@@ -1,0 +1,30 @@
+{
+  "skills": {
+    "canonical_test": "# Systematic Debugging Procedure\nFollow these steps in exactly this order.\n1. REPRODUCE — Run the failing test and establish the failure.\n2. INSPECT_TEST — Read the failing test and identify the expected behavior.\n3. INSPECT_IMPLEMENTATION — Read the relevant implementation and locate the discrepancy.\n4. REPAIR — Make the smallest change that addresses the root cause.\n5. TARGET_VERIFY — Run the directly affected test.\n6. REGRESSION_VERIFY — Run the complete test suite.\n",
+    "canonical_impl": "# Systematic Debugging Procedure\nFollow these steps in exactly this order.\n1. REPRODUCE — Run the failing test and establish the failure.\n2. INSPECT_IMPLEMENTATION — Read the relevant implementation and locate the discrepancy.\n3. INSPECT_TEST — Read the failing test and identify the expected behavior.\n4. REPAIR — Make the smallest change that addresses the root cause.\n5. TARGET_VERIFY — Run the directly affected test.\n6. REGRESSION_VERIFY — Run the complete test suite.\n",
+    "paraphrase_test": "# Debugging Workflow\nUse the workflow in the stated sequence.\n1. Confirm the reported failure by executing the relevant test.\n2. Examine the failing assertion to determine the behavior the repository expects.\n3. After that, examine the source code responsible for the behavior.\n4. Apply only the smallest repair supported by the evidence.\n5. Re-run the directly affected test.\n6. Finish by checking the complete test suite.\n",
+    "paraphrase_impl": "# Debugging Workflow\nUse the workflow in the stated sequence.\n1. Confirm the reported failure by executing the relevant test.\n2. Examine the source code responsible for the behavior.\n3. After that, examine the failing assertion to determine the behavior the repository expects.\n4. Apply only the smallest repair supported by the evidence.\n5. Re-run the directly affected test.\n6. Finish by checking the complete test suite.\n"
+  },
+  "conditions": [
+    {
+      "condition": "canonical_test",
+      "wording": "canonical",
+      "label": 0
+    },
+    {
+      "condition": "canonical_impl",
+      "wording": "canonical",
+      "label": 1
+    },
+    {
+      "condition": "paraphrase_test",
+      "wording": "paraphrase",
+      "label": 0
+    },
+    {
+      "condition": "paraphrase_impl",
+      "wording": "paraphrase",
+      "label": 1
+    }
+  ]
+}
