@@ -1,130 +1,124 @@
-# EXP03 — Paired Interchange Patching
+# EXP03 — 配对互换修补（Paired Interchange Patching）
 
-## Motivation
+## 动机
 
-EXP01b found a Skill-sensitive procedural-state representation:
+EXP01b 发现了技能敏感的程序状态表征：
 
-- cross-wording Macro-F1 = 0.709 at hidden-state index 19;
-- behavior accuracy = 0.651.
+- 隐藏状态索引 19 处跨措辞 Macro-F1 = 0.709；
+- 行为准确率 = 0.651。
 
-EXP02 then found a null causal result for **linear mean-direction steering**:
+EXP02 随后发现了**线性均值方向操控**的空结果：
 
-- real symmetric effect ≈ +0.00086;
-- no advantage over same-state/random controls;
-- no meaningful behavioral flip;
-- negligible dose response.
+- 真实对称效应 ≈ +0.00086；
+- 相比同状态/随机控制无优势；
+- 无有意义的行为翻转；
+- 剂量反应可忽略。
 
-Therefore EXP02 rejects the simple hypothesis:
+因此 EXP02 拒绝了简单假设：
 
-> a global linear direction at hidden-state index 19 is sufficient to control
-> next procedural action.
+> 隐藏状态索引 19 处的全局线性方向足以控制下一个程序动作。
 
-It does **not** reject the stronger possibility that procedural state is
-context-dependent or nonlinearly embedded.
+它**未**拒绝更强的可能性：程序状态是上下文依赖的，或以非线性方式嵌入。
 
-## EXP03 question
+## EXP03 问题
 
-Can the model's actual paired hidden state from the opposite Skill condition
-causally transfer next-action preference when inserted into the same task?
+来自反技能条件的实际配对隐藏状态，插入同一任务后能否因果转移下一次动作偏好？
 
-This removes the linear-vector assumption.
+这移除了线性向量假设。
 
-For every task and wording family:
+对于每个任务和措辞族：
 
 ```text
-TEST-first prompt  <----paired---->  IMPLEMENTATION-first prompt
+TEST-first 提示词  <----配对---->  IMPLEMENTATION-first 提示词
 ```
 
-Task, history, relevant files, and tool type are identical.
+任务、历史、相关文件和工具类型完全相同。
 
-Only Skill ordering differs.
+仅技能顺序不同。
 
-## Intervention
+## 干预方式
 
-For a recipient prompt, take the exact last-prompt-token residual activation
-from its same-task opposite-Skill donor and replace the recipient activation:
+对于接收者（recipient）提示词，取其同任务反技能供体（donor）的精确最后一个提示词 token 残差激活，替换接收者的激活：
 
 ```text
 h_recipient^(l) <- h_donor^(l)
 ```
 
-Then continue the forward pass and re-score:
+然后继续前向传播并重新评分：
 
 ```text
 read_file('tests/...')
 read_file('src/...')
 ```
 
-This is an interchange intervention / activation patch.
+这是一种互换干预（interchange intervention）/ 激活修补（activation patch）。
 
-## Primary endpoint
+## 主要终点
 
-For every patch:
+对每次修补：
 
 ```text
 margin = logP(src action) - logP(test action)
 ```
 
-The signed transfer effect is:
+有符号转移效应为：
 
 ```text
-+ [patched - baseline]   when donor = IMPLEMENTATION-first
-- [patched - baseline]   when donor = TEST-first
++ [patched - baseline]   当供体为 IMPLEMENTATION-first
+- [patched - baseline]   当供体为 TEST-first
 ```
 
-Positive values mean the recipient was shifted toward the donor's prescribed
-procedural state.
+正值表示接收者被转向供体规定的程序状态。
 
-## Confirmatory site
+## 确证位点
 
-EXP01/EXP01b independently selected:
+EXP01/EXP01b 独立选定：
 
 ```text
-hidden-state index 19
+隐藏状态索引 19
 ```
 
-which maps to:
+对应于：
 
 ```text
-decoder block 18 output
+decoder block 18 输出
 ```
 
-The effect at index 19 is confirmatory.
+索引 19 处的效应为确证性检验。
 
-The full layer scan is exploratory.
+全层扫描为探索性分析。
 
-## Sanity control
+## 自检控制（Sanity control）
 
-At hidden-state index 19, EXP03 also performs a self-patch:
+在隐藏状态索引 19 处，EXP03 还执行自修补：
 
 ```text
 h_recipient <- h_recipient
 ```
 
-which should produce ~zero numerical change. A nonzero self-patch indicates an
-implementation bug.
+这应产生近似为零的数值变化。非零自修补表明存在实现缺陷（bug）。
 
-## Run
+## 运行方式
 
-From repository root:
+在仓库根目录执行：
 
 ```bash
 python experiments/exp03_interchange_patching/run.py
 ```
 
-Recommended:
+推荐：
 
 ```bash
 python experiments/exp03_interchange_patching/run.py --batch-size 4
 ```
 
-If memory is limited:
+若显存受限：
 
 ```bash
 python experiments/exp03_interchange_patching/run.py --batch-size 1
 ```
 
-## Required previous artifacts
+## 所需前置文件
 
 ```text
 outputs/exp01b_counterbalanced_next_state/
@@ -134,13 +128,13 @@ outputs/exp01b_counterbalanced_next_state/
 └── run_manifest.json
 ```
 
-and:
+以及：
 
 ```text
 experiments/exp01b_counterbalanced_next_state/run.py
 ```
 
-## Outputs
+## 输出
 
 ```text
 outputs/exp03_interchange_patching/
@@ -152,26 +146,25 @@ outputs/exp03_interchange_patching/
 └── summary.json
 ```
 
-## Interpretation
+## 解释
 
-### If exact interchange works but EXP02 linear steering failed
+### 若精确互换有效但 EXP02 线性操控为空
 
-This supports:
+这支持：
 
 ```text
-linearly decodable
+线性可解码
 +
-context-dependent / nonlinear causal state
+上下文依赖 / 非线性因果状态
 ```
 
-rather than a globally steerable linear vector.
+而非全局可操控的线性向量。
 
-### If exact interchange also fails
+### 若精确互换也为空
 
-Then the last-prompt-token residual state is likely not a sufficient mediator.
-The next experiment should test distributed mechanisms:
+则最后一个提示词 token 的残差状态可能不是充分的中介。下一实验应检验分布式机制：
 
-- multiple token positions;
-- multiple adjacent layers;
-- attention/MLP pathway patching;
-- sequential patching across the Skill-processing trajectory.
+- 多个 token 位置；
+- 多个相邻层；
+- 注意力/MLP 通路修补；
+- 跨技能处理轨迹的顺序修补。

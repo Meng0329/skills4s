@@ -1,69 +1,65 @@
-# EXP03 — Preregistered Experiment Plan
+# EXP03 — 预注册实验计划
 
-## Status
-PLANNED
+## 状态
+已规划（PLANNED）
 
-## Date
+## 日期
 2026-09-20
 
-## Previous Result
-EXP02 is a null result for single-layer linear mean-direction steering.
+## 前置结果
+EXP02 对单层线性均值方向操控呈现零结果。
 
-## Hypothesis
+## 假设
 
-H3: The procedural state is context-conditioned/nonlinear rather than a global
-linear steering vector. Exact same-task opposite-Skill activation interchange
-will causally shift the next-action preference toward the donor Skill state.
+H3：程序状态是上下文依赖/非线性的，而非全局线性操控向量。精确的同任务反技能激活互换（interchange）将因果地将下次动作偏好转向供体技能状态。
 
-## Confirmatory Site
+## 确证位点
 
 ```text
-hidden-state index = 19
-decoder block index = 18
-token = final prompt token
+隐藏状态索引 = 19
+解码器块索引 = 18
+token = 提示词末尾 token
 ```
 
-## Primary Metric
+## 主要指标
 
 ```text
 M = mean_logP(src action) - mean_logP(test action)
 ```
 
-Signed transfer:
+有符号转移效应：
 
 ```text
 T = s_donor * (M_patched - M_baseline)
 ```
 
-where:
+其中：
 
 ```text
-s_donor = +1  for IMPLEMENTATION-first donor
-s_donor = -1  for TEST-first donor
+s_donor = +1  供体为实现优先（IMPLEMENTATION-first）
+s_donor = -1  供体为测试优先（TEST-first）
 ```
 
-## Primary Test
+## 主要检验
 
-Mean task-level signed transfer at hidden-state index 19.
+隐藏状态索引 19 处的平均任务级有符号转移效应。
 
-Success requires:
+成功需要：
 
-- positive mean transfer;
-- task-bootstrap 95% CI excludes zero;
-- same sign in canonical and paraphrased wording;
-- self-patch numerical effect approximately zero.
+- 平均转移为正；
+- 任务自助法 95% CI 排除零；
+- 规范（canonical）与改述（paraphrase）措辞下同号；
+- 自修补（self-patch）数值效应近似为零。
 
-## Exploratory Test
+## 探索性检验
 
-Scan every decoder block output and locate where exact interchange transfer is
-largest.
+扫描每个解码器块输出，定位精确互换转移最大的位置。
 
-No claim that the exploratory peak is independently confirmed.
+探索性峰值不构成独立确证性声明。
 
-## Decision
+## 决策
 
-- Positive exact patch + null linear steering:
-  pursue nonlinear/context-specific procedural state.
-- Null exact patch:
-  move from single-site state representations to distributed circuit/pathway
-  analysis.
+- 精确修补阳性 + 线性操控零结果：
+  继续探索非线性/上下文特定的程序状态。
+- 精确修补也为空：
+  从单一位点状态表征转向分布式电路/通路分析。

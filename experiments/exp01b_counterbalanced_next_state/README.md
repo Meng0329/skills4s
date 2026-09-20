@@ -1,44 +1,44 @@
-# EXP01b — Counterbalanced Skill-Controlled Next-State Decoding
+# EXP01b — 反平衡技能受控的下一步状态解码
 
-## Goal
+## 目标
 
-Test whether changing only the procedure specified by a Skill changes the model's internal representation of the **prescribed next procedural state**.
+检验仅改变技能（Skill）中规定的程序，是否会改变模型对**规定下一步程序状态**的内部表征。
 
-EXP01 found strong stage decodability, but No-Skill was also highly decodable. EXP01b therefore holds task/history/position/tool identity constant and changes only Skill order.
+EXP01 发现阶段可解码性很强，但「无技能」条件同样高度可解码。因此 EXP01b 将任务/历史/位置/工具身份保持恒定，仅改变技能步骤顺序。
 
-## Confirmatory layer
+## 确证层面（Confirmatory layer）
 
-Hidden-state index **19**, selected independently by EXP01. Full layer scans are exploratory.
+隐藏状态索引 **19**，由 EXP01 独立选定。全层扫描为探索性分析。
 
-## Contrast
+## 对照
 
-Immediately after the failure has been reproduced:
+在失败被复现后立即评估：
 
-- TEST-first Skill: next state = `INSPECT_TEST`
-- IMPLEMENTATION-first Skill: next state = `INSPECT_IMPLEMENTATION`
+- 测试优先（TEST-first）技能：下一步状态 = `INSPECT_TEST`
+- 实现优先（IMPLEMENTATION-first）技能：下一步状态 = `INSPECT_IMPLEMENTATION`
 
-Both next actions use `read_file`; only the file argument differs.
+两种下一步动作均使用 `read_file`；仅文件参数不同。
 
-Two wording families are used:
+使用两种措辞族：
 
-- `canonical`: explicit stage labels
-- `paraphrase`: independent wording without those labels
+- `canonical`：显式阶段标签
+- `paraphrase`：不含这些标签的独立措辞
 
-The key probe trains on one wording family and tests on the other while holding out whole tasks.
+关键做法：探针在一个措辞族上训练，在另一个措辞族上测试，并整体留出整任务（hold out whole tasks）。
 
-## Run
+## 运行方式
 
-From repository root:
+在仓库根目录执行：
 
 ```bash
 python experiments/exp01b_counterbalanced_next_state/run.py --num-tasks 48
 ```
 
-The script uses only local Hugging Face-format weights under `./models/`.
+脚本仅使用 `./models/` 下的本地 Hugging Face 格式权重。
 
-## Outputs
+## 输出
 
-`outputs/exp01b_counterbalanced_next_state/` contains:
+`outputs/exp01b_counterbalanced_next_state/` 包含：
 
 - `summary.json`
 - `run_manifest.json`
@@ -52,9 +52,9 @@ The script uses only local Hugging Face-format weights under `./models/`.
 - `activations.npz`
 - `stimuli.json`
 
-## Primary success pattern
+## 主要成功模式
 
-1. Layer-19 cross-wording Macro-F1 is well above 0.5.
-2. Random task-specific mapping control stays near chance.
-3. Skill order reverses next-action log-probability in the prescribed direction.
-4. Held-out probe score correlates with held-out action preference.
+1. 层面 19 的跨措辞 Macro-F1 显著高于 0.5。
+2. 随机任务特定映射控制接近随机水平。
+3. 技能顺序按规定方向反转下一动作的对数概率。
+4. 留出探针得分与留出动作偏好相关。

@@ -1,18 +1,14 @@
-# Experiment 01 — Procedural Stage Probe
+# 实验 01 — 程序阶段探测（Procedural Stage Probe）
 
-## Question
+## 问题
 
-Does a natural-language Agent Skill induce an internal representation of the
-**current procedural stage**, beyond what can be explained by trajectory
-position or next-tool identity?
+自然语言 Agent 技能（Agent Skill）能否诱导出模型对**当前程序阶段**的内部表征，且这种表征无法仅由轨迹位置或下一工具身份解释？
 
-This is a representation-discovery experiment. It intentionally does **not**
-perform activation steering yet.
+这是一个表征发现实验。本实验**不**进行激活操控（activation steering）。
 
-## Local model only
+## 仅限本地模型
 
-Put one or more Hugging Face-format model directories under the repository
-root:
+请将一个或多个 Hugging Face 格式的模型目录放在仓库根目录下：
 
 ```text
 skills4s/
@@ -25,50 +21,47 @@ skills4s/
         └── ...
 ```
 
-No Hugging Face download is used. The script sets offline mode and calls
-`from_pretrained(..., local_files_only=True)`.
+不使用 Hugging Face 下载。脚本设置了离线模式，调用
+`from_pretrained(..., local_files_only=True)`。
 
-If exactly one local model is found, simply run:
+若仅找到一个本地模型，直接运行：
 
 ```bash
 python experiments/exp01_stage_probe/run.py
 ```
 
-If there are multiple local models:
+若有多个本地模型：
 
 ```bash
 python experiments/exp01_stage_probe/run.py \
   --model models/Qwen2.5-Coder-7B-Instruct
 ```
 
-For the first real run:
+首次正式运行推荐：
 
 ```bash
 python experiments/exp01_stage_probe/run.py --num-tasks 12
 ```
 
-## Experimental conditions
+## 实验条件
 
-For every task/stage pair the model sees the same task and teacher-forced
-trajectory history under three conditions:
+对于每个任务/阶段组合，模型看到相同任务和相同的教师强制（teacher-forced）轨迹历史，分为三个条件：
 
-1. `no_skill`
-2. `correct_skill`
-3. `shuffled_skill`
+1. `no_skill`（无技能）
+2. `correct_skill`（正确技能）
+3. `shuffled_skill`（顺序打乱技能）
 
-`shuffled_skill` contains the same procedural blocks as the correct Skill but
-in a fixed wrong order. The main contrast is therefore:
+`shuffled_skill` 包含与正确技能相同的程序块，但顺序被固定打乱。因此主要对照为：
 
 ```text
 Δ_order = h(correct_skill) - h(shuffled_skill)
 ```
 
-This is stronger than only using `Skill - NoSkill`, because it reduces the
-context-length/content confound.
+这比仅使用 `Skill - NoSkill` 更强，因为它减少了上下文长度/内容的混淆变量。
 
-## Controls
+## 控制条件
 
-The six procedural stages are:
+六个程序阶段为：
 
 ```text
 REPRODUCE
@@ -79,17 +72,16 @@ TARGET_VERIFY
 REGRESSION_VERIFY
 ```
 
-Same-tool controls:
+同工具对照：
 
 ```text
 INSPECT_TEST           vs INSPECT_IMPLEMENTATION  -> read_file vs read_file
 TARGET_VERIFY          vs REGRESSION_VERIFY       -> run_tests vs run_tests
 ```
 
-Irrelevant tool calls are inserted into histories, so procedural stage is not
-identical to raw tool-call index.
+历史中插入了无关工具调用，因此程序阶段不等同于原始工具调用索引。
 
-## Outputs
+## 输出
 
 ```text
 outputs/exp01_stage_probe/
@@ -103,12 +95,12 @@ outputs/exp01_stage_probe/
 └── summary.json
 ```
 
-The first scientific decision should use:
+做出首次科学判断时应使用：
 
 - `best_order_delta_macro_f1`
 - `best_layer`
 - `position_baseline_macro_f1`
-- both same-tool pair F1 values
-- the layer-wise curve
+- 两组同工具对照的 F1 值
+- 逐层曲线
 
-Chance for six-way stage classification is approximately `0.167`.
+六分类阶段基线准确率约为 `0.167`。

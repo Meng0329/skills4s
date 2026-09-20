@@ -1,60 +1,58 @@
-# skills4s — Experiment Log
+# skills4s — 实验日志
 
-This file is the project-level scientific record.
+本文件是项目级的科学记录。
 
-Principles:
+原则：
 
-- Record the hypothesis **before** interpreting the result.
-- Separate observation, interpretation, and causal claim.
-- Preserve null and negative results.
-- Tie each completed experiment to its Git commit.
-- Do not upgrade a claim beyond what the intervention actually establishes.
-- Treat exploratory layer searches separately from preregistered/confirmatory tests.
+- 在解释结果**之前**记录假设。
+- 区分观察、解释与因果主张。
+- 保留空结果与阴性结果。
+- 将每个已完成的实验与其 Git 提交关联。
+- 不将主张升级到超出干预实际所确立的范围。
+- 将探索性层扫描与预注册/确证性检验分开对待。
 
 ---
 
-## Experiment Index
+## 实验索引
 
-| ID | Question | Status | Main Result | Decision | Commit |
+| ID | 问题 | 状态 | 主要结果 | 决策 | 提交 |
 |---|---|---|---|---|---|
-| EXP01 | Is procedural stage linearly decodable? | COMPLETED | Yes. Best `order_delta` F1 = 1.000 at H19, but No-Skill F1 = 0.956 | Isolate Skill-induced state with counterbalanced design | `ed1de55` |
-| EXP01b | Does Skill ordering alone alter a cross-wording next-state representation? | COMPLETED | Yes. Cross-wording F1 = 0.709; behavior accuracy = 0.651 | Test causal sufficiency of the representation | `62aee2c` |
-| EXP02 | Is the H19 mean-difference direction causally steerable? | COMPLETED — NULL | No. Real effect ≈ +0.00086; no advantage over controls | Reject global linear-vector control hypothesis | `20dba87` |
-| EXP03 | Can exact paired single-token activation interchange transfer the donor state? | COMPLETED — NULL / NEGATIVE | H19 marginal; later layers show stronger negative transfer | Test coherent multi-token / multi-layer restoration | `e98dade` |
-| EXP04 | Is causal mediation distributed across multiple shared suffix tokens and/or layers? | COMPLETE | Signed transfer +0.058 (CI excludes 0); self-patch/same-state ≈ 0; multi-token confirmed, H21–H28 null alone | Distributed residual-state mediation supported | (see run_manifest.json) |
+| EXP01 | 程序阶段是否线性可解码？ | 已完成 | 是。H19 处最佳 `order_delta` F1 = 1.000，但无技能 F1 = 0.956 | 用反平衡设计分离技能诱导状态 | `ed1de55` |
+| EXP01b | 仅技能顺序是否改变跨措辞的下一步状态表征？ | 已完成 | 是。跨措辞 F1 = 0.709；行为准确率 = 0.651 | 检验表征的因果充分性 | `62aee2c` |
+| EXP02 | H19 均值差方向是否因果可操控？ | 已完成 — 空结果 | 否。真实效应 ≈ +0.00086；对控制无优势 | 拒绝全局线性向量控制假设 | `20dba87` |
+| EXP03 | 精确配对单 token 激活互换能否转移供体状态？ | 已完成 — 空 / 负结果 | H19 边际；更深层显示更强的负转移 | 检验一致的 multi-token / multi-layer 恢复 | `e98dade` |
+| EXP04 | 因果中介是否分布在多个共享后缀 token 和/或层上？ | 已完成 | 有符号转移 +0.058（CI 排除 0）；self-patch/同状态 ≈ 0；确认多 token，H21–H28 单独为空 | 支持分布式残差状态中介 | （见 run_manifest.json） |
 
 ---
 
-# EXP01 — Procedural Stage Probe
+# EXP01 — 程序阶段探测
 
-## Date
+## 日期
 2026-09-20
 
-## Commit
+## 提交
 `ed1de55`
 
-## Status
-COMPLETED
+## 状态
+已完成
 
-## Research Question
+## 研究问题
 
-Can the current procedural stage be linearly decoded from hidden
-representations in a Skill-conditioned coding-agent setting?
+在技能条件化的编码智能体（coding-agent）场景中，当前程序阶段能否从隐藏表征中被线性解码？
 
-## Hypothesis
+## 假设
 
-Skill-conditioned hidden states contain linearly decodable information about
-the current procedural stage beyond trajectory position and tool identity.
+技能条件化的隐藏状态包含关于当前程序阶段的线性可解码信息，且超越轨迹位置与工具身份。
 
-## Design
+## 设计
 
-Conditions:
+条件：
 
-- No Skill
-- Correct Skill
-- Shuffled Skill
+- 无技能（No Skill）
+- 正确技能（Correct Skill）
+- 顺序打乱技能（Shuffled Skill）
 
-Six stages:
+六个阶段：
 
 1. `REPRODUCE`
 2. `INSPECT_TEST`
@@ -63,93 +61,89 @@ Six stages:
 5. `TARGET_VERIFY`
 6. `REGRESSION_VERIFY`
 
-Controls included:
+控制条件包括：
 
-- task-grouped cross-validation;
-- trajectory-position baseline;
-- same-tool stage pairs.
+- 按任务分组交叉验证；
+- 轨迹位置基线；
+- 同工具阶段对。
 
-## Main Results
+## 主要结果
 
-- Best hidden-state index: **19**
-- `correct_skill - shuffled_skill` Macro-F1: **1.000**
-- Correct-Skill F1: **0.978**
-- Shuffled-Skill F1: **0.978**
-- No-Skill F1: **0.956**
-- Position baseline: **0.422**
+- 最佳隐藏状态索引：**19**
+- `correct_skill - shuffled_skill` Macro-F1：**1.000**
+- 正确技能 F1：**0.978**
+- 打乱技能 F1：**0.978**
+- 无技能 F1：**0.956**
+- 位置基线：**0.422**
 
-Same-tool controls:
+同工具对照：
 
-- `INSPECT_TEST` vs `INSPECT_IMPLEMENTATION`: **1.000**
-- `TARGET_VERIFY` vs `REGRESSION_VERIFY`: **1.000**
+- `INSPECT_TEST` vs `INSPECT_IMPLEMENTATION`：**1.000**
+- `TARGET_VERIFY` vs `REGRESSION_VERIFY`：**1.000**
 
-## Observation
+## 观察
 
-Procedural-stage information is extremely strongly linearly decodable,
-especially around H19.
+程序阶段信息被极其强烈地线性解码，尤其是在 H19 附近。
 
-## Critical Confound
+## 关键混淆变量
 
-No-Skill representations already achieve:
+无技能表征已经达到：
 
 ```text
 Macro-F1 = 0.956
 ```
 
-Therefore EXP01 does **not** establish that the representation is induced by
-the Skill.
+因此 EXP01 **不能**确立该表征是由技能诱导的。
 
-The teacher-forced execution history itself carries strong semantic evidence
-about the current procedural stage.
+教师强制（teacher-forced）执行历史本身携带关于当前程序阶段的强语义证据。
 
-## Supported Claims
+## 已支持的主张
 
-- Procedural stage is strongly represented.
-- The representation generalizes across held-out synthetic tasks.
-- It is not reducible to next-tool identity.
-- Raw position features do not explain the full signal.
+- 程序阶段被强烈表征。
+- 该表征在留出的合成任务上泛化。
+- 它不能还原为下一工具身份。
+- 原始位置特征不能解释全部信号。
 
-## Not Established
+## 未确立
 
-- Skill causally creates the representation.
-- Skill order causally controls the representation.
-- H19 is a causal control site.
-- The representation is behaviorally necessary.
+- 技能因果地创建该表征。
+- 技能顺序因果地控制该表征。
+- H19 是因果控制位点。
+- 该表征对行为是必要的。
 
-## Decision
+## 决策
 
-Proceed to a counterbalanced design where task/history/tool identity remain
-fixed and only Skill-prescribed next state changes.
+进入反平衡设计：任务/历史/工具身份保持固定，仅技能规定的下一状态改变。
 
 ---
 
-# EXP01b — Counterbalanced Skill-Controlled Next-State Decoding
+# EXP01b — 反平衡技能受控的下一步状态解码
 
-## Date
+## 日期
 2026-09-20
 
-## Commit
+## 提交
 `62aee2c`
 
-## Status
-COMPLETED
+## 状态
+已完成
 
-## Motivation
+## 动机
 
-EXP01 showed strong stage decodability but also a strong No-Skill signal.
+EXP01 显示阶段可解码性很强，但也存在很强的无技能信号。
 
-EXP01b removes this confound by holding constant:
+EXP01b 通过保持恒定来消除此混淆：
 
-- task;
-- failure observation;
-- execution history;
-- current position;
-- relevant files;
-- next-tool type.
+- 任务；
+- 失败观察；
+- 执行历史；
+- 当前位置；
+- 相关文件；
+- 下一工具类型。
 
-Only Skill-defined procedural order changes.
+仅技能定义的程序顺序改变。
 
-## Primary Contrast
+## 主对照
 
 ```text
 INSPECT_TEST
@@ -157,13 +151,13 @@ vs
 INSPECT_IMPLEMENTATION
 ```
 
-Both require:
+两者均要求：
 
 ```text
 read_file(...)
 ```
 
-Only the file target differs:
+仅文件目标不同：
 
 ```text
 tests/...
@@ -171,155 +165,152 @@ vs
 src/...
 ```
 
-## Cross-Wording Design
+## 跨措辞设计
 
-Two wording families:
+两种措辞族：
 
-- canonical;
-- paraphrased.
+- 规范（canonical）；
+- 改述（paraphrased）。
 
-Primary evaluation crosses both:
+主要评估跨两者：
 
-- held-out tasks;
-- held-out wording family.
+- 留出任务；
+- 留出措辞族。
 
-H19 was treated as the confirmatory representation site based on EXP01.
+基于 EXP01，H19 被作为确证性表征位点。
 
-## Main Results
+## 主要结果
 
-### Representation
+### 表征
 
-Cross-wording Macro-F1:
+跨措辞 Macro-F1：
 
 ```text
 0.709
 ```
 
-Chance:
+随机基线：
 
 ```text
 0.500
 ```
 
-### Random Task-Specific Mapping Control
+### 随机任务特定映射控制
 
-Mean Macro-F1:
+平均 Macro-F1：
 
 ```text
 0.458
 ```
 
-This stays near chance and below the true semantic-label probe.
+这保持在随机水平附近，低于真实语义标签探针。
 
-### Behavioral Preference
+### 行为偏好
 
-Overall next-action accuracy:
+总体下一次动作准确率：
 
 ```text
 0.651
 ```
 
-Canonical wording:
+规范措辞：
 
 ```text
 0.719
 ```
 
-Representation–behavior Pearson correlation:
+表征–行为皮尔逊相关：
 
 ```text
 r = 0.345
 ```
 
-### No-Skill Prior
+### 无技能先验
 
-Without Skill, the model chooses implementation/source inspection in:
+无技能时，模型在：
 
 ```text
 97.9%
 ```
 
-of cases.
+的情况下选择实现/源码检查。
 
-This is a strong intrinsic implementation-first prior.
+这是一个很强的固有「实现优先」先验。
 
-## Interpretation
+## 解释
 
-EXP01b supports a Skill-sensitive representation of the prescribed next
-procedural state that generalizes across task and wording.
+EXP01b 支持一种技能敏感的对规定下一程序状态的表征，该表征跨任务与措辞泛化。
 
-It also provides behavior-level evidence that Skill ordering shifts action
-preference.
+它也提供了行为层面的证据：技能顺序会改变动作偏好。
 
-However:
+然而：
 
 ```text
-decodable representation
+可解码表征
 !=
-causal control
+因果控制
 ```
 
-The representation-level evidence is stronger than the behavior-level effect.
+表征层面证据强于行为层面效应。
 
-## Supported Claims
+## 已支持的主张
 
-1. Skill-prescribed next state is linearly decodable.
-2. The representation generalizes across held-out tasks.
-3. It generalizes across substantially different Skill wording.
-4. The effect cannot be explained by tool identity.
-5. Arbitrary task-specific label mappings do not generalize similarly.
-6. Skill ordering measurably changes next-action preference.
+1. 技能规定的下一状态是线性可解码的。
+2. 该表征在留出任务上泛化。
+3. 它在显著不同的技能措辞上泛化。
+4. 该效应不能由工具身份解释。
+5. 任意的任务特定标签映射不能类似地泛化。
+6. 技能顺序可测地改变下一次动作偏好。
 
-## Not Established
+## 未确立
 
-- H19 is necessary.
-- The decoded direction is used causally.
-- The representation is sufficient to redirect behavior.
-- A single linear state variable implements the procedure.
+- H19 是必要的。
+- 解码方向被因果使用。
+- 该表征足以重定向行为。
+- 单一线性状态变量实现了该程序。
 
-## Decision
+## 决策
 
-Proceed to direct causal intervention.
+进入直接因果干预。
 
 ---
 
-# EXP02 — Causal Procedural-State Steering
+# EXP02 — 因果程序状态操控
 
-## Date
+## 日期
 2026-09-20
 
-## Commit
+## 提交
 `20dba87`
 
-## Status
-COMPLETED — NULL RESULT
+## 状态
+已完成 — 空结果
 
-## Research Question
+## 研究问题
 
-Is the linearly identified H19 procedural-state direction sufficient to
-causally change the model's next-action preference?
+线性识别的 H19 程序状态方向是否足以因果地改变模型的下一次动作偏好？
 
-## Important Layer Mapping
+## 重要的层映射
 
-Hugging Face:
+Hugging Face：
 
 ```text
 hidden_states[19]
 =
-output of decoder block 18
+decoder block 18 的输出
 ```
 
-because:
+因为：
 
 ```text
 hidden_states[0]
 =
-embedding output
+嵌入输出
 ```
 
-## Intervention
+## 干预
 
-Within each train fold:
+在每个训练折内：
 
 ```text
 v =
@@ -328,13 +319,13 @@ mean(h_IMPLEMENTATION)
 mean(h_TEST)
 ```
 
-On held-out tasks:
+在留出任务上：
 
 ```text
 h' = h + alpha * v
 ```
 
-Primary behavioral metric:
+主要行为指标：
 
 ```text
 M =
@@ -343,97 +334,91 @@ mean_logP(src action)
 mean_logP(test action)
 ```
 
-Primary symmetric steering effect:
+主对称操控效应：
 
 ```text
 E =
 [M(+1) - M(-1)] / 2
 ```
 
-## Controls
+## 控制条件
 
-- same-state direction;
-- equal-norm orthogonal random directions;
-- held-out task construction;
-- canonical/paraphrased wording;
-- positive/negative steering;
-- dose response.
+- 同状态方向；
+- 等范数正交随机方向；
+- 留出任务构造；
+- 规范/改述措辞；
+- 正/负操控；
+- 剂量反应。
 
-## Main Results
+## 主要结果
 
-| Criterion | Expected | Observed | Result |
+| 标准 | 预期 | 观察 | 结果 |
 |---|---:|---:|---|
-| `E_real > 0` | clearly positive | `+0.00086` | negligible |
-| Real > same-state | clearly stronger | real-minus-same ≈ `-0.00030` | failed |
-| Real > random | clearly stronger | empirical `p = 0.167` | failed |
-| Behavioral reversal | opposite under ±alpha | `83.9% vs 84.4%` | failed |
-| Dose response | meaningful monotonic shift | total span ≈ `0.004` | negligible |
+| `E_real > 0` | 明显为正 | `+0.00086` | 可忽略 |
+| 真实 > 同状态 | 明显更强 | 真实减同状态 ≈ `-0.00030` | 失败 |
+| 真实 > 随机 | 明显更强 | 经验 `p = 0.167` | 失败 |
+| 行为反转 | ±alpha 下相反 | `83.9% vs 84.4%` | 失败 |
+| 剂量反应 | 有意义的单调移动 | 总跨度 ≈ `0.004` | 可忽略 |
 
-## Interpretation
+## 解释
 
-EXP02 rejects the simple causal hypothesis:
+EXP02 拒绝了简单因果假设：
 
-> the H19 procedural-state information is implemented as a global,
-> task-independent linear steering direction.
+> H19 程序状态信息被实现为一个全局的、任务无关的线性操控方向。
 
-The result is consistent with the general interpretability warning:
+该结果与一般的可解释性警示一致：
 
 ```text
-decodable
+可解码
 !=
-globally linearly steerable
+全局线性可操控
 ```
 
-## What EXP02 Does NOT Show
+## EXP02 未显示的内容
 
-The null result does not establish that the Skill-sensitive representation is
-causally unused.
+空结果并不确立技能敏感表征在因果上未被使用。
 
-Alternative explanations remain:
+替代解释仍然存在：
 
-- nonlinear/context-conditioned representation;
-- multiple interacting mediators;
-- distribution across token positions;
-- distribution across layers;
-- H19 may be a readable downstream summary rather than the causal source.
+- 非线性/上下文条件化表征；
+- 多个交互的中介；
+- 分布在 token 位置；
+- 分布在层；
+- H19 可能是一个可读的下游摘要，而非因果来源。
 
-## Decision
+## 决策
 
-Do not rescue the hypothesis by simply increasing alpha or trying many new
-linear separators.
+不要简单地通过增大 alpha 或尝试许多新的线性分类器来「挽救」该假设。
 
-Proceed to exact paired activation interchange.
+进入精确配对激活互换。
 
 ---
 
-# EXP03 — Paired Interchange Patching
+# EXP03 — 配对互换修补
 
-## Date
+## 日期
 2026-09-20
 
-## Commit
+## 提交
 `e98dade`
 
-## Status
-COMPLETED — NULL / NEGATIVE RESULT
+## 状态
+已完成 — 空 / 负结果
 
-## Research Question
+## 研究问题
 
-If the global linear-direction assumption is removed, can the exact hidden
-state from the same-task opposite-Skill condition transfer the donor's
-next-action preference?
+如果移除全局线性方向假设，来自同任务反技能条件的精确隐藏状态能否转移供体的下一次动作偏好？
 
-## Intervention
+## 干预
 
-For paired prompts with:
+对于配对的提示词，其中：
 
-- same task;
-- same history;
-- same wording family;
-- opposite Skill-prescribed next state;
+- 相同任务；
+- 相同历史；
+- 相同措辞族；
+- 反技能规定的下一状态；
 
-replace the recipient's final-prompt-token hidden state with the donor's exact
-activation:
+用供体的精确激活替换接收者的最终提示词 token 隐藏状态：
 
 ```text
 h_recipient^(l)
@@ -441,7 +426,7 @@ h_recipient^(l)
 h_donor^(l)
 ```
 
-Then rescore:
+然后重新评分：
 
 ```text
 read_file(tests/...)
@@ -449,201 +434,188 @@ vs
 read_file(src/...)
 ```
 
-## Confirmatory Site
+## 确证位点
 
 ```text
 H19
 =
-decoder block 18 output
+decoder block 18 输出
 ```
 
-Full-layer scan was exploratory.
+全层扫描为探索性分析。
 
-## Main Result
+## 主要结果
 
-The confirmatory H19 effect was at most marginal and did not establish causal
-transfer.
+确证性 H19 效应最多是边际的，未确立因果转移。
 
-More strikingly, later hidden states approximately H21-H28 showed stronger
-**negative** signed-transfer effects, on the order of roughly:
+更显著的是，H21–H28 附近的更深隐藏状态显示出更强的**负**有符号转移效应，量级约为：
 
 ```text
--0.011 to -0.017
+-0.011 至 -0.017
 ```
 
-which is much larger in magnitude than the weak positive H19 effect.
+其幅度远大于 H19 的弱正效应。
 
-## Initial Observation
+## 初步观察
 
-The exact single-site donor activation does not behave like a portable
-procedural-state variable.
+精确单一位点供体激活的行为不像一个可移植的程序状态变量。
 
-Deep-layer activation replacement can actively move behavior in the wrong
-direction.
+深层激活替换可以主动将行为推向错误方向。
 
-## Interpretation Boundary
+## 解释边界
 
-This result supports:
+该结果支持：
 
 ```text
-single-token exact residual-state swap
-is not sufficient
+单 token 精确残差状态互换
+不足够
 ```
 
-It does **not yet prove**:
+它**尚不证明**：
 
 ```text
-the full mechanism is a distributed circuit
+完整机制是分布式电路
 ```
 
-because a simpler methodological explanation remains.
+因为存在一个更简单的方法论解释。
 
-## Critical Alternative Explanation: Off-Manifold Chimera
+## 关键替代解释：流形外嵌合体（Off-Manifold Chimera）
 
-EXP03 replaces only one token position while leaving:
+EXP03 仅替换一个 token 位置，同时保持：
 
-- neighboring token states;
-- previous-layer context;
-- later interacting states;
+- 相邻 token 状态；
+- 前层上下文；
+- 后续交互状态；
 
-from the recipient unchanged.
+来自接收者不变。
 
-Therefore the patch may create an inconsistent hybrid:
+因此该修补可能创建不一致的混合：
 
 ```text
-donor state
+供体状态
 +
-recipient surrounding computation
+接收者周围的计算
 ```
 
-The strong negative deep-layer effects may reflect disruption caused by this
-state mismatch rather than evidence of a specific distributed mechanism.
+深层强负效应可能反映由这种状态不匹配引起的破坏，而非特定分布式机制的证据。
 
-## Competing Explanations After EXP03
+## EXP03 后的竞争性解释
 
-### A. Single-Site Chimera
+### A. 单一位点嵌合体
 
-A coherent donor state requires restoring additional aligned token/layer
-context.
+一致的供体状态需要恢复额外的对齐 token/层上下文。
 
-Prediction:
+预测：
 
 ```text
-single-site patch          fails
-coherent distributed patch succeeds
+单一位点修补          失败
+一致分布式修补        成功
 ```
 
-### B. Distributed / Interacting Mediation
+### B. 分布式 / 交互中介
 
-Procedural control is jointly carried across multiple token positions and/or
-layers.
+程序控制由多个 token 位置和/或层共同承载。
 
-Prediction:
+预测：
 
 ```text
-multi-token and/or multi-layer restoration
-outperforms single-site patching
+multi-token 和/或 multi-layer 恢复
+优于单一位点修补
 ```
 
-### C. Residual-State Readout Only
+### C. 仅残差状态读出
 
-Residual stream contains readable Skill information, but the true causal
-mechanism lives in pathway selection such as attention/MLP routing.
+残差流包含可读的技能信息，但真正的因果机制存在于通路选择中，例如注意力/MLP 路由。
 
-Prediction:
+预测：
 
 ```text
-even coherent residual restoration remains null
+即使一致的残差恢复也为空
 ```
 
-## Decision
+## 决策
 
-Run a discriminative multi-token × multi-layer restoration experiment before
-claiming a distributed circuit.
+在宣称分布式电路之前，运行判别性的 multi-token × multi-layer 恢复实验。
 
 ---
 
-# EXP04 — Distributed Procedural-State Restoration
+# EXP04 — 分布式程序状态恢复
 
-## Date
+## 日期
 2026-09-20
 
-## Commit
+## 提交
 74155e8
 
-## Status
-COMPLETE — Positive, self-patch passes, all controls satisfied
+## 状态
+已完成 — 阳性，self-patch 通过，所有控制条件满足
 
-## Primary Result (common_H19_H28, 48 tasks)
+## 主要结果（common_H19_H28，48 个任务）
 
-| Metric | Value | 95% CI |
+| 指标 | 值 | 95% CI |
 |--------|-------|--------|
-| Signed transfer effect | +0.0579 | [0.0523, 0.0636] |
-| Self-patch control | −0.00027 | [−0.00057, +0.000008] |
-| Same-state cross-wording | −0.000024 | [−0.00099, +0.00091] |
-| Opposite-state cross-wording | +0.0571 | [0.0514, 0.0627] |
+| 有符号转移效应 | +0.0579 | [0.0523, 0.0636] |
+| 自修补控制 | −0.00027 | [−0.00057, +0.000008] |
+| 同状态跨措辞 | −0.000024 | [−0.00099, +0.00091] |
+| 反状态跨措辞 | +0.0571 | [0.0514, 0.0627] |
 
-By recipient wording:
-- canonical: +0.037
-- paraphrase: +0.079
+按接收者措辞：
+- 规范（canonical）：+0.037
+- 改述（paraphrase）：+0.079
 
-## Motivation
+## 动机
 
-EXP03 rules out a portable single-token exact state but leaves a major
-ambiguity:
+EXP03 排除了可移植的单 token 精确状态，但留下了一个主要歧义：
 
 ```text
-single-site patch failure
+单一位点修补失败
 =
-off-manifold chimera?
-or
-distributed mediation?
+流形外嵌合体？
+或
+分布式中介？
 ```
 
-EXP04 is specifically designed to distinguish these explanations.
+EXP04 专门设计用于区分这些解释。
 
-## Research Question
+## 研究问题
 
-Can a coherent set of donor activations across multiple aligned prompt tokens
-and/or multiple adjacent layers causally transfer the donor Skill's prescribed
-next-action preference?
+跨越多个对齐提示词 token 和/或多个相邻层的供体激活一致集合，能否因果转移供体技能规定的下一次动作偏好？
 
-## Token Alignment Principle
+## Token 对齐原则
 
-Do **not** patch unaligned Skill tokens.
+**不要**修补未对齐的技能 token。
 
-For each donor/recipient pair, compute the exact longest common token suffix.
+对每个供体/接收者对，计算精确的最长公共 token 后缀。
 
-This suffix contains downstream prompt content that is identical in token IDs,
-including:
+该后缀包含 token ID 完全相同的下游提示词内容，包括：
 
-- execution history;
-- final instruction;
-- generation boundary.
+- 执行历史；
+- 最终指令；
+- 生成边界。
 
-Only aligned positions are patched.
+仅修补对齐位置。
 
-## Localization Configurations
+## 定位配置
 
-### Token-Distribution Test
+### Token 分布检验
 
 ```text
 last1_H19
 common_H19
 ```
 
-Interpretation:
+解释：
 
 ```text
 last1_H19 ~ 0
 common_H19 > 0
 ```
 
-would support multi-token mediation.
+将支持多 token 中介。
 
-### Layer-Distribution Test
+### 层分布检验
 
-Using the aligned common suffix:
+使用对齐的公共后缀：
 
 ```text
 common_H19
@@ -653,22 +625,22 @@ common_H21_H28
 common_H15_H28
 ```
 
-## Preregistered Primary Configuration
+## 预注册主配置
 
 ```text
-donor:
-same task
-same wording
-opposite prescribed state
+供体：
+同任务
+同措辞
+反规定状态
 
-token span:
-entire exact common suffix
+token 跨度：
+完整精确公共后缀
 
-hidden-state range:
+隐藏状态范围：
 H19-H28
 ```
 
-Primary metric:
+主指标：
 
 ```text
 M =
@@ -677,32 +649,32 @@ mean_logP(src action)
 mean_logP(test action)
 ```
 
-Signed transfer:
+有符号转移：
 
 ```text
 T =
 donor_sign * (M_patched - M_baseline)
 ```
 
-Positive means the recipient moves toward the donor's prescribed state.
+正值表示接收者移向供体的规定状态。
 
-## Controls
+## 控制条件
 
-### Self Patch
+### 自修补（Self Patch）
 
 ```text
 recipient <- recipient
 ```
 
-Expected:
+预期：
 
 ```text
 ~ 0
 ```
 
-### Same-State Cross-Wording
+### 同状态跨措辞
 
-Example:
+示例：
 
 ```text
 canonical TEST-first
@@ -710,17 +682,17 @@ canonical TEST-first
 paraphrase TEST-first
 ```
 
-Changes wording without changing procedural state.
+改变措辞而不改变程序状态。
 
-Expected directional state-transfer effect:
+预期的方向性状态转移效应：
 
 ```text
 ~ 0
 ```
 
-### Opposite-State Cross-Wording
+### 反状态跨措辞
 
-Example:
+示例：
 
 ```text
 canonical TEST-first
@@ -728,71 +700,68 @@ canonical TEST-first
 paraphrase IMPLEMENTATION-first
 ```
 
-A positive result would show causal transfer across Skill surface wording.
+阳性结果将显示跨技能表面措辞的因果转移。
 
-## Success Criteria
+## 成功标准
 
-Support for distributed residual-state mediation requires:
+对分布式残差状态中介的支持要求：
 
-1. primary mean signed transfer > 0;
-2. task-bootstrap 95% CI excludes zero;
-3. same-state control materially smaller;
-4. self-patch approximately zero;
-5. canonical and paraphrased recipient conditions have concordant sign;
-6. opposite-state cross-wording transfer is also positive.
+1. 主平均有符号转移 > 0；
+2. 任务自助法 95% CI 排除零；
+3. 同状态控制明显更小；
+4. 自修补近似为零；
+5. 规范与改述接收者条件符号一致；
+6. 反状态跨措辞转移也为正。
 
-## Planned Interpretation
+## 计划性解释
 
-### Outcome A — Multi-token rescue
+### 结果 A — 多 token 挽救
 
 ```text
 last1_H19 ~ 0
 common_H19 > 0
 ```
 
-Interpretation:
+解释：
 
-> procedural mediation is distributed across multiple downstream prompt
-> positions.
+> 程序中介分布在多个下游提示词位置。
 
-### Outcome B — Multi-layer rescue
+### 结果 B — 多层挽救
 
 ```text
 common_H19 ~ 0
 common_H19_H28 > 0
 ```
 
-Interpretation:
+解释：
 
-> procedural mediation depends on coordinated states across layers.
+> 程序中介依赖于跨层的协调状态。
 
-### Outcome C — Full distributed rescue
+### 结果 C — 完全分布式挽救
 
-Primary and cross-wording opposite-state transfer are positive, while self and
-same-state controls stay near zero.
+主检验与跨措辞反状态转移均为正，而自修补与同状态控制保持在零附近。
 
-Interpretation:
+解释：
 
-> a coherent distributed residual-stream state is sufficient to transfer part
-> of Skill-conditioned action preference.
+> 一致的分布式残差流状态足以转移部分技能条件化动作偏好。
 
-### Outcome D — All residual restoration remains null
+### 结果 D — 所有残差恢复仍为空
 
-Interpretation:
+解释：
 
-> stop treating procedural control as a portable residual-state variable.
+> 停止将程序控制视为可移植的残差状态变量。
 
-Next target:
+下一个目标：
 
-- attention-output pathways;
-- MLP-output pathways;
-- head-level routing;
-- Skill-token → action-token causal paths;
-- circuit-selection mechanisms.
+- 注意力输出通路；
+- MLP 输出通路；
+- 头级路由；
+- 技能 token → 动作 token 因果路径；
+- 电路选择机制。
 
-## Localization Effects (signed transfer, 48 tasks each)
+## 定位效应（有符号转移，各 48 个任务）
 
-| Config | Span | Layers | Effect | 95% CI |
+| 配置 | 跨度 | 层 | 效应 | 95% CI |
 |--------|------|--------|--------|--------|
 | last1_H19 | last1 | 19 | +0.0011 | [0.0003, 0.0021] |
 | common_H19 | common | 19 | +0.0305 | [0.0266, 0.0345] |
@@ -801,105 +770,78 @@ Next target:
 | common_H21_H28 | common | 21–28 | −0.0002 | [−0.0038, 0.0033] |
 | common_H15_H28 | common | 15–28 | +0.0796 | [0.0731, 0.0863] |
 
-Pattern:
-- single last token alone: null;
-- entire common suffix at H19: positive → multi-token distribution confirmed;
-- adding H19–H20 is necessary (H21-H28 without them → null);
-- extending down to H15 increases the effect.
+模式：
+- 单独最后一个 token：空；
+- H19 处完整公共后缀：为正 → 确认多 token 分布；
+- 加入 H19–H20 是必要的（不含它们的 H21–H28 → 空）；
+- 扩展到 H15 增加效应。
 
-## Interpreted Result — Outcome C (Full distributed rescue)
+## 解释结果 — 结果 C（完全分布式挽救）
 
 ```text
-Tokens:     1 token → 0.001     common suffix → 0.058
-Layers:     19 alone → 0.031    19–28 → 0.058    21–28 → ~0
-Controls:   self −0.00027     same-state cross-wording −0.00002
+Token：     1 个 token → 0.001     公共后缀 → 0.058
+层：         19 单独 → 0.031     19–28 → 0.058     21–28 → ~0
+控制：      self −0.00027     同状态跨措辞 −0.00002
 ```
 
-> A coherent distributed residual-stream state, spanning the full shared
-> prompt suffix and the H19–H28 block (critically including H19–H20), is
-> sufficient to transfer Skill-conditioned action preference, with controls
-> at machine precision zero.
+> 跨越完整共享提示词后缀和 H19–H28 块（关键包含 H19–H20）的一致分布式残差流状态，足以转移技能条件化动作偏好，控制条件处于机器精度零。
 
-## Methodological Note — Final-Norm Capture Bug (fixed)
+## 方法说明 — 最终归一化捕获缺陷（已修复）
 
-The first EXP04 run failed the self-patch sanity check (mean ≈ +0.197
-instead of ~0). Root cause: in `outputs.hidden_states`, the element at
-index equal to `num_layers` (here `hidden_states[28]`) is the
-**post-final-RMSNorm** activation — not the raw output of `layers[27]`.
-Patching that value back into `layers[27]`'s pre-norm output injected a
-mis-scaled vector (verified max |diff| ≈ 735 → captured 0.196 self-patch
-noise) into the residual stream.
+首次 EXP04 运行未通过自修补自检（均值 ≈ +0.197 而非 ~0）。根本原因：在 `outputs.hidden_states` 中，索引等于 `num_layers` 的元素（此处为 `hidden_states[28]`）是**最终 RMSNorm 之后**的激活——而非 `layers[27]` 的原始输出。将该值修补回 `layers[27]` 的归一化前输出，向残差流注入了错误缩放的向量（经验证最大 |diff| ≈ 735 → 产生 0.196 的自修补噪声）。
 
-Fix: `capture_prompt_states` now grabs hidden states via forward hooks on
-`layers[hidx-1]` (pre-norm), exactly matching what `patch_hook` replaces.
-Additionally moved `score_one` to per-candidate batch-1 forwards to
-eliminate right-padding asymmetry. Self-patch dropped to −0.00027.
+修复：`capture_prompt_states` 现在通过 `layers[hidx-1]` 上的前向钩子（pre-norm）获取隐藏状态，与 `patch_hook` 替换的位置完全一致。此外，将 `score_one` 改为逐候选 batch-1 前向传播，以消除右填充不对称。自修补降至 −0.00027。
 
-Implication for earlier experiments: any location using `hidden_states[len(layers)]`
-(e.g. EXP03's L27/L28 patch conditions) shared this capture/patch
-misalignment, so those specific layers in EXP03 should be treated as
-unverified until re-run with the corrected capture.
+对早期实验的含义：任何使用 `hidden_states[len(layers)]` 的位置（例如 EXP03 的 L27/L28 修补条件）共享此捕获/修补错位，因此 EXP03 中这些特定层在被修正的捕获方式重新运行之前应视为未经验证。
 
 ---
 
-# Current Evidence Summary
+# 当前证据总结
 
-The strongest defensible project-level statement **before EXP04** is:
+EXP04 之前最强的可辩护项目级声明是：
 
-> Agent Skill procedural information is reliably readable from the residual
-> stream and generalizes across task and wording, but neither a global linear
-> direction nor a single-token exact residual-state swap is sufficient to
-> redirect behavior under the tested interventions.
+> Agent 技能程序信息可以从残差流中可靠读取，并跨任务与措辞泛化，但在所检验的干预下，无论是全局线性方向还是单 token 精确残差状态互换，都不足以重定向行为。
 
-Current evidence chain:
+当前证据链：
 
 ```text
-Skill procedural information
+技能程序信息
         |
         v
-linearly decodable                     YES
+线性可解码                         是
         |
         v
-cross-wording semantic generalization  YES
+跨措辞语义泛化                     是
         |
         v
-associated with action preference      YES, moderate
+与动作偏好关联                     是，中等
         |
         v
-global linear steering                 NO
+全局线性操控                       否
         |
         v
-single-token exact interchange         NO
+单 token 精确互换                  否
         |
         v
-distributed causal mediation           YES (EXP04)
+分布式因果中介                     是（EXP04）
 ```
 
-## Current Claim Boundary
+## 当前主张边界
 
-The strongest defensible project-level statement **after EXP04** is:
+EXP04 之后最强的可辩护项目级声明是：
 
-> Agent Skill procedural information is carried by a distributed
-> residual-stream state that spans multiple shared prompt tokens
-> (specifically the full aligned common suffix) and multiple adjacent
-> layers (critical range: H19–H28, with H19–H20 necessary and
-> H21–H28 alone insufficient). This state is sufficient to
-> causally transfer Skill-conditioned action preference when patched
-> across conditions.
+> Agent 技能程序信息由一个分布式残差流状态承载，该状态跨越多个共享提示词 token（具体为完整对齐公共后缀）和多个相邻层（关键范围：H19–H28，其中 H19–H20 必要、H21–H28 单独不足）。在跨条件修补时，该状态足以因果转移技能条件化动作偏好。
 
-Do not yet state:
+尚不可声明：
 
-> "The true causal mechanism is exclusively a distributed circuit."
+> 「真正的因果机制完全是一个分布式电路。」
 
-Alternative explanations not yet ruled out:
+尚未排除的替代解释：
 
-1. Attention-output pathways that happen to carry
-   the same information in parallel;
-2. MLP-output pathways with distributed representation;
-3. Head-level routing / skip-connection bypass mechanisms;
+1. 恰好并行承载相同信息的注意力输出通路；
+2. 具有分布式表征的 MLP 输出通路；
+3. 头级路由 / 跳跃连接旁路机制；
 
-> "The results rule out two simple portable-state hypotheses and motivate a
-> distributed/pathway-level causal account."
+> 「这些结果排除了两个简单的可移植状态假设，并支持分布式/通路层面的因果解释。」
 
-This wording should be retained until EXP04 or subsequent pathway experiments
-provide direct positive causal evidence.
+此措辞应保留，直到 EXP04 或后续通路实验提供直接的正向因果证据。

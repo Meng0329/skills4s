@@ -1,52 +1,50 @@
-# EXP02 — Causal Procedural-State Steering
+# EXP02 — 因果程序状态操控（Causal Procedural-State Steering）
 
-## Research question
+## 研究问题
 
-Does the procedural-state direction identified in EXP01b **causally control**
-the model's next-action preference?
+EXP01b 中识别的程序状态方向是否**因果控制**模型的下一次动作偏好？
 
-EXP01b showed that Skill-prescribed next state is:
+EXP01b 已表明技能规定的下一步状态：
 
-- cross-task / cross-wording decodable at hidden-state index 19;
-- associated with next-action preference.
+- 可在隐藏状态索引 19 处进行跨任务/跨措辞解码；
+- 与下一次动作偏好相关联。
 
-EXP02 moves from association to intervention.
+EXP02 从关联（association）走向干预（intervention）。
 
-## Important layer mapping
+## 重要的层映射
 
-Hugging Face `hidden_states` contains:
+Hugging Face `hidden_states` 包含：
 
 ```text
-hidden_states[0]  = embedding output
-hidden_states[1]  = output after decoder block 0
+hidden_states[0]  = 嵌入输出
+hidden_states[1]  = decoder block 0 之后
 ...
-hidden_states[19] = output after decoder block 18
+hidden_states[19] = decoder block 18 之后
 ```
 
-Therefore the preregistered EXP01/EXP01b hidden-state index 19 maps to:
+因此预注册的 EXP01/EXP01b 隐藏状态索引 19 映射到：
 
 ```text
 model.model.layers[18]
 ```
 
-EXP02 explicitly records both indices to prevent an off-by-one error.
+EXP02 显式记录两个索引，以防差一（off-by-one）错误。
 
-## Causal direction
+## 因果方向
 
-For every held-out-task fold, the direction is computed **only from training
-tasks** in EXP01b:
+对于每个留出任务折，方向**仅使用 EXP01b 中的训练任务**计算：
 
 ```text
 v = mean(h_impl) - mean(h_test)
 ```
 
-at hidden-state index 19.
+位于隐藏状态索引 19 处。
 
-The direction is then injected at the last prompt token of decoder block 18.
+然后将该方向注入 decoder block 18 的最后一个提示词 token。
 
-## Primary causal endpoint
+## 主要因果终点
 
-For each prompt:
+对每个提示词：
 
 ```text
 margin =
@@ -55,67 +53,65 @@ mean_logP(read_file(src/...))
 mean_logP(read_file(tests/...))
 ```
 
-Positive values favor implementation inspection.
+正值表示偏向实现（implementation）检查。
 
-Primary preregistered effect:
+预注册主效应：
 
 ```text
 E_real =
 mean( margin(alpha=+1) - margin(alpha=-1) ) / 2
 ```
 
-Expected:
+预期：
 
 ```text
 E_real > 0
 ```
 
-and substantially larger than matched controls.
+且显著大于匹配的控制条件。
 
-## Controls
+## 控制条件
 
-1. **Orthogonal random direction**
-   - random vector;
-   - explicitly orthogonalized against the real direction;
-   - norm-matched to the real direction.
+1. **正交随机方向**
+   - 随机向量；
+   - 显式与真实方向正交化；
+   - 范数与真实方向匹配。
 
-2. **Same-state direction**
-   - constructed from two halves of IMPLEMENTATION-state training examples;
-   - norm-matched to the real direction;
-   - captures arbitrary within-state activation variation.
+2. **同状态方向**
+   - 由实现（IMPLEMENTATION）状态训练样本的两半构造；
+   - 范数与真实方向匹配；
+   - 捕捉状态内任意的激活变异。
 
-3. **Held-out tasks**
-   - directions are learned from training tasks only;
-   - intervention is evaluated only on held-out tasks.
+3. **留出任务**
+   - 方向仅从训练任务学习；
+   - 干预仅在留出任务上评估。
 
-4. **Cross-wording**
-   - canonical and paraphrased Skills are both evaluated.
+4. **跨措辞**
+   - 规范（canonical）与改述（paraphrase）技能均被评估。
 
-5. **Dose response**
-   - real direction: alpha = -2, -1, -0.5, +0.5, +1, +2;
-   - alpha = ±1 is the preregistered primary comparison;
-   - larger/smaller coefficients are exploratory.
+5. **剂量反应**
+   - 真实方向：alpha = -2, -1, -0.5, +0.5, +1, +2；
+   - alpha = ±1 是预注册的主要比较；
+   - 更大/更小的系数为探索性分析。
 
-6. **Multiple random controls**
-   - five independent random directions by default.
+6. **多重随机控制**
+   - 默认五个独立随机方向。
 
-## Why native PyTorch hooks?
+## 为什么使用原生 PyTorch hooks？
 
-This experiment uses a standard forward hook on the Qwen decoder block output
-instead of adding an interpretability framework dependency.
+本实验使用 Qwen 解码器块输出的标准前向钩子（forward hook），而不是引入可解释性框架依赖。
 
-It implements exactly the intervention we need:
+它精确实现了我们需要的干预：
 
 ```text
 hidden[last_prompt_token] += alpha * direction
 ```
 
-If EXP02 succeeds, later experiments can adopt NNsight/pyvene for more complex
-multi-component patching.
+如果 EXP02 成功，后续实验可采纳 NNsight/pyvene 进行更复杂的多组件修补。
 
-## Required previous output
+## 所需前置输出
 
-EXP02 reads:
+EXP02 读取：
 
 ```text
 outputs/exp01b_counterbalanced_next_state/
@@ -124,18 +120,17 @@ outputs/exp01b_counterbalanced_next_state/
 └── run_manifest.json
 ```
 
-The original EXP01b activations are used only to estimate directions.
-No Hugging Face network access is used.
+原始的 EXP01b 激活仅用于估计方向。不使用任何 Hugging Face 网络访问。
 
-## Run
+## 运行方式
 
-From the repository root:
+在仓库根目录执行：
 
 ```bash
 python experiments/exp02_causal_state_steering/run.py
 ```
 
-Recommended:
+推荐：
 
 ```bash
 python experiments/exp02_causal_state_steering/run.py \
@@ -143,13 +138,13 @@ python experiments/exp02_causal_state_steering/run.py \
   --num-random-controls 5
 ```
 
-If GPU memory is tight:
+若 GPU 显存紧张：
 
 ```bash
 python experiments/exp02_causal_state_steering/run.py --batch-size 1
 ```
 
-## Outputs
+## 输出
 
 ```text
 outputs/exp02_causal_state_steering/
@@ -164,16 +159,15 @@ outputs/exp02_causal_state_steering/
 └── summary.json
 ```
 
-## Go / No-Go criterion
+## 进行 / 停止（Go / No-Go）标准
 
-Strong support requires all of the following:
+强支持需要满足以下全部条件：
 
-1. real-direction primary effect has the predicted sign;
-2. task-bootstrap 95% CI excludes zero;
-3. real effect exceeds the same-state control;
-4. real effect exceeds the distribution of orthogonal random controls;
-5. dose response is approximately monotonic around alpha = 0;
-6. the effect appears in both canonical and paraphrased Skills.
+1. 真实方向主效应具有预测的符号；
+2. 任务自助法 95% CI 排除零；
+3. 真实效应超过同状态控制；
+4. 真实效应超过正交随机控制分布；
+5. 剂量反应在 alpha = 0 附近大致单调；
+6. 规范与改述技能中均出现该效应。
 
-If these hold, the project has causal evidence that a linearly identified
-procedural-state direction participates in controlling next-action preference.
+若这些成立，则项目拥有因果证据，表明线性识别的程序状态方向参与控制下一次动作偏好。

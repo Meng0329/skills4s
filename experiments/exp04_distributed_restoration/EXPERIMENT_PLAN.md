@@ -1,41 +1,38 @@
-# EXP04 — Preregistered Experiment Plan
+# EXP04 — 预注册实验计划
 
-## Status
-PLANNED
+## 状态
+已规划（PLANNED）
 
-## Previous evidence
+## 前置证据
 
-- EXP01: stage information is decodable.
-- EXP01b: Skill-prescribed next state generalizes across wording.
-- EXP02: global linear steering is null.
-- EXP03: one-token exact interchange is not sufficient.
+- EXP01：阶段信息可解码。
+- EXP01b：技能规定的下一步状态跨措辞泛化。
+- EXP02：全局线性操控为空。
+- EXP03：单 token 精确互换不充分。
 
-## Competing explanations
+## 竞争性解释
 
-A. **Single-site chimera**:
-the donor final-token activation is inconsistent with unchanged recipient
-states at neighboring tokens/layers.
+A. **单一位点嵌合体（chimera）**：
+供体的最终 token 激活与接收者在相邻 token/层处未改变的状态不一致。
 
-B. **Distributed mediation**:
-Skill-conditioned control is jointly carried across token positions and/or
-layers.
+B. **分布式中介（distributed mediation）**：
+技能条件化控制由多个 token 位置和/或层共同承载。
 
-## Primary configuration
+## 主配置
 
 ```text
-donor       = same task, same wording, opposite state
-token span  = exact longest common suffix
-layers      = hidden-state indices H19-H28
-metric      = logP(src) - logP(test)
+供体       = 同任务、同措辞、反状态
+token 跨度 = 精确最长公共后缀
+层范围     = 隐藏状态索引 H19-H28
+指标       = logP(src) - logP(test)
 ```
 
-## Success criteria
+## 成功标准
 
-1. primary task-bootstrap 95% CI excludes zero in the positive direction;
-2. same-state cross-wording control is materially smaller;
-3. self patch is approximately zero;
-4. canonical and paraphrase recipients show the same sign;
-5. opposite-state cross-wording donor yields concordant positive transfer.
+1. 主任务自助法 95% CI 在正方向排除零；
+2. 同状态跨措辞控制明显更小；
+3. 自修补（self patch）近似为零；
+4. 规范（canonical）与改述（paraphrase）接收者显示同号；
+5. 反状态跨措辞供体产生一致的正转移。
 
-A positive result supports a distributed residual-state mediator, not yet a
-specific attention/MLP circuit.
+阳性结果支持分布式残差流状态中介，但尚未指向特定的注意力/MLP 电路。
