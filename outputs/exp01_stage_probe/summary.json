@@ -1,0 +1,30 @@
+{
+  "experiment": "exp01_stage_probe",
+  "model_dir": "/data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct",
+  "model_name": "Qwen2.5-Coder-7B-Instruct",
+  "num_tasks": 8,
+  "num_stage_examples": 48,
+  "num_hidden_states": 29,
+  "hidden_size": 3584,
+  "chance_macro_f1": 0.16666666666666666,
+  "best_layer": 19,
+  "best_order_delta_macro_f1": 1.0,
+  "best_correct_skill_macro_f1": 1.0,
+  "best_shuffled_skill_macro_f1": 0.9777777777777777,
+  "best_no_skill_macro_f1": 0.9777777777777777,
+  "position_baseline_macro_f1": 0.42196214518195946,
+  "same_tool_results": [
+    {
+      "pair": "INSPECT_TEST_vs_INSPECT_IMPLEMENTATION",
+      "shared_tool": "read_file",
+      "macro_f1": 1.0
+    },
+    {
+      "pair": "TARGET_VERIFY_vs_REGRESSION_VERIFY",
+      "shared_tool": "run_tests",
+      "macro_f1": 1.0
+    }
+  ],
+  "primary_contrast": "correct_skill - shuffled_skill",
+  "offline_only": true
+}

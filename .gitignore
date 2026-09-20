@@ -7,9 +7,6 @@ models/**/tokenizer_config.json
 models/**/vocab.json
 models/**/merges.txt
 
-# Runtime outputs
-outputs/
-
 # Python
 __pycache__/
 *.pyc
