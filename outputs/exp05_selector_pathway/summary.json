@@ -1,0 +1,70 @@
+{
+  "experiment": "EXP05_selector_pathway",
+  "hypothesis": "H15-H20 distributed residual state acts as a selector that reconfigures unpatched H21-H28 pathways and shifts action preference.",
+  "early_H15_H20_mean": 0.07839944617201884,
+  "early_H15_H20_95ci": [
+    0.07168081742711364,
+    0.08486899662141997
+  ],
+  "late_H21_H28_mean": 2.3491991062959034e-05,
+  "late_H21_H28_95ci": [
+    -0.0033763820693517724,
+    0.0035105851634095113
+  ],
+  "full_H15_H28_mean": 0.07970054230342309,
+  "full_H15_H28_95ci": [
+    0.07307639177888632,
+    0.08642073223212111
+  ],
+  "selector_fraction_of_full_effect": 0.9836751909861425,
+  "self_control_mean": -8.458209534486134e-05,
+  "same_state_cross_wording_control_mean": 0.0021358467638492584,
+  "opposite_state_cross_wording_mean": 0.08307218831032515,
+  "pathway_component_summary": [
+    {
+      "component": "attn",
+      "projection_recovery_mean": 0.700123166704735,
+      "projection_recovery_95ci": [
+        0.6896794686451785,
+        0.7113475213519426
+      ],
+      "distance_recovery_mean": 0.4374750995861781,
+      "distance_recovery_95ci": [
+        0.42738003286531023,
+        0.4475423849030255
+      ]
+    },
+    {
+      "component": "mlp",
+      "projection_recovery_mean": 0.8746769476218894,
+      "projection_recovery_95ci": [
+        0.8701580658018209,
+        0.8796210128178042
+      ],
+      "distance_recovery_mean": 0.6486150233858826,
+      "distance_recovery_95ci": [
+        0.642673990522205,
+        0.654886248799156
+      ]
+    },
+    {
+      "component": "residual",
+      "projection_recovery_mean": 0.8723491656539476,
+      "projection_recovery_95ci": [
+        0.8678434546218837,
+        0.8771820092294903
+      ],
+      "distance_recovery_mean": 0.6576360003450082,
+      "distance_recovery_95ci": [
+        0.6520622712888025,
+        0.6633966270860743
+      ]
+    }
+  ],
+  "pathway_recovery_behavior_pearson_r": {
+    "attn": 0.12589769247570476,
+    "mlp": 0.25136846858650425,
+    "residual": 0.22911766561209546
+  },
+  "decision_rule": "Positive early_H15_H20 CI, late_H21_H28 near zero, and positive unpatched downstream pathway recovery support a selector-like mechanism. Component asymmetry motivates head/MLP-level EXP06."
+}

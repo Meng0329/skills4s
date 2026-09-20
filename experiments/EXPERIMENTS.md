@@ -15,13 +15,14 @@
 
 ## 实验索引
 
-| ID | 问题 | 状态 | 主要结果 | 决策 | 提交 |
-|---|---|---|---|---|---|
-| EXP01 | 程序阶段是否线性可解码？ | 已完成 | 是。H19 处最佳 `order_delta` F1 = 1.000，但无技能 F1 = 0.956 | 用反平衡设计分离技能诱导状态 | `ed1de55` |
-| EXP01b | 仅技能顺序是否改变跨措辞的下一步状态表征？ | 已完成 | 是。跨措辞 F1 = 0.709；行为准确率 = 0.651 | 检验表征的因果充分性 | `62aee2c` |
-| EXP02 | H19 均值差方向是否因果可操控？ | 已完成 — 空结果 | 否。真实效应 ≈ +0.00086；对控制无优势 | 拒绝全局线性向量控制假设 | `20dba87` |
-| EXP03 | 精确配对单 token 激活互换能否转移供体状态？ | 已完成 — 空 / 负结果 | H19 边际；更深层显示更强的负转移 | 检验一致的 multi-token / multi-layer 恢复 | `e98dade` |
-| EXP04 | 因果中介是否分布在多个共享后缀 token 和/或层上？ | 已完成 | 有符号转移 +0.058（CI 排除 0）；self-patch/同状态 ≈ 0；确认多 token，H21–H28 单独为空 | 支持分布式残差状态中介 | （见 run_manifest.json） |
+| 实验 | 核心问题 | 状态 | 关键结果 | Commit |
+|---|---|---|---|---|
+| EXP01 | 程序阶段是否可解码？ | 完成 | H19 `order_delta` F1=1.000，但 No-Skill F1=0.956 | `ed1de55` |
+| EXP01b | Skill 规定的下一状态是否跨措辞可解码？ | 完成 | cross-wording F1=0.709；行为准确率=0.651 | `62aee2c` |
+| EXP02 | H19 全局线性方向是否可因果 steering？ | 完成，NULL | effect≈+0.00086；不优于控制 | `20dba87` |
+| EXP03 | 单 token exact interchange 是否可转移状态？ | 完成，NULL/负 | H19 弱；深层负效应；部分深层结果受 capture/patch 位置错位影响 | `e98dade` |
+| EXP04 | 多 token × 多层一致恢复是否恢复因果效应？ | 完成，POSITIVE | `common_H19_H28=+0.0579 [0.0523,0.0636]`；`H15_H28=+0.0796`；控制≈0 | `bbabe94` 等 |
+| EXP05 | H15–H20 是否作为 selector，重配置后续 attention/MLP？ | 完成，POSITIVE | `early_H15_H20=+0.0784 [0.0717,0.0849]`；selector=98.4% 全效应；late≈0；**MLP recovery 0.875 >> attn 0.700** | 待提交 |
 
 ---
 
@@ -794,11 +795,181 @@ Token：     1 个 token → 0.001     公共后缀 → 0.058
 
 对早期实验的含义：任何使用 `hidden_states[len(layers)]` 的位置（例如 EXP03 的 L27/L28 修补条件）共享此捕获/修补错位，因此 EXP03 中这些特定层在被修正的捕获方式重新运行之前应视为未经验证。
 
+## 决策
+
+进入 EXP05：测试 H15–H20 是否充当 selector 状态，以及该状态是否会在未修补的 H21–H28 中重配置 attention/MLP 输出。
+
+---
+
+# EXP05 — Selector → 通路重配置（Selector → Pathway Reconfiguration）
+
+## 状态
+已完成 — 阳性，MLP-dominant selector，所有控制条件满足
+
+## 日期
+2026-09-21
+
+## 提交
+（待提交）
+
+## 科学动机
+
+EXP04 给出：
+
+```text
+H15-H28 = 强正效应
+H21-H28 = null
+```
+
+这产生一个可检验的 selector 假说：
+
+> H15–H20 可能负责建立任务/程序控制状态；一旦该状态被恢复，后续 H21–H28 可以在不直接修补的情况下自行切换到供体式计算。
+
+这与「持续携带供体激活到输出端」的 carrier 模型不同。
+
+## 主假设
+
+H5：
+
+```text
+在 H15-H20 恢复供体公共后缀
+           ↓
+未修补的 H21-H28 attention/MLP 输出
+移向供体式计算
+           ↓
+动作偏好移向供体技能状态
+```
+
+## 主行为实验
+
+比较：
+
+```text
+early_H15_H20
+late_H21_H28
+full_H15_H28
+```
+
+预期的 selector 模式：
+
+```text
+early_H15_H20 > 0
+late_H21_H28 ~ 0
+full_H15_H28 > 0
+```
+
+## 通路读出（Pathway Readout）
+
+仅修补 H15–H20。
+
+随后不修补 H21–H28，而是测量：
+
+- attention 分支输出；
+- MLP 分支输出；
+- decoder block 输出。
+
+定义：
+
+```text
+projection recovery =
+((patched-recipient) dot (donor-recipient))
+/
+||donor-recipient||^2
+```
+
+## 控制
+
+- self H15-H20 patch；
+- same-state cross-wording H15-H20；
+- opposite-state cross-wording H15-H20；
+- late H21-H28 阴性对照；
+- full H15-H28 阳性对照。
+
+## 成功标准
+
+支持 selector-like 机制需要同时看到：
+
+1. `early_H15_H20` 任务自助法 95% CI > 0；
+2. `late_H21_H28` 仍近 0；
+3. H21–H28 至少一个分支的 recovery > 0；
+4. self / same-state 控制近 0；
+5. opposite-state cross-wording 同方向；
+6. 下游 recovery 与行为效应至少呈正相关趋势。
+
+## 主要结果（48 个任务，任务自助法 95% CI）
+
+### 行为效应（same-task, same-wording, opposite-state donor）
+
+| 配置 | 角色 | 效应 | 95% CI |
+|--------|--------|--------|--------|
+| **early_H15_H20** | primary | **+0.0784** | [0.0717, 0.0849] |
+| late_H21_H28 | 阴性对照 | +0.00002 | [−0.0034, +0.0035] |
+| full_H15_H28 | 阳性对照 | +0.0797 | [0.0731, 0.0864] |
+
+**selector_fraction = 0.984**：仅恢复 H15–H20 即捕获完整效应的 98.4%。
+
+### 控制条件（early_H15_H20 修补下）
+
+| donor 类型 | 效应 | 95% CI |
+|--------|--------|--------|
+| self（自修补） | −0.00008 | [−0.0005, +0.0003] |
+| same-state cross-wording | +0.0021 | [0.0011, 0.0032] |
+| opposite-state cross-wording | +0.0831 | [0.0773, 0.0889] |
+
+### 通路读出（仅 patch H15–H20，H21–H28 未干预）
+
+| 组件 | Projection Recovery | 95% CI | Distance Recovery |
+|--------|--------|--------|--------|
+| attn | 0.700 | [0.690, 0.711] | 0.437 |
+| **mlp** | **0.875** | [0.870, 0.880] | **0.649** |
+| residual | 0.872 | [0.868, 0.877] | 0.658 |
+
+分层模式：MLP recovery 在 H21 处 0.962 逐层衰减至 H28 处 0.835；attention 在 0.64–0.75 波动。
+
+Per-task recovery × 行为效应 Pearson 相关：
+
+```text
+attn      r = 0.126
+mlp       r = 0.251   ← 最高
+residual  r = 0.229
+```
+
+## 解释结果 — Pattern D（MLP-dominant selector）
+
+```text
+行为：      early_H15_H20  +0.0784（= 98.4% full）   late_H21_H28 ≈ 0
+通路：      MLP recovery 0.875 >> attention recovery 0.700
+控制：      self −0.00008      same-state +0.0021
+            opposite-cross-wording +0.0831（同号正）
+```
+
+> H15–H20 的早期分布式残差状态充当 selector：恢复它之后，未修补的 H21–H28 下游计算自发放射向供体，其中 MLP 分支的重配置程度显著高于 attention 分支。支持 selector-like 机制，且分支不对称性指向 MLP 通路。
+
+## 方法说明
+
+- 捕获沿用 EXP04 修复：通过 `layers[hidx-1]` 前向钩子取 pre-norm 激活，float32 存储。
+- 通路读出在仅恢复 H15–H20 的前向中，对 H21–H28 的 attention/MLP/decoder-block 输出进行未干预测量（branch output 从未被 patch）。
+- 修复了与 EXP01b 接口的 3 处命名不匹配（`build_history`→`history`、`build_messages`→`messages`、`CONDITIONS`→`CONDS`）。
+
+## 下一步
+
+MLP recovery（0.875）明显占优 → 进入 **EXP06：MLP feature / neuron-group causal analysis**：
+
+```text
+EXP06 -> 定位 H21-H28 中被 selector 状态条件化重配置的
+         MLP 神经元/特征组合，
+         验证其对动作偏好的充分性与必要性。
+```
+
+参考路线：组合神经元特征的 causal steering（ACL 2026, "Constructing Interpretable Features from Compositional Neuron Groups"）。
+
+若 MLP 定位后仍不够充分，则退回联合通路 / head × MLP 交互分析。
+
 ---
 
 # 当前证据总结
 
-EXP04 之前最强的可辩护项目级声明是：
+EXP01–EXP04 逐步建立：
 
 > Agent 技能程序信息可以从残差流中可靠读取，并跨任务与措辞泛化，但在所检验的干预下，无论是全局线性方向还是单 token 精确残差状态互换，都不足以重定向行为。
 
@@ -824,24 +995,31 @@ EXP04 之前最强的可辩护项目级声明是：
         |
         v
 分布式因果中介                     是（EXP04）
+        |
+        v
+早期状态作 selector                是（EXP05）
+        |
+        v
+重配置下游 MLP 通路                是，MLP-dominant（EXP05）
 ```
 
 ## 当前主张边界
 
-EXP04 之后最强的可辩护项目级声明是：
+EXP05 之后最强的可辩护项目级声明是：
 
-> Agent 技能程序信息由一个分布式残差流状态承载，该状态跨越多个共享提示词 token（具体为完整对齐公共后缀）和多个相邻层（关键范围：H19–H28，其中 H19–H20 必要、H21–H28 单独不足）。在跨条件修补时，该状态足以因果转移技能条件化动作偏好。
+> Agent 技能程序信息由早期（H15–H20）的分布式残差流状态承载。恢复该早期状态（仅 H15–H20），无需直接干预 H21–H28，即可让下游未修补计算自发放射向供体——其中 MLP 分支的重配置程度（projection recovery 0.875）显著高于 attention 分支（0.700）——并因果转移技能条件化动作偏好（+0.0784，为完整 H15–H28 恢复效应的 98.4%）。
 
 尚不可声明：
 
-> 「真正的因果机制完全是一个分布式电路。」
+> 「真正的因果机制完全是一个分布式电路。」或「重配置发生在特定 MLP 神经元组上。」
 
-尚未排除的替代解释：
+尚未完成的验证：
 
-1. 恰好并行承载相同信息的注意力输出通路；
-2. 具有分布式表征的 MLP 输出通路；
-3. 头级路由 / 跳跃连接旁路机制；
+1. 具体 MLP 神经元/特征组的定位（EXP06：MLP feature / neuron-group causal analysis）；
+2. necessity / sufficiency 双向验证；
+3. 跨模型复现；
+4. 跨 Skill / 任务泛化。
 
-> 「这些结果排除了两个简单的可移植状态假设，并支持分布式/通路层面的因果解释。」
+> 「这些结果排除了两个简单的可移植状态假设与单一 carrier 假设，支持 selector / 通路层面的因果解释，并首次将通路不对称指向 MLP 分支。」
 
-此措辞应保留，直到 EXP04 或后续通路实验提供直接的正向因果证据。
+此措辞应保留，直到 EXP06 提供直接的 MLP 神经元级正向因果证据。
