@@ -1,0 +1,7 @@
+torch>=2.1
+transformers>=4.45
+accelerate>=0.34
+numpy>=1.26
+pandas>=2.2
+scikit-learn>=1.4
+matplotlib>=3.8
