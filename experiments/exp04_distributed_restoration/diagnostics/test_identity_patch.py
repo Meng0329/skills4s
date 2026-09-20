@@ -7,7 +7,7 @@ os.environ["TRANSFORMERS_OFFLINE"] = "1"
 import sys, numpy as np, torch
 from pathlib import Path
 
-sys.path.insert(0, "/data/mzb/skills4s/experiments")
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from exp04_distributed_restoration import run as exp04
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from contextlib import ExitStack
