@@ -1,5 +1,11 @@
-# Model weights — download separately via huggingface-cli or git-lfs
-models/
+# Model weights — large safetensors files excluded (re-download via huggingface-cli)
+models/**/*.safetensors
+
+# Model tokenizer files — not needed in repo (re-download from HuggingFace)
+models/**/tokenizer.json
+models/**/tokenizer_config.json
+models/**/vocab.json
+models/**/merges.txt
 
 # Runtime outputs
 outputs/
