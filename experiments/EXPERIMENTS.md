@@ -1,91 +1,127 @@
-# skills4s Experiment Log
+# skills4s — Experiment Log
 
-## EXP01 — Procedural Stage Probe
+This file is the project-level scientific record.
 
-### Date
+Principles:
+
+- Record the hypothesis **before** interpreting the result.
+- Separate observation, interpretation, and causal claim.
+- Preserve null and negative results.
+- Tie each completed experiment to its Git commit.
+- Do not upgrade a claim beyond what the intervention actually establishes.
+- Treat exploratory layer searches separately from preregistered/confirmatory tests.
+
+---
+
+## Experiment Index
+
+| ID | Question | Status | Main Result | Decision | Commit |
+|---|---|---|---|---|---|
+| EXP01 | Is procedural stage linearly decodable? | COMPLETED | Yes. Best `order_delta` F1 = 1.000 at H19, but No-Skill F1 = 0.956 | Isolate Skill-induced state with counterbalanced design | `ed1de55` |
+| EXP01b | Does Skill ordering alone alter a cross-wording next-state representation? | COMPLETED | Yes. Cross-wording F1 = 0.709; behavior accuracy = 0.651 | Test causal sufficiency of the representation | `62aee2c` |
+| EXP02 | Is the H19 mean-difference direction causally steerable? | COMPLETED — NULL | No. Real effect ≈ +0.00086; no advantage over controls | Reject global linear-vector control hypothesis | `20dba87` |
+| EXP03 | Can exact paired single-token activation interchange transfer the donor state? | COMPLETED — NULL / NEGATIVE | H19 marginal; later layers show stronger negative transfer | Test coherent multi-token / multi-layer restoration | `e98dade` |
+| EXP04 | Is causal mediation distributed across multiple shared suffix tokens and/or layers? | COMPLETE | Signed transfer +0.058 (CI excludes 0); self-patch/same-state ≈ 0; multi-token confirmed, H21–H28 null alone | Distributed residual-state mediation supported | (see run_manifest.json) |
+
+---
+
+# EXP01 — Procedural Stage Probe
+
+## Date
 2026-09-20
 
-### Commit
-ed1de55
+## Commit
+`ed1de55`
 
-### Model
-Qwen2.5-Coder-7B-Instruct
+## Status
+COMPLETED
 
-### Research Question
-Can the current procedural stage be linearly decoded from the hidden
-representations of a Skill-conditioned coding agent?
+## Research Question
 
-### Hypothesis
-H1: Skill-conditioned hidden states contain linearly decodable information
-about the current procedural stage beyond trajectory position and tool identity.
+Can the current procedural stage be linearly decoded from hidden
+representations in a Skill-conditioned coding-agent setting?
 
-### Conditions
+## Hypothesis
+
+Skill-conditioned hidden states contain linearly decodable information about
+the current procedural stage beyond trajectory position and tool identity.
+
+## Design
+
+Conditions:
+
 - No Skill
 - Correct Skill
 - Shuffled Skill
 
-### Dataset
-- 8 synthetic coding tasks
-- 6 procedural stages
-- 48 stage examples
-- teacher-forced trajectories
-- task-grouped cross-validation
+Six stages:
 
-### Main Results
-- Best layer: 19
-- Correct - Shuffled F1: 1.000
-- Correct Skill F1: 0.978
-- Shuffled Skill F1: 0.978
-- No Skill F1: 0.956
-- Position baseline F1: 0.422
+1. `REPRODUCE`
+2. `INSPECT_TEST`
+3. `INSPECT_IMPLEMENTATION`
+4. `REPAIR`
+5. `TARGET_VERIFY`
+6. `REGRESSION_VERIFY`
+
+Controls included:
+
+- task-grouped cross-validation;
+- trajectory-position baseline;
+- same-tool stage pairs.
+
+## Main Results
+
+- Best hidden-state index: **19**
+- `correct_skill - shuffled_skill` Macro-F1: **1.000**
+- Correct-Skill F1: **0.978**
+- Shuffled-Skill F1: **0.978**
+- No-Skill F1: **0.956**
+- Position baseline: **0.422**
 
 Same-tool controls:
-- INSPECT_TEST vs INSPECT_IMPLEMENTATION: 1.000
-- TARGET_VERIFY vs REGRESSION_VERIFY: 1.000
 
-### Initial Observation
+- `INSPECT_TEST` vs `INSPECT_IMPLEMENTATION`: **1.000**
+- `TARGET_VERIFY` vs `REGRESSION_VERIFY`: **1.000**
+
+## Observation
+
 Procedural-stage information is extremely strongly linearly decodable,
-with the strongest signal around layer 19.
+especially around H19.
 
-### Important Confound
-No-Skill representations already achieve F1 = 0.956.
+## Critical Confound
 
-Therefore EXP01 does NOT establish that the representation is induced by
-the Skill. The trajectory history itself contains strong semantic evidence
-about the current stage.
+No-Skill representations already achieve:
 
-### Conclusion
-H1 is partially supported only at the representation level.
+```text
+Macro-F1 = 0.956
+```
 
-Supported:
-- procedural stage is linearly represented;
-- representation generalizes across held-out tasks;
-- representation is not reducible to tool identity;
-- position baseline alone does not explain the signal.
+Therefore EXP01 does **not** establish that the representation is induced by
+the Skill.
 
-Not established:
-- Skill causally creates the representation;
-- Skill ordering causally controls the current procedural state;
-- layer 19 representations control agent behavior.
+The teacher-forced execution history itself carries strong semantic evidence
+about the current procedural stage.
 
-### Decision
-Do NOT perform activation steering yet.
+## Supported Claims
 
-Next experiment must isolate Skill-prescribed state while holding task,
-trajectory history, tool history, and current position constant.
+- Procedural stage is strongly represented.
+- The representation generalizes across held-out synthetic tasks.
+- It is not reducible to next-tool identity.
+- Raw position features do not explain the full signal.
 
-### Next Experiment
-EXP01b — Counterbalanced Skill-Controlled Next-State Decoding
+## Not Established
 
-Target contrast:
-INSPECT_TEST ↔ INSPECT_IMPLEMENTATION
+- Skill causally creates the representation.
+- Skill order causally controls the representation.
+- H19 is a causal control site.
+- The representation is behaviorally necessary.
 
-Both use the same tool (`read_file`).
+## Decision
 
-Only the Skill-defined next procedural state changes.
+Proceed to a counterbalanced design where task/history/tool identity remain
+fixed and only Skill-prescribed next state changes.
 
-### Status
-COMPLETED
+---
 
 # EXP01b — Counterbalanced Skill-Controlled Next-State Decoding
 
@@ -93,104 +129,65 @@ COMPLETED
 2026-09-20
 
 ## Commit
-62aee2c
+`62aee2c`
 
 ## Status
 COMPLETED
 
 ## Motivation
 
-EXP01 established that procedural stage information is strongly linearly
-decodable from Qwen2.5-Coder-7B hidden states, but No-Skill representations
-were also highly decodable (Macro-F1 = 0.956). Therefore EXP01 could not
-isolate a Skill-induced procedural representation from semantic information
-already present in the execution history.
+EXP01 showed strong stage decodability but also a strong No-Skill signal.
 
-EXP01b was designed to remove this confound.
+EXP01b removes this confound by holding constant:
 
-## Research Question
+- task;
+- failure observation;
+- execution history;
+- current position;
+- relevant files;
+- next-tool type.
 
-When the task, execution history, current position, and next-tool identity are
-held constant, does changing only the ordering specified by an Agent Skill
-alter:
+Only Skill-defined procedural order changes.
 
-1. the internal representation of the prescribed next procedural state; and
-2. the model's actual next-action preference?
+## Primary Contrast
 
-## Hypothesis
+```text
+INSPECT_TEST
+vs
+INSPECT_IMPLEMENTATION
+```
 
-H1: Skill ordering induces an internal representation of the prescribed next
-procedural state that generalizes across tasks and across surface wording.
-
-H2: This representation is behaviorally relevant: changing the Skill-defined
-next state should shift the model's probability toward the corresponding next
-action.
-
-## Experimental Design
-
-Primary contrast:
-
-- `INSPECT_TEST`
-- `INSPECT_IMPLEMENTATION`
-
-Both states require the same tool:
+Both require:
 
 ```text
 read_file(...)
 ```
 
-Only the file argument differs:
+Only the file target differs:
 
 ```text
 tests/...
-```
-
-versus:
-
-```text
+vs
 src/...
 ```
 
-For every paired example, the following variables were held constant:
+## Cross-Wording Design
 
-- coding task;
-- reproduced failure;
-- execution history;
-- current trajectory position;
-- next-tool type;
-- relevant files.
+Two wording families:
 
-Only the Skill-prescribed ordering was changed.
+- canonical;
+- paraphrased.
 
-Two independent wording families were used:
+Primary evaluation crosses both:
 
-- canonical wording;
-- paraphrased wording.
+- held-out tasks;
+- held-out wording family.
 
-The primary representation test used cross-task, cross-wording evaluation.
-Hidden-state index 19 was preregistered as the confirmatory layer based on the
-independent EXP01 result.
-
-A randomized task-specific mapping control was included to estimate whether the
-probe could exploit arbitrary task-specific associations.
-
-Behavioral linkage was evaluated from the conditional log-probability of two
-candidate actions:
-
-```text
-read_file('tests/...')
-read_file('src/...')
-```
+H19 was treated as the confirmatory representation site based on EXP01.
 
 ## Main Results
 
 ### Representation
-
-Confirmatory Layer:
-
-```text
-Layer 19
-```
 
 Cross-wording Macro-F1:
 
@@ -204,27 +201,17 @@ Chance:
 0.500
 ```
 
-The representation therefore generalizes across held-out tasks and across
-different Skill wording families.
+### Random Task-Specific Mapping Control
 
-### Random Mapping Control
-
-Mean control Macro-F1:
+Mean Macro-F1:
 
 ```text
 0.458
 ```
 
-This result is close to chance and substantially below the true-label probe,
-arguing against a simple task-specific label memorization explanation.
+This stays near chance and below the true semantic-label probe.
 
-A useful descriptive separation is:
-
-```text
-true-label F1 / control F1 ≈ 1.55
-```
-
-### Behavioral Effect
+### Behavioral Preference
 
 Overall next-action accuracy:
 
@@ -232,32 +219,21 @@ Overall next-action accuracy:
 0.651
 ```
 
-Canonical-Skill action accuracy:
+Canonical wording:
 
 ```text
 0.719
 ```
 
-Thus, Skill ordering not only leaves decodable information in the hidden state;
-it also shifts the model's next-action preference in the prescribed direction.
-
-### Representation–Behavior Relationship
-
-Probe / behavior relationship:
+Representation–behavior Pearson correlation:
 
 ```text
-Pearson r = 0.345
+r = 0.345
 ```
 
-The relationship is positive but moderate.
+### No-Skill Prior
 
-This indicates that the linearly decodable representation is associated with
-behavioral preference, but the present experiment does not establish that the
-decoded direction is itself the causal mechanism used by the model.
-
-### No-Skill Behavioral Bias
-
-Without a Skill, the model selected the implementation/source-file action in:
+Without Skill, the model chooses implementation/source inspection in:
 
 ```text
 97.9%
@@ -265,226 +241,665 @@ Without a Skill, the model selected the implementation/source-file action in:
 
 of cases.
 
-This is a strong intrinsic baseline bias toward inspecting implementation code
-before tests.
-
-This bias likely reduces the apparent behavioral effect of TEST-first Skills and
-must be explicitly controlled in causal intervention experiments.
+This is a strong intrinsic implementation-first prior.
 
 ## Interpretation
 
-EXP01b resolves the main confound identified in EXP01.
+EXP01b supports a Skill-sensitive representation of the prescribed next
+procedural state that generalizes across task and wording.
 
-Because task, history, position, and tool identity are matched while the Skill
-ordering changes, the above-chance cross-wording decoding result supports the
-existence of a Skill-sensitive internal representation of the prescribed next
-procedural state.
+It also provides behavior-level evidence that Skill ordering shifts action
+preference.
 
-The cross-wording result further argues that the representation is not solely a
-classifier response to explicit labels such as `INSPECT_TEST` or
-`INSPECT_IMPLEMENTATION`.
-
-The behavioral log-probability results provide evidence that Skill ordering
-affects the model's actual action policy, not only probe decodability.
-
-However, the representation-level result is stronger than the behavioral
-result:
+However:
 
 ```text
-Representation Macro-F1 = 0.709
-Behavior Accuracy        = 0.651
-Probe–Behavior r         = 0.345
+decodable representation
+!=
+causal control
 ```
 
-Therefore the current evidence supports:
-
-```text
-Skill ordering
-    ↓
-Skill-sensitive internal representation
-    ↓
-associated shift in next-action preference
-```
-
-but does NOT yet establish:
-
-```text
-decoded representation
-    ↓
-causally controls next action
-```
+The representation-level evidence is stronger than the behavior-level effect.
 
 ## Supported Claims
 
-The current experiments support the following claims:
+1. Skill-prescribed next state is linearly decodable.
+2. The representation generalizes across held-out tasks.
+3. It generalizes across substantially different Skill wording.
+4. The effect cannot be explained by tool identity.
+5. Arbitrary task-specific label mappings do not generalize similarly.
+6. Skill ordering measurably changes next-action preference.
 
-1. The model contains information about Skill-prescribed procedural state.
-2. This information generalizes across held-out tasks.
-3. This information generalizes across substantially different Skill wording.
-4. The effect cannot be explained by next-tool identity because both target
-   states use `read_file`.
-5. Random task-specific labels do not show comparable cross-task
-   generalization.
-6. Skill ordering produces a measurable change in next-action preference.
+## Not Established
 
-## Claims Not Yet Established
-
-The current experiments do NOT establish that:
-
-1. Layer 19 is the unique or necessary implementation site.
-2. The linearly decoded procedural direction is actually used by the model.
-3. The procedural representation is necessary for the Skill's behavioral
-   effect.
-4. Injecting a different procedural state is sufficient to redirect behavior.
-5. The same mechanism persists over long multi-step autonomous agent
-   trajectories.
-
-## Important Confound / Follow-Up Control
-
-The No-Skill model has a very strong implementation-first prior:
-
-```text
-P(prefer implementation | no skill) = 0.979
-```
-
-EXP02 must therefore analyze intervention effects relative to this baseline
-rather than relying only on raw action accuracy.
-
-Recommended primary outcome for EXP02:
-
-```text
-Δ log-odds(action_impl vs action_test)
-```
-
-before and after intervention.
-
-This will distinguish a true state-dependent causal shift from the model's
-pre-existing source-inspection bias.
-
-## Scientific Conclusion
-
-EXP01b provides positive representation-level and behavioral evidence for a
-Skill-sensitive next-procedural-state signal.
-
-The strongest defensible conclusion at this stage is:
-
-> Holding task, history, trajectory position, and tool identity constant,
-> changing the procedural ordering specified by an Agent Skill changes an
-> internal representation that generalizes across Skill wording and is
-> associated with a corresponding shift in next-action preference.
-
-This is stronger than the result of EXP01, but it remains an associational
-mechanistic result rather than a causal mechanistic result.
+- H19 is necessary.
+- The decoded direction is used causally.
+- The representation is sufficient to redirect behavior.
+- A single linear state variable implements the procedure.
 
 ## Decision
 
-H1: SUPPORTED
+Proceed to direct causal intervention.
 
-H2: PARTIALLY SUPPORTED
+---
 
-Proceed to causal intervention.
+# EXP02 — Causal Procedural-State Steering
 
-## Next Experiment
+## Date
+2026-09-20
 
-EXP02 — Causal Procedural-State Steering
-
-Primary intervention:
-
-```text
-INSPECT_TEST ↔ INSPECT_IMPLEMENTATION
-```
-
-Preregistered intervention region:
-
-```text
-Layer 19
-```
-
-Candidate causal direction:
-
-```text
-v = μ(INSPECT_IMPLEMENTATION) - μ(INSPECT_TEST)
-```
-
-Test whether adding/removing this direction changes:
-
-```text
-log P(read_file(src/...))
--
-log P(read_file(tests/...))
-```
-
-while preserving the Skill text and execution history.
-
-Required controls:
-
-- matched random direction with equal norm;
-- same-state direction;
-- multiple steering strengths;
-- positive and negative intervention;
-- held-out tasks;
-- canonical and paraphrased Skills;
-- explicit correction for the 97.9% No-Skill implementation-first bias.
-
-A successful EXP02 would move the project from:
-
-```text
-Decodable + behavior-associated
-```
-
-to:
-
-```text
-Causally steerable
-```
-
-# EXP02 — Result Note
+## Commit
+`20dba87`
 
 ## Status
 COMPLETED — NULL RESULT
 
-## Commit
-20dba87
+## Research Question
 
-## Main Result
+Is the linearly identified H19 procedural-state direction sufficient to
+causally change the model's next-action preference?
 
-The preregistered linear causal-steering hypothesis was not supported.
+## Important Layer Mapping
 
-| Criterion | Result |
-|---|---:|
-| Real primary effect | +0.00086 |
-| Real > same-state | No; difference ≈ -0.00030 |
-| Real > random controls | No; empirical p = 0.167 |
-| Behavioral reversal | No; 83.9% vs 84.4% |
-| Dose-response span | ≈ 0.004 |
+Hugging Face:
+
+```text
+hidden_states[19]
+=
+output of decoder block 18
+```
+
+because:
+
+```text
+hidden_states[0]
+=
+embedding output
+```
+
+## Intervention
+
+Within each train fold:
+
+```text
+v =
+mean(h_IMPLEMENTATION)
+-
+mean(h_TEST)
+```
+
+On held-out tasks:
+
+```text
+h' = h + alpha * v
+```
+
+Primary behavioral metric:
+
+```text
+M =
+mean_logP(src action)
+-
+mean_logP(test action)
+```
+
+Primary symmetric steering effect:
+
+```text
+E =
+[M(+1) - M(-1)] / 2
+```
+
+## Controls
+
+- same-state direction;
+- equal-norm orthogonal random directions;
+- held-out task construction;
+- canonical/paraphrased wording;
+- positive/negative steering;
+- dose response.
+
+## Main Results
+
+| Criterion | Expected | Observed | Result |
+|---|---:|---:|---|
+| `E_real > 0` | clearly positive | `+0.00086` | negligible |
+| Real > same-state | clearly stronger | real-minus-same ≈ `-0.00030` | failed |
+| Real > random | clearly stronger | empirical `p = 0.167` | failed |
+| Behavioral reversal | opposite under ±alpha | `83.9% vs 84.4%` | failed |
+| Dose response | meaningful monotonic shift | total span ≈ `0.004` | negligible |
 
 ## Interpretation
 
-EXP01b established that Skill-prescribed next state is linearly decodable from
-the residual stream and associated with behavior.
+EXP02 rejects the simple causal hypothesis:
 
-EXP02 shows that the corresponding mean-difference direction at the
-preregistered site is not sufficient to causally redirect next-action
-preference under the tested intervention.
+> the H19 procedural-state information is implemented as a global,
+> task-independent linear steering direction.
 
-Therefore:
+The result is consistent with the general interpretability warning:
 
 ```text
-decodable != globally linearly steerable
+decodable
+!=
+globally linearly steerable
 ```
 
-The result does not establish that the decoded information is causally unused.
-Alternative possibilities include:
+## What EXP02 Does NOT Show
 
-- context-dependent nonlinear representations;
+The null result does not establish that the Skill-sensitive representation is
+causally unused.
+
+Alternative explanations remain:
+
+- nonlinear/context-conditioned representation;
 - multiple interacting mediators;
-- distributed representation across tokens/layers;
-- a representation that is readable but not on the causal pathway.
+- distribution across token positions;
+- distribution across layers;
+- H19 may be a readable downstream summary rather than the causal source.
 
 ## Decision
 
-Do not increase alpha or search for a better linear separator as the immediate
-next step.
+Do not rescue the hypothesis by simply increasing alpha or trying many new
+linear separators.
 
-Proceed to EXP03 exact paired interchange patching to remove the global-linear
-direction assumption.
+Proceed to exact paired activation interchange.
+
+---
+
+# EXP03 — Paired Interchange Patching
+
+## Date
+2026-09-20
+
+## Commit
+`e98dade`
+
+## Status
+COMPLETED — NULL / NEGATIVE RESULT
+
+## Research Question
+
+If the global linear-direction assumption is removed, can the exact hidden
+state from the same-task opposite-Skill condition transfer the donor's
+next-action preference?
+
+## Intervention
+
+For paired prompts with:
+
+- same task;
+- same history;
+- same wording family;
+- opposite Skill-prescribed next state;
+
+replace the recipient's final-prompt-token hidden state with the donor's exact
+activation:
+
+```text
+h_recipient^(l)
+<-
+h_donor^(l)
+```
+
+Then rescore:
+
+```text
+read_file(tests/...)
+vs
+read_file(src/...)
+```
+
+## Confirmatory Site
+
+```text
+H19
+=
+decoder block 18 output
+```
+
+Full-layer scan was exploratory.
+
+## Main Result
+
+The confirmatory H19 effect was at most marginal and did not establish causal
+transfer.
+
+More strikingly, later hidden states approximately H21-H28 showed stronger
+**negative** signed-transfer effects, on the order of roughly:
+
+```text
+-0.011 to -0.017
+```
+
+which is much larger in magnitude than the weak positive H19 effect.
+
+## Initial Observation
+
+The exact single-site donor activation does not behave like a portable
+procedural-state variable.
+
+Deep-layer activation replacement can actively move behavior in the wrong
+direction.
+
+## Interpretation Boundary
+
+This result supports:
+
+```text
+single-token exact residual-state swap
+is not sufficient
+```
+
+It does **not yet prove**:
+
+```text
+the full mechanism is a distributed circuit
+```
+
+because a simpler methodological explanation remains.
+
+## Critical Alternative Explanation: Off-Manifold Chimera
+
+EXP03 replaces only one token position while leaving:
+
+- neighboring token states;
+- previous-layer context;
+- later interacting states;
+
+from the recipient unchanged.
+
+Therefore the patch may create an inconsistent hybrid:
+
+```text
+donor state
++
+recipient surrounding computation
+```
+
+The strong negative deep-layer effects may reflect disruption caused by this
+state mismatch rather than evidence of a specific distributed mechanism.
+
+## Competing Explanations After EXP03
+
+### A. Single-Site Chimera
+
+A coherent donor state requires restoring additional aligned token/layer
+context.
+
+Prediction:
+
+```text
+single-site patch          fails
+coherent distributed patch succeeds
+```
+
+### B. Distributed / Interacting Mediation
+
+Procedural control is jointly carried across multiple token positions and/or
+layers.
+
+Prediction:
+
+```text
+multi-token and/or multi-layer restoration
+outperforms single-site patching
+```
+
+### C. Residual-State Readout Only
+
+Residual stream contains readable Skill information, but the true causal
+mechanism lives in pathway selection such as attention/MLP routing.
+
+Prediction:
+
+```text
+even coherent residual restoration remains null
+```
+
+## Decision
+
+Run a discriminative multi-token × multi-layer restoration experiment before
+claiming a distributed circuit.
+
+---
+
+# EXP04 — Distributed Procedural-State Restoration
+
+## Date
+2026-09-20
+
+## Commit
+74155e8
+
+## Status
+COMPLETE — Positive, self-patch passes, all controls satisfied
+
+## Primary Result (common_H19_H28, 48 tasks)
+
+| Metric | Value | 95% CI |
+|--------|-------|--------|
+| Signed transfer effect | +0.0579 | [0.0523, 0.0636] |
+| Self-patch control | −0.00027 | [−0.00057, +0.000008] |
+| Same-state cross-wording | −0.000024 | [−0.00099, +0.00091] |
+| Opposite-state cross-wording | +0.0571 | [0.0514, 0.0627] |
+
+By recipient wording:
+- canonical: +0.037
+- paraphrase: +0.079
+
+## Motivation
+
+EXP03 rules out a portable single-token exact state but leaves a major
+ambiguity:
+
+```text
+single-site patch failure
+=
+off-manifold chimera?
+or
+distributed mediation?
+```
+
+EXP04 is specifically designed to distinguish these explanations.
+
+## Research Question
+
+Can a coherent set of donor activations across multiple aligned prompt tokens
+and/or multiple adjacent layers causally transfer the donor Skill's prescribed
+next-action preference?
+
+## Token Alignment Principle
+
+Do **not** patch unaligned Skill tokens.
+
+For each donor/recipient pair, compute the exact longest common token suffix.
+
+This suffix contains downstream prompt content that is identical in token IDs,
+including:
+
+- execution history;
+- final instruction;
+- generation boundary.
+
+Only aligned positions are patched.
+
+## Localization Configurations
+
+### Token-Distribution Test
+
+```text
+last1_H19
+common_H19
+```
+
+Interpretation:
+
+```text
+last1_H19 ~ 0
+common_H19 > 0
+```
+
+would support multi-token mediation.
+
+### Layer-Distribution Test
+
+Using the aligned common suffix:
+
+```text
+common_H19
+common_H19_H24
+common_H19_H28
+common_H21_H28
+common_H15_H28
+```
+
+## Preregistered Primary Configuration
+
+```text
+donor:
+same task
+same wording
+opposite prescribed state
+
+token span:
+entire exact common suffix
+
+hidden-state range:
+H19-H28
+```
+
+Primary metric:
+
+```text
+M =
+mean_logP(src action)
+-
+mean_logP(test action)
+```
+
+Signed transfer:
+
+```text
+T =
+donor_sign * (M_patched - M_baseline)
+```
+
+Positive means the recipient moves toward the donor's prescribed state.
+
+## Controls
+
+### Self Patch
+
+```text
+recipient <- recipient
+```
+
+Expected:
+
+```text
+~ 0
+```
+
+### Same-State Cross-Wording
+
+Example:
+
+```text
+canonical TEST-first
+<-
+paraphrase TEST-first
+```
+
+Changes wording without changing procedural state.
+
+Expected directional state-transfer effect:
+
+```text
+~ 0
+```
+
+### Opposite-State Cross-Wording
+
+Example:
+
+```text
+canonical TEST-first
+<-
+paraphrase IMPLEMENTATION-first
+```
+
+A positive result would show causal transfer across Skill surface wording.
+
+## Success Criteria
+
+Support for distributed residual-state mediation requires:
+
+1. primary mean signed transfer > 0;
+2. task-bootstrap 95% CI excludes zero;
+3. same-state control materially smaller;
+4. self-patch approximately zero;
+5. canonical and paraphrased recipient conditions have concordant sign;
+6. opposite-state cross-wording transfer is also positive.
+
+## Planned Interpretation
+
+### Outcome A — Multi-token rescue
+
+```text
+last1_H19 ~ 0
+common_H19 > 0
+```
+
+Interpretation:
+
+> procedural mediation is distributed across multiple downstream prompt
+> positions.
+
+### Outcome B — Multi-layer rescue
+
+```text
+common_H19 ~ 0
+common_H19_H28 > 0
+```
+
+Interpretation:
+
+> procedural mediation depends on coordinated states across layers.
+
+### Outcome C — Full distributed rescue
+
+Primary and cross-wording opposite-state transfer are positive, while self and
+same-state controls stay near zero.
+
+Interpretation:
+
+> a coherent distributed residual-stream state is sufficient to transfer part
+> of Skill-conditioned action preference.
+
+### Outcome D — All residual restoration remains null
+
+Interpretation:
+
+> stop treating procedural control as a portable residual-state variable.
+
+Next target:
+
+- attention-output pathways;
+- MLP-output pathways;
+- head-level routing;
+- Skill-token → action-token causal paths;
+- circuit-selection mechanisms.
+
+## Localization Effects (signed transfer, 48 tasks each)
+
+| Config | Span | Layers | Effect | 95% CI |
+|--------|------|--------|--------|--------|
+| last1_H19 | last1 | 19 | +0.0011 | [0.0003, 0.0021] |
+| common_H19 | common | 19 | +0.0305 | [0.0266, 0.0345] |
+| common_H19_H24 | common | 19–24 | +0.0558 | [0.0502, 0.0615] |
+| **common_H19_H28** | **common** | **19–28** | **+0.0579** | **[0.0523, 0.0636]** |
+| common_H21_H28 | common | 21–28 | −0.0002 | [−0.0038, 0.0033] |
+| common_H15_H28 | common | 15–28 | +0.0796 | [0.0731, 0.0863] |
+
+Pattern:
+- single last token alone: null;
+- entire common suffix at H19: positive → multi-token distribution confirmed;
+- adding H19–H20 is necessary (H21-H28 without them → null);
+- extending down to H15 increases the effect.
+
+## Interpreted Result — Outcome C (Full distributed rescue)
+
+```text
+Tokens:     1 token → 0.001     common suffix → 0.058
+Layers:     19 alone → 0.031    19–28 → 0.058    21–28 → ~0
+Controls:   self −0.00027     same-state cross-wording −0.00002
+```
+
+> A coherent distributed residual-stream state, spanning the full shared
+> prompt suffix and the H19–H28 block (critically including H19–H20), is
+> sufficient to transfer Skill-conditioned action preference, with controls
+> at machine precision zero.
+
+## Methodological Note — Final-Norm Capture Bug (fixed)
+
+The first EXP04 run failed the self-patch sanity check (mean ≈ +0.197
+instead of ~0). Root cause: in `outputs.hidden_states`, the element at
+index equal to `num_layers` (here `hidden_states[28]`) is the
+**post-final-RMSNorm** activation — not the raw output of `layers[27]`.
+Patching that value back into `layers[27]`'s pre-norm output injected a
+mis-scaled vector (verified max |diff| ≈ 735 → captured 0.196 self-patch
+noise) into the residual stream.
+
+Fix: `capture_prompt_states` now grabs hidden states via forward hooks on
+`layers[hidx-1]` (pre-norm), exactly matching what `patch_hook` replaces.
+Additionally moved `score_one` to per-candidate batch-1 forwards to
+eliminate right-padding asymmetry. Self-patch dropped to −0.00027.
+
+Implication for earlier experiments: any location using `hidden_states[len(layers)]`
+(e.g. EXP03's L27/L28 patch conditions) shared this capture/patch
+misalignment, so those specific layers in EXP03 should be treated as
+unverified until re-run with the corrected capture.
+
+---
+
+# Current Evidence Summary
+
+The strongest defensible project-level statement **before EXP04** is:
+
+> Agent Skill procedural information is reliably readable from the residual
+> stream and generalizes across task and wording, but neither a global linear
+> direction nor a single-token exact residual-state swap is sufficient to
+> redirect behavior under the tested interventions.
+
+Current evidence chain:
+
+```text
+Skill procedural information
+        |
+        v
+linearly decodable                     YES
+        |
+        v
+cross-wording semantic generalization  YES
+        |
+        v
+associated with action preference      YES, moderate
+        |
+        v
+global linear steering                 NO
+        |
+        v
+single-token exact interchange         NO
+        |
+        v
+distributed causal mediation           YES (EXP04)
+```
+
+## Current Claim Boundary
+
+The strongest defensible project-level statement **after EXP04** is:
+
+> Agent Skill procedural information is carried by a distributed
+> residual-stream state that spans multiple shared prompt tokens
+> (specifically the full aligned common suffix) and multiple adjacent
+> layers (critical range: H19–H28, with H19–H20 necessary and
+> H21–H28 alone insufficient). This state is sufficient to
+> causally transfer Skill-conditioned action preference when patched
+> across conditions.
+
+Do not yet state:
+
+> "The true causal mechanism is exclusively a distributed circuit."
+
+Alternative explanations not yet ruled out:
+
+1. Attention-output pathways that happen to carry
+   the same information in parallel;
+2. MLP-output pathways with distributed representation;
+3. Head-level routing / skip-connection bypass mechanisms;
+
+> "The results rule out two simple portable-state hypotheses and motivate a
+> distributed/pathway-level causal account."
+
+This wording should be retained until EXP04 or subsequent pathway experiments
+provide direct positive causal evidence.

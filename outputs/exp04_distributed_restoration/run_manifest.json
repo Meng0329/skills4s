@@ -1,0 +1,103 @@
+{
+  "experiment": "EXP04_distributed_restoration",
+  "git_commit": "e98dade0c23f43c8ba40f72d902458926daa06d5",
+  "source_exp01b_git_commit": "5f1ab7f1f046ae95e7cfb69536d8b044039f03c7",
+  "seed": 4404,
+  "model_dir": "/data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct",
+  "model_name": "Qwen2.5-Coder-7B-Instruct",
+  "primary_config": "common_H19_H28",
+  "configs": [
+    {
+      "name": "last1_H19",
+      "span": "last1",
+      "hidden_indices": [
+        19
+      ],
+      "role": "token_scan"
+    },
+    {
+      "name": "common_H19",
+      "span": "common",
+      "hidden_indices": [
+        19
+      ],
+      "role": "token_scan"
+    },
+    {
+      "name": "common_H19_H24",
+      "span": "common",
+      "hidden_indices": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "role": "layer_scan"
+    },
+    {
+      "name": "common_H19_H28",
+      "span": "common",
+      "hidden_indices": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "role": "primary"
+    },
+    {
+      "name": "common_H21_H28",
+      "span": "common",
+      "hidden_indices": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "role": "layer_scan"
+    },
+    {
+      "name": "common_H15_H28",
+      "span": "common",
+      "hidden_indices": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "role": "layer_scan"
+    }
+  ],
+  "script_sha256": "a94cc2fa3e55df75f6f8226ad5f861d300b8659e6e8c72427aeedd58929ce855",
+  "exp01b_script_sha256": "d475d7b06b6edd118079639e0d15e1d36cae28419ed62f451b769e4a1316af6f",
+  "model_config_sha256": "c0242402ad6a13b331ea320feea8c7e3776ffb7a4eff0757b9cd667e116d9a28",
+  "python": "3.13.12",
+  "torch": "2.14.0+cu130",
+  "transformers": "4.57.6",
+  "cuda_available": true,
+  "cuda_version": "13.0",
+  "gpu": "NVIDIA RTX A6000",
+  "offline_only": true
+}
