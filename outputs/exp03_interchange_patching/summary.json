@@ -1,0 +1,34 @@
+{
+  "experiment": "EXP03_interchange_patching",
+  "hypothesis": "Exact same-task opposite-Skill residual-state interchange causally transfers next-action preference.",
+  "confirmatory_hidden_state_index": 19,
+  "confirmatory_decoder_layer_index": 18,
+  "confirmatory_mean_signed_transfer": 0.0011501091842850049,
+  "confirmatory_bootstrap_95ci": [
+    2.3641235505541178e-05,
+    0.0022886345473428567
+  ],
+  "confirmatory_positive_patch_rate": 0.515625,
+  "confirmatory_effect_by_wording": [
+    {
+      "wording": "canonical",
+      "mean": 0.000993746022383372,
+      "count": 96
+    },
+    {
+      "wording": "paraphrase",
+      "mean": 0.0013064723461866379,
+      "count": 96
+    }
+  ],
+  "self_patch_mean_abs_margin_change": 0.002279740758240223,
+  "self_patch_max_abs_margin_change": 0.011263132095336914,
+  "exploratory_best_hidden_state_index": 20,
+  "exploratory_best_decoder_layer_index": 19,
+  "exploratory_best_mean_signed_transfer": 0.0020583185056845346,
+  "exploratory_best_bootstrap_95ci": [
+    0.00045002469172080356,
+    0.0037057114144166308
+  ],
+  "decision_rule": "Positive index-19 transfer with task-bootstrap CI excluding zero, same sign across wordings, and near-zero self-patch supports a context-specific causal state. Otherwise inspect exploratory layer localization before moving to multi-token/multi-layer patching."
+}

@@ -1,0 +1,22 @@
+{
+  "experiment": "EXP03_interchange_patching",
+  "git_commit": "20dba87c8375b54ef4657bdfe9f7ed895b5d569b",
+  "source_exp01b_git_commit": "5f1ab7f1f046ae95e7cfb69536d8b044039f03c7",
+  "seed": 4303,
+  "model_dir": "/data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct",
+  "model_name": "Qwen2.5-Coder-7B-Instruct",
+  "confirmatory_hidden_state_index": 19,
+  "confirmatory_decoder_layer_index": 18,
+  "num_prompts": 192,
+  "num_tasks": 48,
+  "batch_size": 4,
+  "script_sha256": "955f8340109ea49866bef3311102d671bc927fc1f3bb98b1eda1310a00ad0c2e",
+  "model_config_sha256": "c0242402ad6a13b331ea320feea8c7e3776ffb7a4eff0757b9cd667e116d9a28",
+  "python": "3.13.12",
+  "torch": "2.14.0+cu130",
+  "transformers": "4.57.6",
+  "cuda_available": true,
+  "cuda_version": "13.0",
+  "gpu": "NVIDIA RTX A6000",
+  "offline_only": true
+}
