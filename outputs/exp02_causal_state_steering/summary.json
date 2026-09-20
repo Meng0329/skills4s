@@ -1,0 +1,44 @@
+{
+  "experiment": "EXP02_causal_state_steering",
+  "primary_claim_test": "Does the held-out impl-minus-test representation direction causally shift impl-vs-test action preference?",
+  "hidden_state_index": 19,
+  "decoder_layer_index": 18,
+  "primary_alpha": 1.0,
+  "num_tasks": 48,
+  "real_primary_effect_mean": 0.0008585280738770962,
+  "real_primary_effect_bootstrap_95ci": [
+    0.00013574348607410985,
+    0.001577483272800842
+  ],
+  "same_state_primary_effect_mean": 0.0011555529199540615,
+  "same_state_primary_effect_bootstrap_95ci": [
+    0.000777159328572452,
+    0.001530786141908417
+  ],
+  "real_minus_same_state_mean": -0.00029702484607696533,
+  "real_minus_same_state_bootstrap_95ci": [
+    -0.0011567025096155704,
+    0.0005787760562573868
+  ],
+  "random_control_effect_mean": -0.00033175237476825716,
+  "random_control_effect_std": 0.000416028265377419,
+  "random_control_empirical_one_sided_p": 0.16666666666666666,
+  "real_effect_by_wording": [
+    {
+      "wording": "canonical",
+      "mean": 0.0004947750518719355,
+      "count": 48
+    },
+    {
+      "wording": "paraphrase",
+      "mean": 0.0012222810958822568,
+      "count": 48
+    }
+  ],
+  "dose_response_alpha_vs_delta_margin_pearson_r": 0.9619521494531758,
+  "plus_alpha_impl_choice_rate_all": 0.8385416666666666,
+  "minus_alpha_impl_choice_rate_all": 0.84375,
+  "test_skill_plus_alpha_impl_flip_pressure": 0.6875,
+  "impl_skill_minus_alpha_test_flip_pressure": 0.0,
+  "interpretation_rule": "Positive real effect with CI excluding zero, stronger than same-state and orthogonal-random controls, plus monotonic dose response, supports causal steering."
+}
