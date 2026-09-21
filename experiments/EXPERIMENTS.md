@@ -24,6 +24,7 @@
 | EXP04 | 多 token × 多层一致恢复是否恢复因果效应？ | 完成，POSITIVE | `common_H19_H28=+0.0579 [0.0523,0.0636]`；`H15_H28=+0.0796`；控制≈0 | `bbabe94` 等 |
 | EXP05 | H15–H20 是否作为 selector，重配置后续 attention/MLP？ | 完成，POSITIVE | `early_H15_H20=+0.0784 [0.0717,0.0849]`；selector=98.4% 全效应；late≈0；**MLP recovery 0.875 >> attn 0.700** | `8e70ce0` |
 | EXP06 | 选中的 H21–H28 MLP 神经元组是否因果中介？ | 完成，NEGATIVE/反转 | top256 suff/nec 均 ≈ −0.0014（负）；全 MLP suff −0.0141；K 单调走负；**MLP 神经元既非充分也非必要** | `4b4b47c` |
+| EXP07 | H21–H28 注意力头输出是否因果中介？ | 完成，NEGATIVE/部分正 | AllAttention suff/nec −0.015/−0.016（负）；Top16 suff≈0，nec +0.0018（弱正）；K≥32 负；**注意力头输出不构成可移植的充分性中介** | `5ab0009` |
 
 ---
 
@@ -1107,6 +1108,133 @@ policy shift
 
 ---
 
+# EXP07 — 注意力头因果中介（Attention-Head Causal Mediation）
+
+## 状态
+已完成 — 阴性/部分弱正，AllAttention 上界为负
+
+## 日期
+2026-09-21
+
+## 提交
+`5ab0009`
+
+## 科学动机
+
+EXP06 证伪了 H21–H28 MLP 中间激活作为因果中介。剩余的主要下游分支是自注意力通路（EXP05 attention recovery 0.700 虽低于 MLP 但为正）。
+
+EXP07 检验：
+
+> H21–H28 的注意力头输出是否因果地中介 H15–H20 分布式 selector 状态的行为效应？
+
+## 干预位点
+
+Qwen2 自注意力将 per-head 输出拼接后经 `o_proj` 投影。EXP07 在 `self_attn.o_proj` 的 `forward_pre_hook` 处捕获/编辑拼接后的输入 `[batch, seq, 28, 128]`（28 头 × 128 head_dim），相当于直接操作头输出向量，绕开 Q/K/V 内部结构。
+
+## 因果标准（与 EXP06 相同双关）
+
+```text
+sufficiency:
+donor 头组移植（不恢复 selector）-> 行为移向 donor
+
+necessity:
+H15-H20 selector 恢复 + 将头组钳回 recipient -> selector 效应下降
+```
+
+特征选择仅用 train tasks（4-fold GroupKFold，36 train / 12 held-out）；干预在 held-out tasks 评估。
+
+## 发现统计量（仅 train）
+
+```text
+R = baseline recipient 头输出
+D = baseline donor 头输出
+P = H15-H20 selector 恢复后的 recipient 头输出
+
+aligned = E[(P-R)(D-R)]     （按 token 位置与 head_dim 求和）
+energy  = E[(D-R)^2]
+recovery_ratio = aligned / (energy + eps)
+impact_score = max(recovery,0) * sqrt(energy) * ||W_o^(h)||_F
+```
+
+`||W_o^(h)||_F` 为 `o_proj` 中该头对应权重块的 Frobenius 范数（每头 128 列）。
+
+## 主配置
+
+- 主组大小：**K = 16**（层-头对）；探索性 K = 4 / 32 / 64；
+- AllAttention 上界：全部 8 层 × 28 头 = 224 个层-头组件一次性 donor 移植/recipient 钳回；
+- 5 个按层 count-matched 随机组（每层头数与 top16 完全一致，池中剔除选中头）；
+- cross-wording 检验（K=16）：canonical TEST recipient ← paraphrase IMPLEMENTATION donor；
+- 48 个任务，任务自助法 95% CI。
+
+## 结果（48 个任务）
+
+### 预注册主配置
+
+| 指标 | 期望 | 实际 | 95% CI | 判定 |
+|---|---:|---:|---:|---|
+| early_selector_effect（内部一致性） | +0.078 | +0.0784 | [0.0718, 0.0851] | ✓ 复现 |
+| all_attention_sufficiency | >0 | −0.0145 | [−0.0161, −0.0128] | 负 |
+| all_attention_necessity_loss | >0 | −0.0163 | [−0.0179, −0.0146] | 负 |
+| top16_sufficiency | >0 | +0.0002 | [−0.0007, +0.0011] | ≈0（null） |
+| top16_necessity_loss | >0 | +0.0018 | [+0.0011, +0.0025] | 弱正 |
+| top16_suff − matched_random | >0 | +0.0005 | [−0.0003, +0.0012] | CI 含 0 |
+| top16_nec − matched_random | >0 | +0.0017 | [+0.0011, +0.0023] | 正 |
+
+### 剂量-反应（非单调，K=16 是 peak）
+
+```text
+K=4     suff −0.0005   nec −0.0006   （≈0）
+K=16    suff +0.0002   nec +0.0018   ← 唯一正信号（necessity）
+K=32    suff −0.0055   nec −0.0059   （转负）
+K=64    suff −0.0025   nec −0.0037   （负）
+```
+
+与 EXP06 的单调走负不同，EXP07 呈非单调：K=16 的 necessity 是唯一显著正信号，K≥32 后随注入量增大而转负（残差流破坏占主导）。
+
+### 其他
+
+```text
+cross_wording_top16_suff  +0.0005（同号，弱）
+cross_wording_top16_nec   +0.0009（同号，弱）
+```
+
+## 数据质量核验
+
+- early_selector_effect = +0.0784 与 EXP05/EXP06 逐位一致 → pipeline/hook/scoring 正确；
+- intervention_results.csv 共 4416 行 = 48 任务 × 4 条目 × (21 same-wording + 2 cross-wording)，无缺失；
+- 首次运行仅 post-processing 一行绘图 bug（`counts.groupby("hidden_state_index").count.mean()` 的 `.count` 被 DataFrame 方法遮蔽）导致 exit 1；数据收集阶段 4 折全部完成，已用修复脚本由 CSV 重放生成 summary.json/图，数值未重新计算。
+
+## 解释结果 — 注意力头不构成可移植的充分性中介
+
+> H21–H28 的注意力头输出（o_proj 输入层面的层-头组件）既不充分也不必要（作为整体或稀疏组）。
+
+- **AllAttention 上界为负**（suff −0.0145 / nec −0.0163）：把全部 224 个头输出整体移植/钳回，行为被推离 donor 方向，与 EXP06 全 MLP 干预同量级（−0.014 ~ −0.016）——深层头输出携带的不只是可移植状态，还有残差流一致性约束；
+- **Top16 sufficiency ≈ 0**（CI 含 0）：稀疏头组移植不能把行为移向 donor → 不充分；
+- **Top16 necessity 弱正**（+0.0018，约 early effect 的 2.3%）：钳回选中头确实微弱削弱 selector 效应，且胜过 matched-random（+0.0017）——存在微弱的必要性贡献，但幅度远不足以构成"主要因果载体"；
+- **K≥32 转负**：非单调说明"更多头"不产生更多中介，而是产生更多 off-manifold 破坏。
+
+与 EXP06 合并判断：**下游两大分支（MLP 中间激活、注意力头输出）均未通过中介检验**。EXP05 观察到的下游 recovery 不对称（MLP 0.875 > attn 0.700）在两个独立因果干预下都被证伪为伴随表现。
+
+## 决策分支触发
+
+按预注册决策树：
+
+```text
+AllAttention > 0 & Top16 > 0   -> EXP08 Q/K/V + Head Path Patching   ✗ 未满足
+AllAttention > 0 & Top16 ≈ 0   -> broad distributed routing          ✗ 未满足
+AllAttention ≈ 0 / 负          -> 拒绝可移植 post-attention-output 中介 ✓ 命中
+```
+
+证据收敛于第三个分支：**H15–H20 selector 效应的下游因果机制不浓缩于 H21–H28 的注意力头输出，也不浓缩于 MLP 神经元**。行为效应的因果载体仍是早期分布式残差状态本身；下游计算（无论 attention 还是 MLP）是该状态的"joint computation condition"，其重配置是伴随表现，而非可移植中介。
+
+下一步候选（不再沿下游通路收缩路径推进）：
+
+1. H15–H20 内部边界定位（哪些层/token/维度是 selector 的最小因果成分）；
+2. 高维 multi-component decomposition（SAE/SNMF）刻画 selector 状态本身；
+3. 跨模型复现、跨 Skill / 任务泛化。
+
+---
+
 # 当前证据总结
 
 EXP01–EXP04 逐步建立：
@@ -1144,32 +1272,36 @@ EXP01–EXP04 逐步建立：
         |
         v
 MLP 神经元因果中介                 否（EXP06 证伪：无充分性/必要性）
+        |
+        v
+注意力头输出因果中介               否（EXP07 证伪：AllAttention 负，Top16 suff≈0 / nec 弱正）
 ```
 
 ## 当前主张边界
 
-EXP06 之后最强的可辩护项目级声明是：
+EXP07 之后，EXP05–06–07 的三角证据完整闭合：
 
-> Agent 技能程序信息由早期（H15–H20）的分布式残差流状态承载。恢复该早期状态（仅 H15–H20），无需直接干预 H21–H28，即可因果转移技能条件化动作偏好（+0.0784，为完整 H15–H28 恢复效应的 98.4%）；同时下游未修补计算（尤其 MLP 分支，projection recovery 0.875）自发朝供体移动——但该下游移动是伴随表现，**不是**由 H21–H28 MLP 神经元承载的因果中介（EXP06：稀疏组与全 MLP 均无充分性、无必要性，干预为负效应）。
+> Agent 技能程序信息由早期（H15–H20）的分布式残差流状态承载。恢复该早期状态（仅 H15–H20），无需直接干预 H21–H28，即可因果转移技能条件化动作偏好（+0.0784，为完整 H15–H28 恢复效应的 98.4%）。同时下游未修补计算自发朝供体移动（MLP recovery 0.875，attention recovery 0.700）——**但该下游移动的两大主要下游分支（MLP 中间神经元、注意力头输出）均已被独立因果干预证伪为可移植中介**：MLP 神经元既非充分也非必要（EXP06，full-MLP suff −0.014），注意力头输出同样既不充分（all attention suff −0.015）也不构成有效的稀疏中介组（Top16 suff ≈ 0，nec 仅 +0.002 即 early effect 的 2.3%）。下游移动是伴随表现（correlational），不是因果载体。
 
 尚不可声明：
 
 > 「真正的因果机制完全是一个分布式电路。」或「行为转移经由某个特定的下游神经元/通路组件承载。」
 
-已验证的排除项（EXP01–EXP06）：
+已验证的排除项（EXP01–EXP07）：
 
 1. 全局线性操控方向（EXP02，否）；
 2. 单 token 精确残差互换（EXP03，否）；
 3. H21–H28 稀疏 MLP 神经元组作为因果中介（EXP06，无充分性/必要性）；
-4. H21–H28 全 MLP 中间激活作为因果载体（EXP06，full-MLP 干预为负）。
+4. H21–H28 全 MLP 中间激活作为因果载体（EXP06，full-MLP 干预为负）；
+5. H21–H28 注意力头输出作为因果中介（EXP07，AllAttention 为负；Top16 sufficiency null，necessity 仅 +2.3%）。
 
 尚未完成的验证：
 
-1. attention 通路 / head-level 干预（候选下一步）；
-2. H15–H20 内部边界定位与 selector 状态的最小成分；
+1. H15–H20 内部边界定位与 selector 状态的最小成分；
+2. 高维 multi-component decomposition（SAE/SNMF）刻画 selector 状态本身；
 3. 跨模型复现；
 4. 跨 Skill / 任务泛化。
 
-> 「证据排除了两个简单的可移植状态假设、单一 carrier 假设，以及 MLP 神经元级中介假设；支持早期分布式残差 selector 的可移植性，但其下游因果机制尚未定位。」
+> 「证据排除了五个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介——支持早期分布式残差 selector 的可移植性，但其下游因果机制尚未定位，两条主要下游通路（MLP / attention）均已独立证伪。」
 
-此措辞应保留，直到后续实验定位到行为转移的实际下游通路。
+此措辞应保留，直到后续实验定位到行为转移的实际下游通路，或转向 selector 状态本身的分解（SAE/SNMF）。
