@@ -23,6 +23,7 @@
 | EXP03 | 单 token exact interchange 是否可转移状态？ | 完成，NULL/负 | H19 弱；深层负效应；部分深层结果受 capture/patch 位置错位影响 | `e98dade` |
 | EXP04 | 多 token × 多层一致恢复是否恢复因果效应？ | 完成，POSITIVE | `common_H19_H28=+0.0579 [0.0523,0.0636]`；`H15_H28=+0.0796`；控制≈0 | `bbabe94` 等 |
 | EXP05 | H15–H20 是否作为 selector，重配置后续 attention/MLP？ | 完成，POSITIVE | `early_H15_H20=+0.0784 [0.0717,0.0849]`；selector=98.4% 全效应；late≈0；**MLP recovery 0.875 >> attn 0.700** | `8e70ce0` |
+| EXP06 | 选中的 H21–H28 MLP 神经元组是否因果中介？ | 完成，NEGATIVE/反转 | top256 suff/nec 均 ≈ −0.0014（负）；全 MLP suff −0.0141；K 单调走负；**MLP 神经元既非充分也非必要** | `6422f13` 后 |
 
 ---
 
@@ -934,7 +935,7 @@ mlp       r = 0.251   ← 最高
 residual  r = 0.229
 ```
 
-## 解释结果 — Pattern D（MLP-dominant selector）
+## 解释结果 — Pattern D（MLP-dominant recovery，因果性已被 EXP06 证伪）
 
 ```text
 行为：      early_H15_H20  +0.0784（= 98.4% full）   late_H21_H28 ≈ 0
@@ -943,7 +944,9 @@ residual  r = 0.229
             opposite-cross-wording +0.0831（同号正）
 ```
 
-> H15–H20 的早期分布式残差状态充当 selector：恢复它之后，未修补的 H21–H28 下游计算自发放射向供体，其中 MLP 分支的重配置程度显著高于 attention 分支。支持 selector-like 机制，且分支不对称性指向 MLP 通路。
+> H15–H20 的早期分布式残差状态充当 selector：恢复它之后，未修补的 H21–H28 下游计算自发放射向供体，其中 MLP 分支的重配置程度显著高于 attention 分支。支持 selector-like 机制。
+
+**重要限制（EXP06 更新）**：EXP05 的分支不对称性（MLP recovery 0.875 > attention 0.700）是 select 恢复后下游计算的**伴随表现（correlational）**，而非因果中介本身。EXP06 通过稀疏神经元充分性/必要性干预直接检验后，否定了「该重配置由 H21–H28 MLP 神经元承载」的主张（详见下方 EXP06 章节）。本节的 Pattern D 应降级为读出现象，不作为机制结论引用。
 
 ## 方法说明
 
@@ -963,7 +966,144 @@ EXP06 -> 定位 H21-H28 中被 selector 状态条件化重配置的
 
 参考路线：组合神经元特征的 causal steering（ACL 2026, "Constructing Interpretable Features from Compositional Neuron Groups"）。
 
-若 MLP 定位后仍不够充分，则退回联合通路 / head × MLP 交互分析。
+**EXP06 结果更新**：该假设已被否定——MLP 神经元组（无论稀疏还是全量）均无充分性与必要性。后续不沿 MLP 神经元收缩路径推进。
+
+---
+
+# EXP06 — MLP 神经元组因果中介（MLP Neuron-Group Causal Mediation）
+
+## 状态
+已完成 — 阴性/反转，所有神经元级干预为负效应
+
+## 日期
+2026-09-21
+
+## 提交
+`6422f13` 后（未单独提交，待本次一并记录）
+
+## 科学动机
+
+EXP05 将最强下游重配置定位到 MLP 分支：
+
+```text
+projection recovery:
+MLP      = 0.875
+Residual = 0.872
+Attention= 0.700
+```
+
+H15–H20 selector 窗口捕获完整 H15–H28 行为效应的 98.4%。
+
+EXP06 从分支级定位推进到 MLP 中间神经元组，检验因果充分性与必要性。
+
+## 研究问题
+
+H21–H28 中，哪些 MLP 神经元组合真正把 H15–H20 selector 状态转换为下一次动作策略？
+
+## 因果标准
+
+候选神经元组必须同时通过两关（train 选组，held-out 干预）：
+
+```text
+sufficiency:
+donor 神经元组移植 -> 行为移向 donor
+
+necessity:
+selector 恢复 + 钳回组到 recipient -> selector 效应下降
+```
+
+## 发现统计量（仅 train tasks）
+
+```text
+R = baseline recipient 神经元激活
+D = baseline donor 神经元激活
+P = H15-H20 selector 恢复后的 recipient 激活
+
+aligned = E[(P-R)(D-R)]
+energy  = E[(D-R)^2]
+recovery_ratio = aligned / (energy + eps)
+impact_score = max(recovery,0) * sqrt(energy) * ||W^down[:,j]||
+```
+
+介入点：`mlp.down_proj` 的 `forward_pre_hook`，直接捕获/编辑中间激活 `z`（Qwen2：`z = SiLU(gate_proj(x)) * up_proj(x)`，`y = down_proj(z)`）。
+
+## 主配置
+
+- 主组大小：**K = 256**（层-神经元对）；探索性 K = 64 / 1024；
+- 4-fold GroupKFold：36 train / 12 held-out；
+- 5 个按层 count-matched 随机组（每组各层数量与 top-K 完全一致）；
+- cross-wording 检验（K=256）：canonical TEST recipient ← paraphrase IMPLEMENTATION donor；
+- 48 个任务，任务自助法 95% CI。
+
+## 结果（48 个任务）
+
+### 预注册主配置（K=256）
+
+| 指标 | 期望 | 实际 | 95% CI | 判定 |
+|---|---:|---:|---:|---|
+| early_selector_effect（内部一致性） | +0.078 | +0.0784 | [0.0718, 0.0850] | ✓ 复现 |
+| top256_sufficiency | >0 | −0.0014 | [−0.0022, −0.0006] | 负 |
+| top256_necessity_loss | >0 | −0.0014 | [−0.0023, −0.0005] | 负 |
+| top256_suff − matched_random | >0 | −0.0010 | [−0.0018, −0.0003] | 负 |
+| top256_nec − matched_random | >0 | −0.0014 | [−0.0020, −0.0008] | 负 |
+
+### 剂量-反应（K 单调走负）
+
+```text
+K=64     suff −0.0000    nec −0.0003   （≈0）
+K=256    suff −0.0014    nec −0.0014
+K=1024   suff −0.0070    nec −0.0116
+全 MLP   suff −0.0141    nec −0.0145
+```
+
+越大的组负得越多——无正向剂量-反应，而是随注入量增大的残差流破坏。
+
+### 其他
+
+```text
+random256_sufficiency   −0.0004（matched-random 略负）
+top256_cross_wording    suff −0.0014  nec −0.0013（同号负）
+all_mlp_sufficiency     −0.0141（full-MLP 上界也为负）
+```
+
+### 数据质量核验
+
+- early_selector_effect = +0.0784 与 EXP05 逐位一致 → pipeline/hook/scoring 正确；
+- K=256 recovery_ratio 均值 0.91（min 0.35 / max 1.32），选择机制正常；
+- 层分布跨 4-fold 稳定（H24/H28 偏多），matched-random 构造正确；
+- 正负分布：top256 15/48 正 vs 33/48 负；全 MLP 5/43 → 系统性负效应。
+
+## 解释结果 — 反转的因果证据
+
+> H21–H28 的 MLP 中间神经元（稀疏组与全 MLP 皆然）既非充分也非必要。
+
+- 移植 donor MLP 神经元值**不转移**行为（sufficiency 负），反而轻微推离 donor；
+- 钳回选中神经元**不削弱** selector 效应（necessity loss 负）；
+- full-MLP 上界为负（−0.014），排除「效应宽泛分布于整个 MLP」的替代解释。
+
+EXP05 的 MLP recovery 0.875 是 **donor 状态沿残差流传播的伴随表现（correlational）**，不是因果开关。直接注入 donor z 破坏残差流一致性，负效应与 EXP03 深层 off-manifold chimera 同量级（−0.011 ~ −0.017）。
+
+## 对证据链的影响
+
+```text
+Skill
+ ↓
+distributed H15-H20 selector   ← 仍成立（+0.0784，98.4%）
+ ↓
+H21-H28 MLP recovery 0.875     ← 降级为伴随现象，非因果
+ ↓
+specific MLP neuron group      ← 否定：无充分性、无必要性
+ ↓
+policy shift
+```
+
+「representation → branch → neurons → behavior」的神经层级收缩假说被证伪。行为效应的因果载体仍是早期 H15–H20 的分布式残差状态本身，其下游机制不浓缩于 MLP 神经元。
+
+## 下一步（预注册决策触发）
+
+1. 拒绝「compact causal MLP group」与「broad MLP mediation」两个分支；
+2. 优先考察 **attention 通路 / head-level**（EXP05 attention recovery 0.700 虽低但为正）；
+3. 若 attention 也失败，接受「残差流分布式状态本身即因果载体」，转向高维 multi-component decomposition（含 SAE/SNMF）或跨 Skill 泛化验证。
 
 ---
 
@@ -1000,26 +1140,36 @@ EXP01–EXP04 逐步建立：
 早期状态作 selector                是（EXP05）
         |
         v
-重配置下游 MLP 通路                是，MLP-dominant（EXP05）
+下游 MLP recovery 更高             是（EXP05，读出）
+        |
+        v
+MLP 神经元因果中介                 否（EXP06 证伪：无充分性/必要性）
 ```
 
 ## 当前主张边界
 
-EXP05 之后最强的可辩护项目级声明是：
+EXP06 之后最强的可辩护项目级声明是：
 
-> Agent 技能程序信息由早期（H15–H20）的分布式残差流状态承载。恢复该早期状态（仅 H15–H20），无需直接干预 H21–H28，即可让下游未修补计算自发放射向供体——其中 MLP 分支的重配置程度（projection recovery 0.875）显著高于 attention 分支（0.700）——并因果转移技能条件化动作偏好（+0.0784，为完整 H15–H28 恢复效应的 98.4%）。
+> Agent 技能程序信息由早期（H15–H20）的分布式残差流状态承载。恢复该早期状态（仅 H15–H20），无需直接干预 H21–H28，即可因果转移技能条件化动作偏好（+0.0784，为完整 H15–H28 恢复效应的 98.4%）；同时下游未修补计算（尤其 MLP 分支，projection recovery 0.875）自发朝供体移动——但该下游移动是伴随表现，**不是**由 H21–H28 MLP 神经元承载的因果中介（EXP06：稀疏组与全 MLP 均无充分性、无必要性，干预为负效应）。
 
 尚不可声明：
 
-> 「真正的因果机制完全是一个分布式电路。」或「重配置发生在特定 MLP 神经元组上。」
+> 「真正的因果机制完全是一个分布式电路。」或「行为转移经由某个特定的下游神经元/通路组件承载。」
+
+已验证的排除项（EXP01–EXP06）：
+
+1. 全局线性操控方向（EXP02，否）；
+2. 单 token 精确残差互换（EXP03，否）；
+3. H21–H28 稀疏 MLP 神经元组作为因果中介（EXP06，无充分性/必要性）；
+4. H21–H28 全 MLP 中间激活作为因果载体（EXP06，full-MLP 干预为负）。
 
 尚未完成的验证：
 
-1. 具体 MLP 神经元/特征组的定位（EXP06：MLP feature / neuron-group causal analysis）；
-2. necessity / sufficiency 双向验证；
+1. attention 通路 / head-level 干预（候选下一步）；
+2. H15–H20 内部边界定位与 selector 状态的最小成分；
 3. 跨模型复现；
 4. 跨 Skill / 任务泛化。
 
-> 「这些结果排除了两个简单的可移植状态假设与单一 carrier 假设，支持 selector / 通路层面的因果解释，并首次将通路不对称指向 MLP 分支。」
+> 「证据排除了两个简单的可移植状态假设、单一 carrier 假设，以及 MLP 神经元级中介假设；支持早期分布式残差 selector 的可移植性，但其下游因果机制尚未定位。」
 
-此措辞应保留，直到 EXP06 提供直接的 MLP 神经元级正向因果证据。
+此措辞应保留，直到后续实验定位到行为转移的实际下游通路。

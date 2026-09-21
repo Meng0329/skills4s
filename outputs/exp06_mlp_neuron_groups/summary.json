@@ -1,0 +1,67 @@
+{
+  "experiment": "EXP06_mlp_neuron_groups",
+  "primary_k": 256,
+  "early_selector_effect_mean": 0.07839944617201884,
+  "top256_sufficiency_mean": -0.0014082457249363263,
+  "top256_sufficiency_95ci": [
+    -0.002209416551825901,
+    -0.0006053133169189104
+  ],
+  "top256_necessity_loss_mean": -0.0013894497727354367,
+  "top256_necessity_loss_95ci": [
+    -0.0022692334838211536,
+    -0.00047695760925610875
+  ],
+  "top256_sufficiency_minus_matched_random_mean": -0.001044155719379584,
+  "top256_sufficiency_minus_matched_random_95ci": [
+    -0.0017656807601451874,
+    -0.00031010406712691195
+  ],
+  "top256_necessity_minus_matched_random_mean": -0.001383254739145438,
+  "top256_necessity_minus_matched_random_95ci": [
+    -0.0019728132166589303,
+    -0.0007824721296007435
+  ],
+  "all_mlp_sufficiency_mean": -0.014129634946584702,
+  "all_mlp_necessity_loss_mean": -0.014476300527652105,
+  "cross_wording_top256_sufficiency_mean": -0.001352831410864989,
+  "cross_wording_top256_sufficiency_95ci": [
+    -0.001988744627063473,
+    -0.0007310937857255349
+  ],
+  "cross_wording_top256_necessity_loss_mean": -0.0012795769919951756,
+  "cross_wording_top256_necessity_loss_95ci": [
+    -0.002014822078247865,
+    -0.0005356373032554988
+  ],
+  "dose_response": [
+    {
+      "k": 256,
+      "sufficiency_mean": -0.0014082457249363263,
+      "sufficiency_ci_low": -0.002209416551825901,
+      "sufficiency_ci_high": -0.0006053133169189104,
+      "necessity_loss_mean": -0.0013894497727354367,
+      "necessity_ci_low": -0.0022692334838211536,
+      "necessity_ci_high": -0.00047695760925610875
+    },
+    {
+      "k": 64,
+      "sufficiency_mean": -8.153729140758514e-06,
+      "sufficiency_ci_low": -0.0007139359678452214,
+      "sufficiency_ci_high": 0.0007450663251802318,
+      "necessity_loss_mean": -0.00026549243678649265,
+      "necessity_ci_low": -0.0010873969333867232,
+      "necessity_ci_high": 0.0005701110698282715
+    },
+    {
+      "k": 1024,
+      "sufficiency_mean": -0.007019331989188989,
+      "sufficiency_ci_low": -0.008249229091840485,
+      "sufficiency_ci_high": -0.005789650557562709,
+      "necessity_loss_mean": -0.011605691475172838,
+      "necessity_ci_low": -0.013107037055306137,
+      "necessity_ci_high": -0.01010777287495633
+    }
+  ],
+  "decision_rule": "Primary neuron-group mediation is supported if K=256 is both sufficient and necessary with CI>0, exceeds matched-random groups, and generalizes in sign across wording."
+}
