@@ -25,7 +25,7 @@
 | EXP05 | H15–H20 是否作为 selector，重配置后续 attention/MLP？ | 完成，POSITIVE | `early_H15_H20=+0.0784 [0.0717,0.0849]`；selector=98.4% 全效应；late≈0；**MLP recovery 0.875 >> attn 0.700** | `8e70ce0` |
 | EXP06 | 选中的 H21–H28 MLP 神经元组是否因果中介？ | 完成，NEGATIVE/反转 | top256 suff/nec 均 ≈ −0.0014（负）；全 MLP suff −0.0141；K 单调走负；**MLP 神经元既非充分也非必要** | `4b4b47c` |
 | EXP07 | H21–H28 注意力头输出是否因果中介？ | 完成，NEGATIVE/部分正 | AllAttention suff/nec −0.015/−0.016（负）；Top16 suff≈0，nec +0.0018（弱正）；K≥32 负；**注意力头输出不构成可移植的充分性中介** | `0281b2f` |
-| EXP08 | H15–H20 内部哪里是 causal handoff？ | 完成，紧凑多层核心 | H20=+0.049（62% full）、H15:H19=+0.052（66%）；full−H20=+0.030、full−H15:H19=+0.027（均显著）；**H18–H20 即 97% 全效应，H15–H17 可移除**；既非 H20 单层 handoff 亦非全宽均匀累积 | `7b6819d` |
+| EXP08 | H15–H20 内部哪里是 causal handoff？ | 完成，紧凑多层核心 | H20=+0.049（62% full）、H15:H19=+0.052（66%）；full−H20=+0.030、full−H15:H19=+0.027（均显著）；**H18–H20 即 97% 全效应，H15–H17 可移除**；既非 H20 单层 handoff 亦非全宽均匀累积 | `186b370` |
 
 ---
 
@@ -1245,7 +1245,7 @@ AllAttention ≈ 0 / 负          -> 拒绝可移植 post-attention-output 中�
 2026-09-21
 
 ## 提交
-`7b6819d`
+`186b370`
 
 ## 科学动机
 
