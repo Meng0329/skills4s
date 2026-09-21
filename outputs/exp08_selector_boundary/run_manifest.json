@@ -1,0 +1,173 @@
+{
+  "experiment": "EXP08_selector_boundary",
+  "git_commit": "0281b2f0c028ae61d19a1a0795e9564b428bcc1e",
+  "source_exp01b_git_commit": "5f1ab7f1f046ae95e7cfb69536d8b044039f03c7",
+  "seed": 4808,
+  "model_dir": "/data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct",
+  "model_name": "Qwen2.5-Coder-7B-Instruct",
+  "selector_hidden_indices": [
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "configs": [
+    {
+      "name": "single_H15",
+      "hidden_indices": [
+        15
+      ],
+      "family": "single",
+      "boundary": 15
+    },
+    {
+      "name": "single_H16",
+      "hidden_indices": [
+        16
+      ],
+      "family": "single",
+      "boundary": 16
+    },
+    {
+      "name": "single_H17",
+      "hidden_indices": [
+        17
+      ],
+      "family": "single",
+      "boundary": 17
+    },
+    {
+      "name": "single_H18",
+      "hidden_indices": [
+        18
+      ],
+      "family": "single",
+      "boundary": 18
+    },
+    {
+      "name": "single_H19",
+      "hidden_indices": [
+        19
+      ],
+      "family": "single",
+      "boundary": 19
+    },
+    {
+      "name": "single_H20",
+      "hidden_indices": [
+        20
+      ],
+      "family": "single",
+      "boundary": 20
+    },
+    {
+      "name": "prefix_H15_H16",
+      "hidden_indices": [
+        15,
+        16
+      ],
+      "family": "prefix",
+      "boundary": 16
+    },
+    {
+      "name": "prefix_H15_H17",
+      "hidden_indices": [
+        15,
+        16,
+        17
+      ],
+      "family": "prefix",
+      "boundary": 17
+    },
+    {
+      "name": "prefix_H15_H18",
+      "hidden_indices": [
+        15,
+        16,
+        17,
+        18
+      ],
+      "family": "prefix",
+      "boundary": 18
+    },
+    {
+      "name": "prefix_H15_H19",
+      "hidden_indices": [
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "family": "prefix",
+      "boundary": 19
+    },
+    {
+      "name": "full_H15_H20",
+      "hidden_indices": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "family": "prefix",
+      "boundary": 20
+    },
+    {
+      "name": "suffix_H16_H20",
+      "hidden_indices": [
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "family": "suffix",
+      "boundary": 16
+    },
+    {
+      "name": "suffix_H17_H20",
+      "hidden_indices": [
+        17,
+        18,
+        19,
+        20
+      ],
+      "family": "suffix",
+      "boundary": 17
+    },
+    {
+      "name": "suffix_H18_H20",
+      "hidden_indices": [
+        18,
+        19,
+        20
+      ],
+      "family": "suffix",
+      "boundary": 18
+    },
+    {
+      "name": "suffix_H19_H20",
+      "hidden_indices": [
+        19,
+        20
+      ],
+      "family": "suffix",
+      "boundary": 19
+    }
+  ],
+  "script_sha256": "04b56200dc5e42e9f3e225d05eb8be2c5a2a0b3f21f6b229094f8ff8dc0f4d3b",
+  "exp01b_script_sha256": "d475d7b06b6edd118079639e0d15e1d36cae28419ed62f451b769e4a1316af6f",
+  "model_config_sha256": "c0242402ad6a13b331ea320feea8c7e3776ffb7a4eff0757b9cd667e116d9a28",
+  "python": "3.13.12",
+  "torch": "2.9.1+cu128",
+  "transformers": "5.3.0",
+  "cuda_available": true,
+  "cuda_version": "12.8",
+  "gpu": "NVIDIA RTX A6000",
+  "offline_only": true
+}

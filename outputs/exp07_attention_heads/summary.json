@@ -1,0 +1,75 @@
+{
+  "experiment": "EXP07_attention_heads",
+  "primary_k": 16,
+  "early_selector_effect_mean": 0.07839944617201881,
+  "top16_sufficiency_mean": 0.00020976426700750235,
+  "top16_sufficiency_95ci": [
+    -0.000665974492828054,
+    0.0011098568250114554
+  ],
+  "top16_necessity_loss_mean": 0.0018051803732911595,
+  "top16_necessity_loss_95ci": [
+    0.001128235715441397,
+    0.002497251518070674
+  ],
+  "top16_sufficiency_minus_matched_random_mean": 0.00047660836329061943,
+  "top16_sufficiency_minus_matched_random_95ci": [
+    -0.0002594583217675508,
+    0.0012485122866928392
+  ],
+  "top16_necessity_minus_matched_random_mean": 0.0017218283067146761,
+  "top16_necessity_minus_matched_random_95ci": [
+    0.0011265755817293905,
+    0.0023104264323288927
+  ],
+  "all_attention_sufficiency_mean": -0.014500854536890942,
+  "all_attention_sufficiency_95ci": [
+    -0.016079236567020375,
+    -0.012762482968779866
+  ],
+  "all_attention_necessity_loss_mean": -0.0162537088617682,
+  "all_attention_necessity_loss_95ci": [
+    -0.017869890372579245,
+    -0.01460604709573086
+  ],
+  "cross_wording_top16_sufficiency_mean": 0.0005191648378968245,
+  "cross_wording_top16_necessity_loss_mean": 0.0009062218790253018,
+  "dose_response": [
+    {
+      "k": 4,
+      "sufficiency_mean": -0.00048823654651641585,
+      "sufficiency_ci_low": -0.0011968638825540709,
+      "sufficiency_ci_high": 0.00023270097250739633,
+      "necessity_loss_mean": -0.0005637525270382524,
+      "necessity_ci_low": -0.0011219295129800823,
+      "necessity_ci_high": 2.764041225115311e-05
+    },
+    {
+      "k": 16,
+      "sufficiency_mean": 0.00020976426700750235,
+      "sufficiency_ci_low": -0.000665974492828054,
+      "sufficiency_ci_high": 0.0011098568250114554,
+      "necessity_loss_mean": 0.0018051803732911595,
+      "necessity_ci_low": 0.001128235715441397,
+      "necessity_ci_high": 0.002497251518070674
+    },
+    {
+      "k": 32,
+      "sufficiency_mean": -0.005542829011877352,
+      "sufficiency_ci_low": -0.00682878276954091,
+      "sufficiency_ci_high": -0.0042991208067784505,
+      "necessity_loss_mean": -0.0059141206244627325,
+      "necessity_ci_low": -0.006914920716856879,
+      "necessity_ci_high": -0.004842417500913118
+    },
+    {
+      "k": 64,
+      "sufficiency_mean": -0.002517535972098498,
+      "sufficiency_ci_low": -0.0038169517026593156,
+      "sufficiency_ci_high": -0.001188056264072651,
+      "necessity_loss_mean": -0.0036844508722424347,
+      "necessity_ci_low": -0.004703117076617955,
+      "necessity_ci_high": -0.0026785634535675066
+    }
+  ]
+}
