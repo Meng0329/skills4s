@@ -24,7 +24,8 @@
 | EXP04 | 多 token × 多层一致恢复是否恢复因果效应？ | 完成，POSITIVE | `common_H19_H28=+0.0579 [0.0523,0.0636]`；`H15_H28=+0.0796`；控制≈0 | `bbabe94` 等 |
 | EXP05 | H15–H20 是否作为 selector，重配置后续 attention/MLP？ | 完成，POSITIVE | `early_H15_H20=+0.0784 [0.0717,0.0849]`；selector=98.4% 全效应；late≈0；**MLP recovery 0.875 >> attn 0.700** | `8e70ce0` |
 | EXP06 | 选中的 H21–H28 MLP 神经元组是否因果中介？ | 完成，NEGATIVE/反转 | top256 suff/nec 均 ≈ −0.0014（负）；全 MLP suff −0.0141；K 单调走负；**MLP 神经元既非充分也非必要** | `4b4b47c` |
-| EXP07 | H21–H28 注意力头输出是否因果中介？ | 完成，NEGATIVE/部分正 | AllAttention suff/nec −0.015/−0.016（负）；Top16 suff≈0，nec +0.0018（弱正）；K≥32 负；**注意力头输出不构成可移植的充分性中介** | `5ab0009` |
+| EXP07 | H21–H28 注意力头输出是否因果中介？ | 完成，NEGATIVE/部分正 | AllAttention suff/nec −0.015/−0.016（负）；Top16 suff≈0，nec +0.0018（弱正）；K≥32 负；**注意力头输出不构成可移植的充分性中介** | `0281b2f` |
+| EXP08 | H15–H20 内部哪里是 causal handoff？ | 完成，紧凑多层核心 | H20=+0.049（62% full）、H15:H19=+0.052（66%）；full−H20=+0.030、full−H15:H19=+0.027（均显著）；**H18–H20 即 97% 全效应，H15–H17 可移除**；既非 H20 单层 handoff 亦非全宽均匀累积 | `7b6819d` |
 
 ---
 
@@ -1225,13 +1226,154 @@ AllAttention > 0 & Top16 ≈ 0   -> broad distributed routing          ✗ 未�
 AllAttention ≈ 0 / 负          -> 拒绝可移植 post-attention-output 中介 ✓ 命中
 ```
 
-证据收敛于第三个分支：**H15–H20 selector 效应的下游因果机制不浓缩于 H21–H28 的注意力头输出，也不浓缩于 MLP 神经元**。行为效应的因果载体仍是早期分布式残差状态本身；下游计算（无论 attention 还是 MLP）是该状态的"joint computation condition"，其重配置是伴随表现，而非可移植中介。
+证据收敛于第三个分支：**H15–H20 selector 效应的下游因果机制不浓缩于 H21–H28 的注意力头输出，也不浓缩于 MLP 神经元**。可拒绝"可移植的 post-attention head output 是主要中介"这一假设。**注意：尚不能直接断言「H15–H20 residual 本身就是最终因果载体」**——Qwen2 每个 decoder block 均为「输入 residual → RMSNorm → Attention → residual add → RMSNorm → MLP → residual add」的联合计算，上一层输出直接作为下一层整体计算的输入条件，因此 H15–H20 内部究竟哪一层真正完成 causal handoff 仍属未知（由 EXP08 定位）；下游计算（无论 attention 还是 MLP）的重配置是伴随表现，而非可移植中介。
 
-下一步候选（不再沿下游通路收缩路径推进）：
+下一步候选（EXP08 正在运行）：
 
-1. H15–H20 内部边界定位（哪些层/token/维度是 selector 的最小因果成分）；
+1. **EXP08 H15–H20 内部边界定位**（single / prefix / suffix 扫描，判定 H20 handoff vs depth-distributed）；
 2. 高维 multi-component decomposition（SAE/SNMF）刻画 selector 状态本身；
 3. 跨模型复现、跨 Skill / 任务泛化。
+
+---
+
+# EXP08 — Selector 边界 / Handoff 定位（Selector Boundary / Handoff Localization）
+
+## 状态
+已完成 — 紧凑多层核心（H18–H20），既非 H20 单层 handoff 亦非 H15–H20 全宽累积
+
+## 日期
+2026-09-21
+
+## 提交
+`7b6819d`
+
+## 科学动机
+
+EXP06/07 证伪了 H21–H28 两条下游通路（MLP 中间激活、注意力头输出）作为可移植中介。但"早期（H15–H20）分布式 selector"尚未在层深度上被证明真的是 distributed——它可能实际是某个单层的 handoff state，也可能是 H15→H20 的深度累积。
+
+Qwen2 每个 decoder block 为「输入 residual → RMSNorm → Attention → residual add → RMSNorm → MLP → residual add」的联合计算，上一层输出直接作为下一层整体计算的输入条件，因此该问题必须用实验定位而非假设。
+
+## 研究问题
+
+H15–H20 窗口内，行为效应的 causal handoff 究竟在哪里？
+
+## 设计（条件与 EXP04–EXP07 完全一致）
+
+- same task / same wording / opposite state donor / exact common suffix 对齐；
+- 48 个任务，任务级 paired bootstrap 95% CI（seed 4808）。
+
+配置族：
+
+```text
+single:        H15, H16, H17, H18, H19, H20
+prefix:        H15-H16, H15-H17, H15-H18, H15-H19, full H15-H20
+suffix:        H16-H20, H17-H20, H18-H20, H19-H20
+```
+
+控制（仅对 single_H20 与 full_H15_H20）：
+
+```text
+self                     预期 ≈ 0
+same-state cross-wording 预期 小
+opposite cross-wording   预期 同号正
+```
+
+预注册判定规则：
+
+```text
+H20-handoff 解释：
+H20-only 强正且接近 full，而 H15-H19（无 H20）远弱
+
+depth-distributed 解释：
+prefix 在 H20 前累积出可观效应，且无单层接近 full
+```
+
+## 主要结果（48 个任务）
+
+### 三个关键数
+
+| 配置 | mean | 95% CI | fraction of full |
+|---|---:|---:|---:|
+| `single_H20` | **+0.0488** | [0.0440, 0.0536] | **0.622** |
+| `prefix_H15_H19` | **+0.0516** | [0.0462, 0.0571] | **0.659** |
+| `full_H15_H20` | **+0.0784** | [0.0718, 0.0852] | 1.000 |
+
+### Paired contrasts（task-level paired bootstrap）
+
+```text
+full − H20        +0.0296  [+0.0266, +0.0327]   显著正
+full − H15:H19    +0.0268  [+0.0239, +0.0297]   显著正
+H20 − H15:H19     −0.0028  [−0.0071, +0.0014]   H20 ≈ H15:H19（无差异）
+```
+
+### 最小窗口定位（full 相对各 suffix 的 paired 差）
+
+```text
+full − suffix_H16_H20   +0.0002  [−0.0005, +0.0009]   不可区分 → H16-H20 ≈ full，H15 可移除
+full − suffix_H17_H20   +0.0026  [+0.0019, +0.0033]   仅 +0.0026
+full − suffix_H18_H20   +0.0024  [+0.0015, +0.0032]   H18-H20 捕获 97% 全效应
+full − suffix_H19_H20   +0.0211  [+0.0187, +0.0235]   仅 H19-H20 显著不足
+```
+
+### 单层与累积曲线
+
+```text
+single:   H15 −0.016  H16 −0.010  H17 +0.006  H18 +0.042  H19 +0.030  H20 +0.049
+prefix:   pre16 −0.010  pre17 +0.008  pre18 +0.044  pre19 +0.052  full +0.078
+suffix:   s16_H20 +0.078  s17_H20 +0.076  s18_H20 +0.076  s19_H20 +0.057
+```
+
+- Single 层：H18（+0.042）与 H20（+0.049）是两个最强单层，H15/H16 为负；
+- Prefix：H20 是最大单步增量（pre19→full +0.027），但 pre18 已 +0.044；
+- Suffix：H16-H20 ≈ full；H18-H20 即 97%；仅剩 H19-H20 时掉到 +0.057。
+
+### 控制（全部通过）
+
+```text
+single_H20 self        −0.0002   full self        −0.0001
+single_H20 same-state  +0.0052   full same-state  +0.0021
+single_H20 opp-cross   +0.0462   full opp-cross   +0.0831
+```
+
+## 数据质量核验
+
+- `full_H15_H20` = +0.0784 与 EXP05/06/07 的 early_selector_effect 逐位一致 → pipeline/hook/scoring 正确；
+- 48 任务 × 4 条目全量记录，无缺失；exit 0 一次通过（无 EXP06/07 的 bug 复发）。
+
+## 解释结果 — 紧凑多层核心（Pattern：neither 纯 handoff 亦非全宽累积）
+
+> **效应集中在 H18–H20 三层**（suffix 0.076 ≈ full，full−H18:H20 仅 +0.0024）；**H20 是单层最强（62% full）但远非充分**；H15–H17 基本可移除（H16–H20 与 full 统计不可区分）。
+
+两个备选故事均被拒：
+
+```text
+H20 handoff 假说（H20≈+0.075, H15:H19≈0）：拒
+   → H20 仅 +0.049（62%），H15:H19 为 +0.052（66%）绝非 0
+
+H15→H20 深度均匀累积假说（H20 << full）：拒
+   → prefix 在 H17 之前 ≈ 0/负，H15–H16 单层为负、可移除
+```
+
+实测形态是第三种：**紧凑多层核心 H18–H20，H20 主导但需与 H18/H19 一致恢复才达到 full**。行为效应的 causal carrier 是一个约 3 层宽的分布式窗口，而非单层 handoff，也非 EXP05 窗口名暗示的 H15–H20 全宽。
+
+## 对证据链的影响
+
+- "H15–H20 selector"的窗口名应更新为 **"H18–H20 核心（H20 主导）"**；EXP05/08 中 H15–H17 的贡献接近可忽略/负；
+- 与 ACL 2026 *Patches of Nonlinearity* 的对照更加精确：不是"某层形成可搬运 instruction vector"，而是 **连续 2–3 层 joint computation 累积出的条件化状态**（与 Qwen2 block 结构一致：前层输出是后层联合计算的输入条件）；
+- EXP06/07 的排除结论不受影响：H21–H28 两条下游通路仍被证伪；EXP08 进一步把"早期窗口"从 6 层收窄到 3 层。
+
+## 下一步（决策触发）
+
+按预注册决策树，结果最接近 **depth-distributed（需修正为 H18–H20 核心）** 分支：
+
+```text
+H20-handoff（H20≈full, H15:H19≈0）          ✗
+depth-distributed / 紧凑多层核心              ✓（H18-H20，H20 主导）
+```
+
+因此 **EXP09 不做单 block 20 的 Q/K/V**（H20 仅 62%，sufficiency 不足），而应做：
+
+> **EXP09：H18–H20 多层 consumer-side path localization** —— 逐层分解 Q/K/V → attention routing → post-attention residual → MLP 的因果贡献，定位"哪一层（或哪几层）的哪个内部投影真正承载 handoff"。
 
 ---
 
@@ -1275,33 +1417,41 @@ MLP 神经元因果中介                 否（EXP06 证伪：无充分性/必�
         |
         v
 注意力头输出因果中介               否（EXP07 证伪：AllAttention 负，Top16 suff≈0 / nec 弱正）
+        |
+        v
+早期窗口内部 handoff 定位          H18-H20 紧凑核心（EXP08：H20 单层 62%，H15:H19 66%，
+                                   H18-H20 即 97%；H15-H17 可移除）
 ```
 
 ## 当前主张边界
 
-EXP07 之后，EXP05–06–07 的三角证据完整闭合：
+EXP08 之后，可辩护的项目级声明：
 
-> Agent 技能程序信息由早期（H15–H20）的分布式残差流状态承载。恢复该早期状态（仅 H15–H20），无需直接干预 H21–H28，即可因果转移技能条件化动作偏好（+0.0784，为完整 H15–H28 恢复效应的 98.4%）。同时下游未修补计算自发朝供体移动（MLP recovery 0.875，attention recovery 0.700）——**但该下游移动的两大主要下游分支（MLP 中间神经元、注意力头输出）均已被独立因果干预证伪为可移植中介**：MLP 神经元既非充分也非必要（EXP06，full-MLP suff −0.014），注意力头输出同样既不充分（all attention suff −0.015）也不构成有效的稀疏中介组（Top16 suff ≈ 0，nec 仅 +0.002 即 early effect 的 2.3%）。下游移动是伴随表现（correlational），不是因果载体。
+> **可恢复的干预位点**：早期窗口内行为效应的因果载体集中在 **H18–H20 三层**（full_H15_H20 = +0.0784；suffix_H18_H20 = +0.0760，即 97% 全效应；H20 单层 +0.0488 为最强单层，但仅 62%，far from sufficient；H15–H17 可移除）。该恢复不需要干预 H21–H28，即可因果转移技能条件化动作偏好。下游两条通路（MLP 中间神经元 EXP06、注意力头输出 EXP07）均已被独立证伪为可移植中介，其 recovery 不对称是伴随表现。
+
+> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位（EXP09 consumer-side path localization）。
 
 尚不可声明：
 
-> 「真正的因果机制完全是一个分布式电路。」或「行为转移经由某个特定的下游神经元/通路组件承载。」
+> 「真正的因果机制完全是一个分布式电路。」或「行为转移经由某个特定的下游神经元/通路组件承载。」或「H18–H20 各层贡献可线性叠加。」
 
-已验证的排除项（EXP01–EXP07）：
+已验证的排除项（EXP01–EXP08）：
 
 1. 全局线性操控方向（EXP02，否）；
 2. 单 token 精确残差互换（EXP03，否）；
 3. H21–H28 稀疏 MLP 神经元组作为因果中介（EXP06，无充分性/必要性）；
 4. H21–H28 全 MLP 中间激活作为因果载体（EXP06，full-MLP 干预为负）；
-5. H21–H28 注意力头输出作为因果中介（EXP07，AllAttention 为负；Top16 sufficiency null，necessity 仅 +2.3%）。
+5. H21–H28 注意力头输出作为因果中介（EXP07，AllAttention 为负；Top16 sufficiency null，necessity 仅 +2.3%）；
+6. H20 单层作为独立 handoff state（EXP08，仅 62% full，full−H20 显著正）；
+7. H15–H17 对早期窗口的必要性（EXP08，单层为负/≈0，H16–H20 与 full 不可区分）。
 
 尚未完成的验证：
 
-1. H15–H20 内部边界定位与 selector 状态的最小成分；
-2. 高维 multi-component decomposition（SAE/SNMF）刻画 selector 状态本身；
+1. H18–H20 内部逐层 consumer-side 定位（Q/K/V → routing → MLP 的因果贡献）；
+2. H18–H20 状态的维度分解（SAE/SNMF）；
 3. 跨模型复现；
 4. 跨 Skill / 任务泛化。
 
-> 「证据排除了五个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介——支持早期分布式残差 selector 的可移植性，但其下游因果机制尚未定位，两条主要下游通路（MLP / attention）均已独立证伪。」
+> 「证据排除了七个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性——效应集中在 H18–H20 三层（H20 单层最强但仅 62%），两条主要下游通路（MLP / attention）均已独立证伪为可移植中介；H18–H20 内部各层 causal contribution 待 EXP09 定位。」
 
-此措辞应保留，直到后续实验定位到行为转移的实际下游通路，或转向 selector 状态本身的分解（SAE/SNMF）。
+此措辞应保留，直到 EXP09 定位到各层内部投影（Q/K/V/MLP）的 causal handoff 结构。
