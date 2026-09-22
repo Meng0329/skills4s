@@ -26,6 +26,7 @@
 | EXP06 | 选中的 H21–H28 MLP 神经元组是否因果中介？ | 完成，NEGATIVE/反转 | top256 suff/nec 均 ≈ −0.0014（负）；全 MLP suff −0.0141；K 单调走负；**MLP 神经元既非充分也非必要** | `4b4b47c` |
 | EXP07 | H21–H28 注意力头输出是否因果中介？ | 完成，NEGATIVE/部分正 | AllAttention suff/nec −0.015/−0.016（负）；Top16 suff≈0，nec +0.0018（弱正）；K≥32 负；**注意力头输出不构成可移植的充分性中介** | `0281b2f` |
 | EXP08 | H15–H20 内部哪里是 causal handoff？ | 完成，紧凑多层核心 | H20=+0.049（62% full）、H15:H19=+0.052（66%）；full−H20=+0.030、full−H15:H19=+0.027（均显著）；**H18–H20 即 97% 全效应，H15–H17 可移除**；既非 H20 单层 handoff 亦非全宽均匀累积 | `186b370` |
+| EXP09 | H18–H20 残差经 Q/K/V 投影状态传递？ | 完成，POSITIVE | H20 KV suff=+0.046（94%）/nec=+0.044（91%）；**V 单通道即 89%**，K≈0、Q 为负；chain_KV=+0.066（full 的 84%）；**KV>Q 确认**（+0.051/+0.050）但机制为 V 主导 | 待 commit |
 
 ---
 
@@ -1377,6 +1378,130 @@ depth-distributed / 紧凑多层核心              ✓（H18-H20，H20 主导�
 
 ---
 
+# EXP09 — Residual → Q/K/V Routing Mediation（残差 → Q/K/V 路由中介）
+
+## 状态
+已完成 — **H20 层 QKV（实际由 V 主导）即消费接口：suff 84% / nec 81%，KV≈V，K≈0，Q 为负**；三层 chain 恢复 full 的 84%。
+
+## 日期
+2026-09-22
+
+## 提交
+待 commit
+
+## 科学动机
+
+EXP08 定位出 H18–H20 紧凑因果核心，但"前层输出是后层联合计算的输入条件"（Qwen2 block：input residual → RMSNorm → Attention → residual add → RMSNorm → MLP → residual add），H18–H20 内部哪一层完成 causal handoff 仍未知。EXP06/07 已证伪 H21–H28 的下游 MLP 与注意力头输出作为可移植中介——但那只覆盖了"远离核心的末端通路"。EXP09 检查紧邻核心的**消费接口**：block 18/19/20 的 Q/K/V 投影状态（pre-RoPE）。
+
+## 研究问题
+
+H18/H19/H20 残差状态的行为效应，是否通过各自消费 block 的 Q/K/V（KV/QKV）投影状态传递？
+
+## 设计
+
+- 与 EXP04–EXP08 完全一致：same task / same wording / opposite state donor / exact common suffix 对齐；48 任务，任务级 paired bootstrap 95% CI（seed 4909）。
+- 干预位点：`layers[h].self_attn.{q,k,v}_proj` **输出（pre-RoPE，整行替换）**；源残差 `layers[h-1]` 输出（= H_h）。
+- 投影组合：`Q / K / V / KV / QKV`；固定 5 投影。
+- 充分性（suff）：仅移植 donor 投影状态（无残差 patch），`E_suff = s·(M_patched − M_base)`。
+- 必要性（nec）：移植 donor 残差 + clamp 接收方投影为 donor 状态，`E_nec = E_res − s·(M_res+clamp − M_base)`（即"去掉投影能传递的贡献后残差还剩多少"；E_nec 大 = 投影状态对该残差效应是必要的）。
+- Chain（三层 consumer 同时干预，投影 donor 状态来自对应层残差）：
+  - `chain_KV_sufficiency`、`chain_QKV_sufficiency`。
+- 控制（每层 QKV suff + opposite 组 nec）：
+  - `self`（预期 ≈ 0）；`same-state cross-wording`（预期 小/≈0）；`opposite cross-wording`（预期 同号正）。
+- Paired contrasts（task-level paired bootstrap）：
+  - `H20_KV_suff_minus_Q_suff`、`H20_KV_nec_minus_Q_nec`（预注册 **KV > Q** 检验）；
+  - `H20_QKV_suff_minus_KV_suff`、`H20_QKV_nec_minus_KV_nec`（Q 是否必要）。
+
+## 预注册假设
+
+> **KV > Q**：prompt 侧 K 决定后续 token 如何匹配 prompt 状态，V 决定读取内容；Q 主要作用于自身读取先验上下文。故消费接口的充分性/必要性应以 KV 为主，Q 贡献小甚至为负。
+
+## 主要结果（48 个任务）
+
+### 用户指定关键数（H20，confirmatory）
+
+| 指标 | mean | 95% CI | fraction of H20 residual |
+|---|---:|---:|---:|
+| `H20_residual_reference`（=EXP08 single_H20 复现） | **+0.0488** | [0.0440, 0.0536] | 1.000 |
+| `H20_KV_sufficiency` | **+0.0460** | [0.0427, 0.0494] | **0.944** |
+| `H20_KV_necessity_loss` | **+0.0443** | [0.0409, 0.0479] | **0.909** |
+| `H20_QKV_sufficiency` | **+0.0408** | [0.0374, 0.0440] | 0.836 |
+| `H20_QKV_necessity_loss` | **+0.0393** | [0.0357, 0.0430] | 0.806 |
+| `chain_KV_sufficiency`（H18+H19+H20 同时） | **+0.0661** | [0.0604, 0.0720] | —（full_H15_H20 的 **84%**） |
+| `chain_QKV_sufficiency` | **+0.0645** | [0.0587, 0.0704] | —（full 的 82%） |
+
+- H20 residual 复现 +0.0488 与 EXP08 `single_H20` 逐位一致 → 本实验 pipeline/hook 正确。
+- **suff 与 nec 双双强正、CI 排除 0** → 按预注册决策树进入 **causal routing interface** 分支。
+
+### Paired contrasts（H20）
+
+```text
+KV_suff − Q_suff    +0.0506  [+0.0467, +0.0547]   显著正 → KV >> Q（预注册假设确认）
+KV_nec  − Q_nec     +0.0500  [+0.0463, +0.0539]   显著正 → KV >> Q
+QKV_suff − KV_suff  −0.0053  [−0.0067, −0.0039]   QKV < KV（加 Q 反而略降）
+QKV_nec  − KV_nec   −0.0050  [−0.0064, −0.0037]   QKV < KV
+```
+
+### 子分量分解（routing_profile，fraction of 该层 residual）
+
+```text
+H20:  Q  −0.094 (负)   K  +0.002 (≈0)   V  +0.890   KV  +0.944   QKV  +0.836
+      nec  −0.117       +0.025           +0.897      +0.909      +0.806
+H19:  Q  +0.270        K  +0.006/0.203  V  +0.315/0.459   KV  +0.464/0.403   QKV  +0.656/0.639
+H18:  Q  −0.011 (≈0)   K  +0.135        V  +0.284        KV  +0.384/0.345    QKV  +0.373/0.350
+```
+
+- **H20（confirmatory 层）：V 投影状态即主载体**（suff 89.0% / nec 89.7%），KV≈V（+0.0460 vs +0.0434，差值 ~+0.003）；**K≈0、Q 显著为负（−9.4%）**——加 Q 会压低效应（QKV < KV 的配对差来源）。
+- **H19（复制层）**：QKV 最强（66%），V 次之（32%），Q 在这里为正（27%）——中间层 Q 仍有用。
+- **H18（复制层）**：KV≈QKV≈38%，V 28%，K 13.5%，Q≈0。
+- **随深度递增**：QV-KV 接口的因果占比 H18 38% → H19 46–66% → H20 94%；越靠近最终输出层，block 内 Q/K/V 投影状态越完整地承载残差效应。
+
+### 控制（全部通过）
+
+```text
+H20_QKV self                              −0.0002  （≈0 ✓）
+H20_QKV same-state cross-wording          −0.0022  （≈0 ✓）
+H20_QKV opposite cross-wording suff       +0.0397  （同号正 ✓）
+H20_QKV opposite cross-wording nec        +0.0345  （同号正 ✓）
+```
+
+## 数据质量核验
+
+- `H20_residual_reference` +0.0488 与 EXP08 `single_H20` 逐位一致（float32）→ 干预管线无系统性偏移；
+- chain 值（+0.066/+0.064）介于 single_H20（+0.049）与 EXP08 full（+0.078）之间，且方向单调 → 三层 chain 恢复 full 的 84%，与"紧凑多层核心"一致；
+- 48 任务 × 4 条目全量记录；exit 0 一次通过；seed 4909。
+
+## 解释结果 — H20 的 V-projection 是残差→行为的主要消费接口
+
+> **H20 残差效应主要通过 block 20 的 V（及其 KV 组合）投影状态传递**：suff 94%/nec 91%，Q 贡献为负、K≈0，加 Q 反而略损。三层 chain（H18+H19+H20 的 QKV/KV 同时移植）恢复 full_H15_H20 的 82–84%——consumer-side 接口随深度逐层接管：H18 38% → H19 66% → H20 94%。
+
+- 预注册 **KV > Q** 假设**确认**（配对差 +0.0506/+0.0500，均显著正），但机制细节与假设动机不同：不是"K 决定匹配、V 决定读取"的 K+V 组合，而是 **V 单通道近乎完整承载**（89–90%），K 在 H20 ≈ 0；
+- Q 在 H20 为负：强制把 H20 的 Q 换成 donor 的 Q 会略微破坏行为（Q 状态含 position-sensitive 读取先验，跨措辞移植时干扰）；
+- 必要性 loss（91%）≈ 充分性（94%）：H20 的 KV 投影状态既充分又几乎必要 → 是真正的 causal routing interface，而非"残差另走 MLP 旁路"（若残差可绕开投影走 MLP，necessity loss 应远低于 94%）；
+- EXP06/07 的排除不受影响：那里干预的是 H21–H28 内部（更下游），这里干预的是 H18–H20 自身消费块入口。
+
+## 对证据链的影响
+
+- 证据链补上关键一跳：**H18–H20 残差 → 各层 block 的 V/KV 投影状态（consumer 接口）→ 行为**；
+- 与 Qwen2 block joint computation 的结构吻合：前层残差不直接"搬运"，而是通过本层 attention 的 V-projection 读取进入后续计算——H20 层此接口几乎饱和（94%）；
+- "便携状态"的含义进一步收窄：可移植的因果载体是 **H20 消费块的 V 投影内容状态**（与 EXP07 的 post-attention head output 不同——那在 H21–H28，且被证伪；这里是 H20 自身投影，suff/nec 双高）。
+
+## 下一步（决策触发）
+
+按预注册决策树：
+
+```text
+KV/QKV suff+nec 均 +/CI 排除 0  →  causal routing interface     ✓（H20 KV suff 94% / nec 91%）
+necessity-only                 →  context-conditioned routing   ✗
+null / negative                →  拒绝便携 QKV 中介，转归一化/残差交互研究  ✗
+```
+
+进入 **EXP10**：
+
+> **GQA KV-head × token-position 路径定位** —— 既然载体是 V-projection 状态（Qwen2 仅 4 个 KV head，GQA），进一步问：(a) 4 个 KV-head 中哪几个承载（head 级 suff/nec）；(b) 状态在 prompt 哪些 token 位置（内容 token vs skill token vs 分隔符）最强；(c) 位置 × head 的交互矩阵。若 head 或位置高度集中 → 可移植中介收敛为极稀疏电路；若均匀 → 修正为宽路径路由。
+
+---
+
 # 当前证据总结
 
 EXP01–EXP04 逐步建立：
@@ -1421,21 +1546,27 @@ MLP 神经元因果中介                 否（EXP06 证伪：无充分性/必�
         v
 早期窗口内部 handoff 定位          H18-H20 紧凑核心（EXP08：H20 单层 62%，H15:H19 66%，
                                    H18-H20 即 97%；H15-H17 可移除）
+        |
+        v
+残差 → Q/K/V 消费接口             是（EXP09：H20 KV suff 94%/nec 91%；V 单通道即 89%，
+                                   K≈0、Q 负；chain_KV 恢复 full 的 84%；KV>Q 确认但为 V 主导）
 ```
 
 ## 当前主张边界
 
-EXP08 之后，可辩护的项目级声明：
+EXP09 之后，可辩护的项目级声明：
 
 > **可恢复的干预位点**：早期窗口内行为效应的因果载体集中在 **H18–H20 三层**（full_H15_H20 = +0.0784；suffix_H18_H20 = +0.0760，即 97% 全效应；H20 单层 +0.0488 为最强单层，但仅 62%，far from sufficient；H15–H17 可移除）。该恢复不需要干预 H21–H28，即可因果转移技能条件化动作偏好。下游两条通路（MLP 中间神经元 EXP06、注意力头输出 EXP07）均已被独立证伪为可移植中介，其 recovery 不对称是伴随表现。
 
-> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位（EXP09 consumer-side path localization）。
+> **消费接口**：H20 残差效应主要通过 block 20 的 **V（KV）投影状态**传递——suff +0.0460（94% 残差）/ nec +0.0443（91%），CI 均排除 0；V 单通道即 89%，K≈0，Q 为负；三层 chain（H18+H19+H20 的 KV/QKV 同时移植）恢复 full 的 82–84%。预注册 KV > Q 假设确认（配对差 +0.051/+0.050 均显著正），但机制细节是 **V 单通道主导**而非 K+V 组合。
+
+> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位；④「Q/K/V 三通道共同负载路由」——H20 上 K≈0、Q 为负，实际是 V 近单通道；⑤「V 投影状态就是最末端载体」——V 状态仍需进入 attention 加权聚合→MLP，其后各步是否可进一步归因仍未实验。
 
 尚不可声明：
 
-> 「真正的因果机制完全是一个分布式电路。」或「行为转移经由某个特定的下游神经元/通路组件承载。」或「H18–H20 各层贡献可线性叠加。」
+> 「真正的因果机制完全是一个分布式电路。」或「行为转移经由某个特定的下游神经元/通路组件承载。」或「H18–H20 各层贡献可线性叠加。」或「已定位到单个 GQA KV head / 单个 token 位置的完整路径。」
 
-已验证的排除项（EXP01–EXP08）：
+已验证的排除项（EXP01–EXP09）：
 
 1. 全局线性操控方向（EXP02，否）；
 2. 单 token 精确残差互换（EXP03，否）；
@@ -1443,15 +1574,18 @@ EXP08 之后，可辩护的项目级声明：
 4. H21–H28 全 MLP 中间激活作为因果载体（EXP06，full-MLP 干预为负）；
 5. H21–H28 注意力头输出作为因果中介（EXP07，AllAttention 为负；Top16 sufficiency null，necessity 仅 +2.3%）；
 6. H20 单层作为独立 handoff state（EXP08，仅 62% full，full−H20 显著正）；
-7. H15–H17 对早期窗口的必要性（EXP08，单层为负/≈0，H16–H20 与 full 不可区分）。
+7. H15–H17 对早期窗口的必要性（EXP08，单层为负/≈0，H16–H20 与 full 不可区分）；
+8. H20 Q 投影作为中介（EXP09，Q suff/nec 均为负，加 Q 反而压低 QKV<KV）；
+9. H20 K 投影作为中介（EXP09，suff +0.0001 ≈ 0，nec 仅 +0.025）。
 
 尚未完成的验证：
 
-1. H18–H20 内部逐层 consumer-side 定位（Q/K/V → routing → MLP 的因果贡献）；
-2. H18–H20 状态的维度分解（SAE/SNMF）；
-3. 跨模型复现；
-4. 跨 Skill / 任务泛化。
+1. H18–H20 内部 4 个 GQA KV-head、token 位置的局部化（EXP10 计划）；
+2. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
+3. H18–H20 状态的维度分解（SAE/SNMF）；
+4. 跨模型复现；
+5. 跨 Skill / 任务泛化。
 
-> 「证据排除了七个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性——效应集中在 H18–H20 三层（H20 单层最强但仅 62%），两条主要下游通路（MLP / attention）均已独立证伪为可移植中介；H18–H20 内部各层 causal contribution 待 EXP09 定位。」
+> 「证据排除了九个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影——效应集中在 H18–H20 三层（H20 单层最强但仅 62%），且 H20 残差效应绝大部分经 block 20 的 V（KV）投影状态传递（suff 94%/nec 91%，chain 恢复 full 的 84%）；两条主要下游通路（MLP / attention）均已独立证伪为可移植中介；下一步按决策树进入 EXP10 GQA KV-head × token-position 路径定位。」
 
 此措辞应保留，直到 EXP09 定位到各层内部投影（Q/K/V/MLP）的 causal handoff 结构。

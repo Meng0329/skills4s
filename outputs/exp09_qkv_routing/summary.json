@@ -1,0 +1,372 @@
+{
+  "experiment": "EXP09_qkv_routing",
+  "primary_source": "H20",
+  "H20_residual_reference_mean": 0.04879554764678081,
+  "H20_residual_reference_95ci": [
+    0.044007422107582295,
+    0.0535900692610691
+  ],
+  "H20_KV_sufficiency_mean": 0.046039726895590626,
+  "H20_KV_sufficiency_95ci": [
+    0.04270665131043643,
+    0.04936382720091691
+  ],
+  "H20_KV_necessity_loss_mean": 0.044343833501140274,
+  "H20_KV_necessity_loss_95ci": [
+    0.04085616368489961,
+    0.047932682543372115
+  ],
+  "H20_QKV_sufficiency_mean": 0.0407846641416351,
+  "H20_QKV_sufficiency_95ci": [
+    0.03744140954998632,
+    0.04400573128368705
+  ],
+  "H20_QKV_necessity_loss_mean": 0.03931715339422226,
+  "H20_QKV_necessity_loss_95ci": [
+    0.03567040654209753,
+    0.042986481629001594
+  ],
+  "H20_QKV_self_control_mean": -0.00015480909496545792,
+  "H20_QKV_same_state_cross_wording_mean": -0.0022185721124211946,
+  "H20_QKV_opposite_cross_wording_sufficiency_mean": 0.03974820921818415,
+  "H20_QKV_opposite_cross_wording_necessity_loss_mean": 0.034469611632327236,
+  "chain_KV_sufficiency_mean": 0.06611528682212035,
+  "chain_KV_sufficiency_95ci": [
+    0.06037695723741005,
+    0.07196388921389976
+  ],
+  "chain_QKV_sufficiency_mean": 0.06445092211167018,
+  "chain_QKV_sufficiency_95ci": [
+    0.058711406472139065,
+    0.07044153656655301
+  ],
+  "H20_paired_contrasts": [
+    {
+      "contrast": "H20_KV_suff_minus_Q_suff",
+      "mean_difference": 0.050616463335851826,
+      "ci_low": 0.04674681824787209,
+      "ci_high": 0.05465500778518617
+    },
+    {
+      "contrast": "H20_KV_nec_minus_Q_nec",
+      "mean_difference": 0.05003805334369341,
+      "ci_low": 0.04630311029807975,
+      "ci_high": 0.05389755245608587
+    },
+    {
+      "contrast": "H20_QKV_suff_minus_KV_suff",
+      "mean_difference": -0.0052550627539555235,
+      "ci_low": -0.006733288910860816,
+      "ci_high": -0.003874266341639062
+    },
+    {
+      "contrast": "H20_QKV_nec_minus_KV_nec",
+      "mean_difference": -0.005026680106918017,
+      "ci_low": -0.006367616231242815,
+      "ci_high": -0.003704337449744345
+    }
+  ],
+  "routing_profile": [
+    {
+      "source_h": 18,
+      "component": "Q",
+      "effect_type": "sufficiency",
+      "mean": -0.00047573354095220566,
+      "ci_low": -0.0012615825980901718,
+      "ci_high": 0.0003033410602559642,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": -0.011463433528759536
+    },
+    {
+      "source_h": 18,
+      "component": "Q",
+      "effect_type": "necessity_loss",
+      "mean": -0.0006583010156949362,
+      "ci_low": -0.0016616277086238067,
+      "ci_high": 0.00035788749810308144,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": -0.015862640082574993
+    },
+    {
+      "source_h": 18,
+      "component": "K",
+      "effect_type": "sufficiency",
+      "mean": 0.005617826556166013,
+      "ci_low": 0.004475267782496909,
+      "ci_high": 0.0068120093628143245,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": 0.13536901597017956
+    },
+    {
+      "source_h": 18,
+      "component": "K",
+      "effect_type": "necessity_loss",
+      "mean": 0.002305832381049792,
+      "ci_low": 0.0010651446568469207,
+      "ci_high": 0.0035448810939366603,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": 0.055562103474392555
+    },
+    {
+      "source_h": 18,
+      "component": "V",
+      "effect_type": "sufficiency",
+      "mean": 0.011800084883968035,
+      "ci_low": 0.010112690141734978,
+      "ci_high": 0.013450198348922034,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": 0.28433876751750314
+    },
+    {
+      "source_h": 18,
+      "component": "V",
+      "effect_type": "necessity_loss",
+      "mean": 0.008806325495243073,
+      "ci_low": 0.006846959221487244,
+      "ci_high": 0.010676744913992777,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": 0.21220014621058922
+    },
+    {
+      "source_h": 18,
+      "component": "KV",
+      "effect_type": "sufficiency",
+      "mean": 0.015950158548851807,
+      "ci_low": 0.014123744323539238,
+      "ci_high": 0.01769913036841899,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": 0.38434032196251566
+    },
+    {
+      "source_h": 18,
+      "component": "KV",
+      "effect_type": "necessity_loss",
+      "mean": 0.014324796386063099,
+      "ci_low": 0.011912128484497467,
+      "ci_high": 0.0166004986812671,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": 0.34517505504440893
+    },
+    {
+      "source_h": 18,
+      "component": "QKV",
+      "effect_type": "sufficiency",
+      "mean": 0.015470047481358051,
+      "ci_low": 0.01348957159401228,
+      "ci_high": 0.017445239680819208,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": 0.3727714060991934
+    },
+    {
+      "source_h": 18,
+      "component": "QKV",
+      "effect_type": "necessity_loss",
+      "mean": 0.01452379177014033,
+      "ci_low": 0.012170598617133994,
+      "ci_high": 0.01681044927487771,
+      "residual_reference": 0.041500091552734375,
+      "fraction_of_residual": 0.34997011396191435
+    },
+    {
+      "source_h": 19,
+      "component": "Q",
+      "effect_type": "sufficiency",
+      "mean": 0.008220172487199306,
+      "ci_low": 0.005961068836040795,
+      "ci_high": 0.010417381480025748,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.2698875206589248
+    },
+    {
+      "source_h": 19,
+      "component": "Q",
+      "effect_type": "necessity_loss",
+      "mean": 0.004873629038532575,
+      "ci_low": 0.0026162654937555395,
+      "ci_high": 0.007215255886937174,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.16001265908582443
+    },
+    {
+      "source_h": 19,
+      "component": "K",
+      "effect_type": "sufficiency",
+      "mean": 0.00017563067376613617,
+      "ci_low": -0.0011164898751303554,
+      "ci_high": 0.0015414987690746782,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.0057663664805346175
+    },
+    {
+      "source_h": 19,
+      "component": "K",
+      "effect_type": "necessity_loss",
+      "mean": 0.00616916020711263,
+      "ci_low": 0.004448322424044212,
+      "ci_high": 0.007924488047137855,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.20254798247093736
+    },
+    {
+      "source_h": 19,
+      "component": "V",
+      "effect_type": "sufficiency",
+      "mean": 0.009579332855840525,
+      "ci_low": 0.007592897241314252,
+      "ci_high": 0.011534909298643469,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.3145119397500901
+    },
+    {
+      "source_h": 19,
+      "component": "V",
+      "effect_type": "necessity_loss",
+      "mean": 0.01399320208777984,
+      "ci_low": 0.012417735516404111,
+      "ci_high": 0.01554827147629112,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.4594296072778532
+    },
+    {
+      "source_h": 19,
+      "component": "KV",
+      "effect_type": "sufficiency",
+      "mean": 0.014139099977910519,
+      "ci_low": 0.01249910524735848,
+      "ci_high": 0.01568302574257056,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.46421977681481297
+    },
+    {
+      "source_h": 19,
+      "component": "KV",
+      "effect_type": "necessity_loss",
+      "mean": 0.012280666579802832,
+      "ci_low": 0.010448003676719964,
+      "ci_high": 0.014139701852885385,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.40320305448859894
+    },
+    {
+      "source_h": 19,
+      "component": "QKV",
+      "effect_type": "sufficiency",
+      "mean": 0.019977564302583534,
+      "ci_low": 0.017892449155139427,
+      "ci_high": 0.022210347458409767,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.6559102387236543
+    },
+    {
+      "source_h": 19,
+      "component": "QKV",
+      "effect_type": "necessity_loss",
+      "mean": 0.019469875221451122,
+      "ci_low": 0.017175751621834934,
+      "ci_high": 0.02189547197582821,
+      "residual_reference": 0.030457771693666775,
+      "fraction_of_residual": 0.6392416167956103
+    },
+    {
+      "source_h": 20,
+      "component": "Q",
+      "effect_type": "sufficiency",
+      "mean": -0.004576736440261205,
+      "ci_low": -0.00597488690012445,
+      "ci_high": -0.0032226928432161623,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": -0.09379414026441706
+    },
+    {
+      "source_h": 20,
+      "component": "Q",
+      "effect_type": "necessity_loss",
+      "mean": -0.005694219842553139,
+      "ci_low": -0.007190880870136122,
+      "ci_high": -0.0040974457748234275,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": -0.11669547975508383
+    },
+    {
+      "source_h": 20,
+      "component": "K",
+      "effect_type": "sufficiency",
+      "mean": 8.864731838305791e-05,
+      "ci_low": -0.0009775793955971797,
+      "ci_high": 0.0011651965401445802,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": 0.001816709160121625
+    },
+    {
+      "source_h": 20,
+      "component": "K",
+      "effect_type": "necessity_loss",
+      "mean": 0.0012301265572508175,
+      "ci_low": 8.810138485083977e-05,
+      "ci_high": 0.0024258426933859776,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": 0.025209811480248295
+    },
+    {
+      "source_h": 20,
+      "component": "V",
+      "effect_type": "sufficiency",
+      "mean": 0.04344554773221413,
+      "ci_low": 0.04075507110295196,
+      "ci_high": 0.04632481363757203,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": 0.8903588509079959
+    },
+    {
+      "source_h": 20,
+      "component": "V",
+      "effect_type": "necessity_loss",
+      "mean": 0.043759024081130825,
+      "ci_low": 0.04053333677972356,
+      "ci_high": 0.0468942590833952,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": 0.8967831327130876
+    },
+    {
+      "source_h": 20,
+      "component": "KV",
+      "effect_type": "sufficiency",
+      "mean": 0.046039726895590626,
+      "ci_low": 0.04270665131043643,
+      "ci_high": 0.04936382720091691,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": 0.9435231105276468
+    },
+    {
+      "source_h": 20,
+      "component": "KV",
+      "effect_type": "necessity_loss",
+      "mean": 0.044343833501140274,
+      "ci_low": 0.04085616368489961,
+      "ci_high": 0.047932682543372115,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": 0.9087680257660921
+    },
+    {
+      "source_h": 20,
+      "component": "QKV",
+      "effect_type": "sufficiency",
+      "mean": 0.0407846641416351,
+      "ci_low": 0.03744140954998632,
+      "ci_high": 0.04400573128368705,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": 0.8358275725659529
+    },
+    {
+      "source_h": 20,
+      "component": "QKV",
+      "effect_type": "necessity_loss",
+      "mean": 0.03931715339422226,
+      "ci_low": 0.03567040654209753,
+      "ci_high": 0.042986481629001594,
+      "residual_reference": 0.04879554764678081,
+      "fraction_of_residual": 0.8057528871041604
+    }
+  ],
+  "decision_rule": "KV/QKV routing mediation is supported when H20 sufficiency and necessity are positive with CIs excluding zero, controls are small, and cross-wording preserves sign. Necessity without sufficiency supports context-conditioned routing rather than a portable state."
+}
