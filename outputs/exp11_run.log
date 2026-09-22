@@ -1,0 +1,152 @@
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   1%|▏         | 5/339 [00:00<00:07, 43.09it/s]Loading weights:   5%|▍         | 16/339 [00:00<00:04, 78.59it/s]Loading weights:   9%|▊         | 29/339 [00:00<00:03, 88.23it/s]Loading weights:  12%|█▏        | 41/339 [00:00<00:03, 88.11it/s]Loading weights:  16%|█▌        | 53/339 [00:00<00:03, 87.65it/s]Loading weights:  19%|█▉        | 64/339 [00:00<00:02, 92.09it/s]Loading weights:  22%|██▏       | 74/339 [00:00<00:02, 94.16it/s]Loading weights:  25%|██▍       | 84/339 [00:00<00:02, 86.04it/s]Loading weights:  27%|██▋       | 93/339 [00:01<00:02, 82.21it/s]Loading weights:  30%|███       | 102/339 [00:01<00:03, 76.07it/s]Loading weights:  33%|███▎      | 113/339 [00:01<00:02, 83.89it/s]Loading weights:  37%|███▋      | 124/339 [00:01<00:02, 87.19it/s]Loading weights:  39%|███▉      | 133/339 [00:01<00:02, 86.73it/s]Loading weights:  42%|████▏     | 142/339 [00:01<00:02, 82.75it/s]Loading weights:  45%|████▍     | 151/339 [00:01<00:02, 79.82it/s]Loading weights:  48%|████▊     | 162/339 [00:01<00:02, 80.04it/s]Loading weights:  51%|█████▏    | 174/339 [00:02<00:02, 81.16it/s]Loading weights:  55%|█████▍    | 186/339 [00:02<00:01, 86.49it/s]Loading weights:  58%|█████▊    | 198/339 [00:02<00:01, 89.18it/s]Loading weights:  62%|██████▏   | 209/339 [00:02<00:01, 86.94it/s]Loading weights:  65%|██████▌   | 222/339 [00:02<00:01, 92.66it/s]Loading weights:  69%|██████▉   | 234/339 [00:02<00:01, 95.95it/s]Loading weights:  72%|███████▏  | 245/339 [00:02<00:00, 96.14it/s]Loading weights:  76%|███████▌  | 258/339 [00:02<00:00, 97.80it/s]Loading weights:  80%|███████▉  | 270/339 [00:03<00:00, 97.59it/s]Loading weights:  83%|████████▎ | 282/339 [00:03<00:00, 94.49it/s]Loading weights:  87%|████████▋ | 294/339 [00:03<00:00, 93.49it/s]Loading weights:  90%|█████████ | 306/339 [00:03<00:00, 92.21it/s]Loading weights:  94%|█████████▎| 317/339 [00:03<00:00, 94.88it/s]Loading weights:  97%|█████████▋| 329/339 [00:03<00:00, 92.66it/s]Loading weights: 100%|██████████| 339/339 [00:03<00:00, 90.01it/s]
+======================================================================================
+EXP11: Exact KV0×Token -> Query-Head Value Path
+Model: /data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct
+Tasks: 48
+Q heads: 28 KV heads: 4
+KV0 readers: [0, 1, 2, 3, 4, 5, 6]
+Phase: all
+======================================================================================
+[001/048] task 0
+[002/048] task 1
+[003/048] task 2
+[004/048] task 3
+[005/048] task 4
+[006/048] task 5
+[007/048] task 6
+[008/048] task 7
+[009/048] task 8
+[010/048] task 9
+[011/048] task 10
+[012/048] task 11
+[013/048] task 12
+[014/048] task 13
+[015/048] task 14
+[016/048] task 15
+[017/048] task 16
+[018/048] task 17
+[019/048] task 18
+[020/048] task 19
+[021/048] task 20
+[022/048] task 21
+[023/048] task 22
+[024/048] task 23
+[025/048] task 24
+[026/048] task 25
+[027/048] task 26
+[028/048] task 27
+[029/048] task 28
+[030/048] task 29
+[031/048] task 30
+[032/048] task 31
+[033/048] task 32
+[034/048] task 33
+[035/048] task 34
+[036/048] task 35
+[037/048] task 36
+[038/048] task 37
+[039/048] task 38
+[040/048] task 39
+[041/048] task 40
+[042/048] task 41
+[043/048] task 42
+[044/048] task 43
+[045/048] task 44
+[046/048] task 45
+[047/048] task 46
+[048/048] task 47
+{
+  "experiment": "EXP11_exact_value_path",
+  "phase": "all",
+  "source_hidden_index": 20,
+  "consumer_decoder_block": 20,
+  "kv_head": 0,
+  "reader_query_heads": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "offsets_fdr_positive_in_both": [
+    {
+      "offset": -13,
+      "decoded_token_modal": ".\n\n",
+      "sufficiency_mean": 0.007453920009235541,
+      "sufficiency_q": 0.0003333166674999583,
+      "necessity_mean": 0.006830097486575444,
+      "necessity_q": 0.0003333166674999583
+    },
+    {
+      "offset": -9,
+      "decoded_token_modal": " next",
+      "sufficiency_mean": 0.0009244726970791817,
+      "sufficiency_q": 0.048197590120493974,
+      "necessity_mean": 0.001070813275873661,
+      "necessity_q": 0.002599870006499675
+    },
+    {
+      "offset": -5,
+      "decoded_token_modal": "<|im_end|>",
+      "sufficiency_mean": 0.02521269799520572,
+      "sufficiency_q": 0.0003333166674999583,
+      "necessity_mean": 0.02629812837888797,
+      "necessity_q": 0.0003333166674999583
+    },
+    {
+      "offset": -3,
+      "decoded_token_modal": "<|im_start|>",
+      "sufficiency_mean": 0.0015615175167719524,
+      "sufficiency_q": 0.010749462526873657,
+      "necessity_mean": 0.0014583201458056767,
+      "necessity_q": 0.0007499625018749063
+    },
+    {
+      "offset": -1,
+      "decoded_token_modal": "\n",
+      "sufficiency_mean": 0.009498288234074911,
+      "sufficiency_q": 0.0003333166674999583,
+      "necessity_mean": 0.009595977142453194,
+      "necessity_q": 0.0003333166674999583
+    }
+  ],
+  "full_KV0_B5_sufficiency_mean": 0.04478038288652897,
+  "reader_heads_fdr_positive_in_both": [
+    {
+      "query_head": 0,
+      "sufficiency_mean": 0.032602621552844845,
+      "sufficiency_q": 6.999650017499125e-05,
+      "necessity_mean": 0.031873300671577454,
+      "necessity_q": 5.833041681249271e-05
+    },
+    {
+      "query_head": 1,
+      "sufficiency_mean": 0.0011043092235922813,
+      "sufficiency_q": 0.005399730013499325,
+      "necessity_mean": 0.0018748131891091664,
+      "necessity_q": 9.99950002499875e-05
+    },
+    {
+      "query_head": 3,
+      "sufficiency_mean": 0.016667614070077736,
+      "sufficiency_q": 6.999650017499125e-05,
+      "necessity_mean": 0.016736069073279698,
+      "necessity_q": 5.833041681249271e-05
+    },
+    {
+      "query_head": 5,
+      "sufficiency_mean": 0.006166810169816017,
+      "sufficiency_q": 6.999650017499125e-05,
+      "necessity_mean": 0.005997032858431339,
+      "necessity_q": 5.833041681249271e-05
+    }
+  ],
+  "verified_KV0_B5_effect_mean": 0.04478038288652897,
+  "mean_non_KV0_reader_delta_ratio": 0.0,
+  "all7_reconstruction_sufficiency_mean": 0.04478038288652897,
+  "all7_removal_necessity_mean": 0.04478038288652897,
+  "Q7_Q27_control_sufficiency_mean": 0.0,
+  "Q7_Q27_control_necessity_mean": 0.0
+}

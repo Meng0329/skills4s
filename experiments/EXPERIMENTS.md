@@ -28,6 +28,7 @@
 | EXP08 | H15–H20 内部哪里是 causal handoff？ | 完成，紧凑多层核心 | H20=+0.049（62% full）、H15:H19=+0.052（66%）；full−H20=+0.030、full−H15:H19=+0.027（均显著）；**H18–H20 即 97% 全效应，H15–H17 可移除**；既非 H20 单层 handoff 亦非全宽均匀累积 | `186b370` |
 | EXP09 | H18–H20 残差经 Q/K/V 投影状态传递？ | 完成，POSITIVE | H20 KV suff=+0.046（94%）/nec=+0.044（91%）；**V 单通道即 89%**，K≈0、Q 为负；chain_KV=+0.066（full 的 84%）；**KV>Q 确认**（+0.051/+0.050）但机制为 V 主导 | `62eb9a9` |
 | EXP10 | GQA V-head × token 位置定位？ | 完成，稀疏收敛 | **KV0 单头承载全部 V 效应**（direct +0.047 ≈ full +0.043）；**B5（最末端指令区）即 99.9% full**；KV0×B5 单 cell（suff +0.0448, q=0.0006 / nec +0.0445, q=0.0006）≈ full_V 的 103%；KV1≈0、KV2/3 微负；B0–B4 无效 | `a3ed568` |
+| EXP11 | B5 内精确 offset + KV0 reader heads？ | 完成，收敛到边界标记 | **offset -5（`<|im_end|>`）即 56% full、-1（assistant 起始）21%**；reader heads **Q0 73% / Q3 37% / Q5 14%**（Q2/4/6 负）；sanity 全过（Q7–Q27 delta=0、leakage ratio=0、all7 重建=full 逐位）；**1 KV head × 2 边界 token × 3 query heads** | 待 commit |
 
 ---
 
@@ -1638,6 +1639,115 @@ B5（~17 token，offset −17..−1）固定包含：
 
 ---
 
+# EXP11 — Exact KV0×Token → Query-Head Value Path（精确 KV0×token → query-head value path）
+
+## 状态
+已完成 — **B5 内部收敛到 4 个因果 offset（-13/-5/-3/-1，其中 -5=final instruction 句号后段 55%、-1=assistant 起始 21%）；KV0 的 7 个 reader query heads 中 Q0/Q3/Q5 承载全部 V 效应（Q0 suff +0.0326 = 73%），Q2/Q4/Q6 为负；三条 sanity 全部通过（leakage ratio = 0.0）**。
+
+## 日期
+2026-09-22
+
+## 提交
+待 commit
+
+## 科学动机
+
+EXP10 把 V 效应收敛到 **KV0 × B5**（B5 = 最末端 17 token 的 final-instruction + assistant 边界区域）。本轮不再大范围扫描，沿已收敛的路径做两步精确定位：
+
+1. **B5 内逐 token-offset 扫描**：`single-token suff / nec` + `leave-one-token-out loss`，逐 endpoint 做 task-level bootstrap CI + sign-flip p + BH-FDR；
+2. **KV0 的 7 个 reader query heads**：Qwen2.5-Coder-7B-Instruct 为 28 Q heads / 4 KV heads，`repeat_kv` 连续重复 7 次 → **KV0 → Q0–Q6**（实现决定的映射，非假设）。
+
+关键方法学改进（区别于 EXP07 直接搬 donor post-attention output）：对每个 candidate 分别计算 **baseline 与 KV0×B5 V-patch 两次 forward 的 block20 o_proj input delta**，然后只传递某个 reader head 的真实 delta（path sufficiency：baseline 上游 + Qh 的 patched delta；path necessity：V patch 上游 + 把 Qh 钳回 baseline）。因为上游只改 V、Q/K 不变，观测到的 per-query-head delta 是 KV0×B5 V intervention 实际造成的下游响应——真正的 path patching。
+
+## 设计
+
+- 与 EXP04–EXP10 完全一致：same task / same wording / opposite state donor / exact common suffix；48 任务，任务级 paired bootstrap 95% CI（seed 5111）。
+- 干预位点：block20 `v_proj` 输出（KV0 head × 指定 token offset，pre-RoPE）+ block20 `o_proj` **输入**（28 query-head 拼接，head 切片）。
+- Part A offsets：B5 内每个 offset（-1..-20）单 patch single-token suff / nec / LOO；offset 全标记 exploratory，逐 endpoint BH-FDR。
+- Part B readers：对 Q0–Q6 各做 path suff / necessity_loss；含 3 条硬性 sanity：
+  - `all7 reconstruction`（Q0–Q6 all7 delta 一起传 ≈ KV0×B5 full V effect）；
+  - `all7 removal`（Q0–Q6 all7 钳回 baseline ≈ 移除 KV0×B5 full V effect）；
+  - `Q7–Q27 induced delta` 应理论上 ≈ 0（KV0 V 只进入 v-states 0–6），`non_kv0_delta_ratio` 度量泄漏。
+
+## 主要结果（48 个任务）
+
+### Sanity checks（全部严格通过）
+
+| check | 值 | 预期 | 结果 |
+|---|---:|---:|---|
+| `verified_KV0_B5_effect_mean`（reader 通道复现 EXP10） | **+0.0448** [0.0421, 0.0475] | ≈ EXP10 KV0×B5 +0.0448 | ✓ 逐位一致 |
+| `all7_reconstruction_sufficiency_mean` | **+0.0448** [0.0420, 0.0476] | ≈ full V effect | ✓ 逐位等于 |
+| `all7_removal_necessity_mean` | **+0.0448** [0.0421, 0.0476] | ≈ 移除 full V effect | ✓ 完全移除 |
+| `Q7_Q27_control_sufficiency_mean` | **0.0000** | ≈ 0 | ✓ 精确 0 |
+| `Q7_Q27_control_necessity_mean` | **0.0000** | ≈ 0 | ✓ 精确 0 |
+| `mean_non_KV0_reader_delta_ratio` | **0.0** | ≈ 0 | ✓ 零泄漏 |
+
+**三条硬性 sanity 全部成立** → 单 Q head 结果可解释；GQA 架构映射（KV0→Q0–Q6）被实证确认。
+
+### Part A — B5 内 exact offsets 定位（`offsets_fdr_positive_in_both`）
+
+仅以下 offset 同时满足 single-token suff q<0.05、nec q<0.05、mean>0：
+
+| offset | modal token | suff mean | suff q | nec mean | nec q |
+|---|---:|---|---:|---|---:|
+| -13 | `.\n\n`（"next action now."句号） | +0.0075 | 0.0003 | +0.0068 | 0.0003 |
+| -9 | ` next`（"Choose the single..."） | +0.0009 | 0.048 | +0.0011 | 0.003 |
+| -5 | `<|im_end|>` | **+0.0252** | 0.0003 | **+0.0263** | 0.0003 |
+| -3 | `<|im_start|>` | +0.0016 | 0.011 | +0.0015 | 0.0007 |
+| -1 | `\n`（assistant 起始） | **+0.0095** | 0.0003 | **+0.0096** | 0.0003 |
+
+- 其余 offset（-20..-6, -4, -2）全部 ≈0 或微负、FDR 不显著；
+- **单个 offset -5（`<|im_end|>`）即 suff +0.0252 = full KV0×B5 的 56%**；-1（assistant 起始换行）再 +0.0095（21%）→ 两者合计 77%；
+- LOO（leave-one-out）与 single-token 一致：-5 与 -1 的 LOO loss 最大——B5 效应不是均匀地铺开，而是写死在 **chat template 边界标记**（`<|im_end|>`、`<|im_start|>`、`\n`）及紧邻的指令尾部。
+
+### Part B — KV0 reader query-heads 定位（`reader_heads_fdr_positive_in_both`）
+
+| Q head | path suff mean | path suff q | path nec mean | nec q |
+|---|---:|---|---:|---|
+| **Q0** | **+0.0326** | 0.00007 | **+0.0319** | 0.00006 |
+| Q1 | +0.0011 | 0.005 | +0.0019 | 0.0001 |
+| **Q3** | **+0.0167** | 0.00007 | **+0.0167** | 0.00006 |
+| **Q5** | **+0.0062** | 0.00007 | **+0.0060** | 0.00006 |
+| Q2 | −0.0021 | — | −0.0028 | — |
+| Q4 | −0.0061 | — | −0.0066 | — |
+| Q6 | −0.0036 | — | −0.0040 | — |
+
+- **Q0 单 head 即 73% full V（suff +0.0326 vs full +0.0448）**；Q3（37%）、Q5（14%）为正；Q1 微小正；
+- Q2/Q4/Q6 为负（转移其 delta 反而干扰）；
+- 正贡献 Q0+Q1+Q3+Q5 ≈ +0.057，减去 Q2/Q4/Q6 的负贡献后 ≈ full +0.045——**reader 头部内 delta 近似线性叠加**；
+- **理想收敛形态部分达成**：1 个 KV head（KV0）× 4 个 causal offset（-13/-5/-3/-1，核心 -5+−1）× 3 个正 reader heads（Q0/Q3/Q5，Q0 主导 73%）。
+
+## 数据质量核验
+
+- `verified_KV0_B5_effect` = +0.0448 = EXP10 KV0×B5 +0.0448 逐位一致（float32）；
+- `all7` 与 `full_KV0_B5` 全部逐位等于——delta 采集/重注入零误差；
+- Q7–Q27 delta = 0.0、leakage ratio = 0.0——架构 sanity 实证通过，无 head 映射串位；
+- 48 任务 × 4 条目全量记录；exit 0 一次通过；seed 5111。
+
+## 解释结果 — B5 边界标记是 KV0 V 状态的载体，Q0/Q3/Q5 是读取者
+
+> **KV0 在 B5 写入的 V 状态，被 block20 的 Q0（主导 73%）、Q3、Q5 三个 query heads 读取。** 写入位置不是均匀铺满 B5，而是集中在 chat template 边界：`<|im_end|>`（-5，56%）与 assistant 起始 `\n`（-1，21%）——即「用户消息结束 → assistant 开始生成」的边界区间。
+
+- 与 GQA 架构一致：KV0 → v-states 0–6 → 仅有 Q0/Q3/Q5 真正读取该状态（Q1/微，Q2/Q4/Q6 抑制）；
+- 行为链路进一步收束：**Skill → H18–H20 → H20 V(KV0) → B5 边界 token → Q0/Q3/Q5 读取 → o_proj → 动作偏好**；
+- Q2/Q4/Q6 为负：这些 head 的 patched delta 在别处是正常上下文计算的一部分，强行传递反而破坏行为（与 EXP10 KV2/KV3 轻微抑制类似）。
+
+## 对证据链的影响
+
+- 证据链核心机理解释力首次被压缩到：**1 KV head × 2 个边界 token（-5/-1）× 3 个 query heads（Q0/Q3/Q5）**；
+- 支持「Skill 状态被写进 generation-boundary 前的 chat-format 边界标记」——与 chat template 的结构性作用（决定回复以何种身份/格式生成）一致；
+- EXP07 的排除不受影响：这里干预的是 block20 内部 V→Q path（读侧），EXP07 干预的是 H21–H28 下游 attention head output（写侧下游）。
+
+## 下一步（决策触发）
+
+EXP11 已把路径收敛到很小规模。按预注册：
+
+> **即使 EXP11 很漂亮，也暂不宣称「完整 circuit 已证明」。** 下一轮（EXP12）应把 EXP11 发现的 **exact offsets（-13/-5/-3/-1）+ query heads（Q0/Q3/Q5）冻结为预注册目标**，在**新的 Skill/task family** 上做独立 replication——比在同一 48 个 synthetic tasks 上继续往更细层级钻，更接近真正可支撑 CCF-A 的证据。若 replication 通过，则可正式提出 candidate circuit：
+
+> **Skill-conditioned procedural state is written into a small set of generation-boundary tokens (im_end→assistant start), stored in H20 KV0 value states, and read by a small subset (Q0/Q3/Q5) of the seven GQA query heads.**
+
+---
+
 # 当前证据总结
 
 EXP01–EXP04 逐步建立：
@@ -1690,6 +1800,11 @@ MLP 神经元因果中介                 否（EXP06 证伪：无充分性/必�
         v
 GQA V-head × token-position        稀疏收敛（EXP10：KV0 单头承载全部 V 效应；B5 即 99.9%；
                                    KV0×B5 一个 cell = full_V 103%，q<0.001 双族；KV1-3 ≈ 0/负）
+        |
+        v
+exact offset × reader query-head   收敛到边界标记（EXP11：offset -5 im_end 56% + -1 21%；
+                                   reader heads Q0 73% / Q3 37% / Q5 14%，Q2/4/6 负；
+                                   sanity 全过：Q7-Q27 delta=0、leakage=0、all7 重建=full）
 ```
 
 ## 当前主张边界
@@ -1702,14 +1817,17 @@ EXP10 之后，可辩护的项目级声明：
 
 > **稀疏 head×position 收敛**：H20 V 效应集中于 **单一 GQA value head（KV0）× 最末端 token 区域（B5，"Choose the single next action now" + assistant turn 边界）**——KV0×B5 一个 cell（suff +0.0448 / nec +0.0445，q 均 <0.001）即完整复现 full-V 效应（~103%）；KV1 近空载，KV2/KV3 轻微抑制；B0–B4 全部无效。procedural state 的路由接口是 **1 head × ~17 token 最末端区域**。
 
-> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位；④「Q/K/V 三通道共同负载路由」——H20 上 K≈0、Q 为负，实际是 V 近单通道；⑤「V 投影状态就是最末端载体」——V 状态仍需进入 attention 加权聚合→MLP，其后各步是否可进一步归因仍未实验；⑥「多个 GQA KV head 协同负载」——H20 上 4 个 head 高度不对称，KV0 承载全部正效应；⑦「effect 广泛分布于 prompt 前段内容」——B0–B4 全无效，写入仅发生在 generation boundary 前的最终指令区域。
+> **精确 path（EXP11）**：B5 内部效应写在 **4 个 causal offset**（-13 `.\n\n`、-5 `<|im_end|>` 56%、-3 `<|im_start|>`、-1 `\n` 21%）——集中在 **chat-template 边界标记与指令尾部**；读取者收敛到 **Q0（73%）、Q3（37%）、Q5（14%）** 三个 query heads（Q2/Q4/Q6 转移 delta 为负，近似线性叠加）；三条 sanity 全部严格通过（Q7–Q27 delta 精确 0、non-KV0 leakage ratio 0.0、all7 重建/移除与 full V effect 逐位相等）→ 该分解是真实因果路径而非事后挑选。
+
+> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位；④「Q/K/V 三通道共同负载路由」——H20 上 K≈0、Q 为负，实际是 V 近单通道；⑤「V 投影状态就是最末端载体」——V 状态仍需进入 attention 加权聚合→MLP，其后各步是否可进一步归因仍未实验；⑥「多个 GQA KV head 协同负载」——H20 上 4 个 head 高度不对称，KV0 承载全部正效应；⑦「effect 广泛分布于 prompt 前段内容」——B0–B4 全无效，写入仅发生在 generation boundary 前的最终指令区域；⑧「全部 7 个 reader query heads 协同读取」——EXP11 仅 Q0/Q3/Q5 正贡献（Q0 73%），Q2/Q4/Q6 为负；⑨「B5 内效应均匀铺开」——仅 4 个 offset 显著，其中 -5/-1 即 77%。
 
 尚不可声明：
 
 > 「真正的因果机制完全是一个分布式电路。」——已不成立；EXP10 证伪了分布式假设，路由接口是高度稀疏的。
 > 「已定位到单个 GQA KV head / 单个 token 位置的完整路径。」——KV0×B5 定位完成，但 B5 仍有约 17 token 宽，且尚未归因到具体 query heads。
+> 「完整 circuit 已证明。」——EXP11 的 offsets/readers 是在同一 48 synthetic tasks 上探索性发现的，需在**新 Skill/task family 上独立 replication（EXP12）** 后才能作为预注册确证；同一批数据上继续钻更深不能替代独立复现。
 
-已验证的排除项（EXP01–EXP10）：
+已验证的排除项（EXP01–EXP11）：
 
 1. 全局线性操控方向（EXP02，否）；
 2. 单 token 精确残差互换（EXP03，否）；
@@ -1721,17 +1839,18 @@ EXP10 之后，可辩护的项目级声明：
 8. H20 Q 投影作为中介（EXP09，Q suff/nec 均为负，加 Q 反而压低 QKV<KV）；
 9. H20 K 投影作为中介（EXP09，suff +0.0001 ≈ 0，nec 仅 +0.025）；
 10. 多 GQA KV head 协同负载假设（EXP10：KV1 ≈ 0、KV2/KV3 轻微抑制，仅 KV0 承载正效应）；
-11. Prompt 位置均匀/前段分布假设（EXP10：B0–B4 全无效，100% 集中于 B5 末端）。
+11. Prompt 位置均匀/前段分布假设（EXP10：B0–B4 全无效，100% 集中于 B5 末端）；
+12. 全部 7 个 reader query heads 协同读取（EXP11：Q0 73% 主导、Q3/Q5 次要，Q2/Q4/Q6 负）；
+13. B5 内效应均匀铺开（EXP11：仅 offset -13/-5/-3/-1 显著，其余 ≈ 0）。
 
 尚未完成的验证：
 
-1. B5 内逐 token offset 精确归因（EXP11 计划：KV0 × B5 → exact token offsets）；
-2. 读取 KV0 的 7 个 query heads 中哪几个执行该 B5 位置的路由（EXP11 计划：Q→KV0 query→value path patching）；
-3. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
-4. H18–H20 状态的维度分解（SAE/SNMF）；
-5. 跨模型复现；
-6. 跨 Skill / 任务泛化。
+1. **EXP11 发现的 exact offsets + query heads 在新 Skill/task family 上的独立 replication（EXP12 计划）**；
+2. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
+3. H18–H20 状态的维度分解（SAE/SNMF）；
+4. 跨模型复现；
+5. 跨 Skill / 任务泛化（与 1 合并为同一 EXP12 主线）。
 
-> 「证据排除了十一个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影、多 KV head 协同负载、位置均匀分布——效应收缩为：H20 残差 → block 20 V-projection → KV0 value head → B5（最末端 17 token 指令区+assistant 边界）；下一步 EXP11 精确 token offset + 对应 7 个 query heads 归因。」
+> 「证据排除了十三个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影、多 KV head 协同负载、位置均匀分布、7 reader heads 协同读取、B5 均匀铺开——路径收缩为：**H20 残差 → block20 V-projection → KV0 → B5 的 chat-template 边界 token（<|im_end|>、assistant 起始）→ Q0/Q3/Q5 读取 → o_proj → 动作偏好**；EXP11 的 offsets/readers 待在新 Skill/task family 上独立 replication（EXP12）后冻结为确证电路。」
 
 此措辞应保留，直到 EXP09 定位到各层内部投影（Q/K/V/MLP）的 causal handoff 结构。

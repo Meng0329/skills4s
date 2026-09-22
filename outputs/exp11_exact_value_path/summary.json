@@ -1,0 +1,95 @@
+{
+  "experiment": "EXP11_exact_value_path",
+  "phase": "all",
+  "source_hidden_index": 20,
+  "consumer_decoder_block": 20,
+  "kv_head": 0,
+  "reader_query_heads": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "offsets_fdr_positive_in_both": [
+    {
+      "offset": -13,
+      "decoded_token_modal": ".\n\n",
+      "sufficiency_mean": 0.007453920009235541,
+      "sufficiency_q": 0.0003333166674999583,
+      "necessity_mean": 0.006830097486575444,
+      "necessity_q": 0.0003333166674999583
+    },
+    {
+      "offset": -9,
+      "decoded_token_modal": " next",
+      "sufficiency_mean": 0.0009244726970791817,
+      "sufficiency_q": 0.048197590120493974,
+      "necessity_mean": 0.001070813275873661,
+      "necessity_q": 0.002599870006499675
+    },
+    {
+      "offset": -5,
+      "decoded_token_modal": "<|im_end|>",
+      "sufficiency_mean": 0.02521269799520572,
+      "sufficiency_q": 0.0003333166674999583,
+      "necessity_mean": 0.02629812837888797,
+      "necessity_q": 0.0003333166674999583
+    },
+    {
+      "offset": -3,
+      "decoded_token_modal": "<|im_start|>",
+      "sufficiency_mean": 0.0015615175167719524,
+      "sufficiency_q": 0.010749462526873657,
+      "necessity_mean": 0.0014583201458056767,
+      "necessity_q": 0.0007499625018749063
+    },
+    {
+      "offset": -1,
+      "decoded_token_modal": "\n",
+      "sufficiency_mean": 0.009498288234074911,
+      "sufficiency_q": 0.0003333166674999583,
+      "necessity_mean": 0.009595977142453194,
+      "necessity_q": 0.0003333166674999583
+    }
+  ],
+  "full_KV0_B5_sufficiency_mean": 0.04478038288652897,
+  "reader_heads_fdr_positive_in_both": [
+    {
+      "query_head": 0,
+      "sufficiency_mean": 0.032602621552844845,
+      "sufficiency_q": 6.999650017499125e-05,
+      "necessity_mean": 0.031873300671577454,
+      "necessity_q": 5.833041681249271e-05
+    },
+    {
+      "query_head": 1,
+      "sufficiency_mean": 0.0011043092235922813,
+      "sufficiency_q": 0.005399730013499325,
+      "necessity_mean": 0.0018748131891091664,
+      "necessity_q": 9.99950002499875e-05
+    },
+    {
+      "query_head": 3,
+      "sufficiency_mean": 0.016667614070077736,
+      "sufficiency_q": 6.999650017499125e-05,
+      "necessity_mean": 0.016736069073279698,
+      "necessity_q": 5.833041681249271e-05
+    },
+    {
+      "query_head": 5,
+      "sufficiency_mean": 0.006166810169816017,
+      "sufficiency_q": 6.999650017499125e-05,
+      "necessity_mean": 0.005997032858431339,
+      "necessity_q": 5.833041681249271e-05
+    }
+  ],
+  "verified_KV0_B5_effect_mean": 0.04478038288652897,
+  "mean_non_KV0_reader_delta_ratio": 0.0,
+  "all7_reconstruction_sufficiency_mean": 0.04478038288652897,
+  "all7_removal_necessity_mean": 0.04478038288652897,
+  "Q7_Q27_control_sufficiency_mean": 0.0,
+  "Q7_Q27_control_necessity_mean": 0.0
+}
