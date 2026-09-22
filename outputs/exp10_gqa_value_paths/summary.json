@@ -1,0 +1,195 @@
+{
+  "experiment": "EXP10_gqa_value_paths",
+  "H20_residual_reference_mean": 0.04879554764678081,
+  "H20_residual_reference_95ci": [
+    0.04398995983259132,
+    0.05370282501292725
+  ],
+  "full_V_sufficiency_mean": 0.04344554773221413,
+  "full_V_sufficiency_95ci": [
+    0.0405977656521524,
+    0.046416125485363106
+  ],
+  "full_V_necessity_mean": 0.043759024081130825,
+  "full_V_necessity_95ci": [
+    0.04058674853295088,
+    0.04709085026600709
+  ],
+  "full_V_self_control_mean": 4.31950514515241e-05,
+  "full_V_same_state_cross_wording_mean": -0.001221750242014726,
+  "full_V_opposite_cross_wording_sufficiency_mean": 0.04393698119868835,
+  "full_V_opposite_cross_wording_necessity_mean": 0.04169276791314284,
+  "best_direct_sufficiency_head_exploratory": 0,
+  "best_direct_sufficiency_mean": 0.04705274570733309,
+  "best_direct_necessity_head_exploratory": 0,
+  "best_direct_necessity_mean": 0.04721143438170353,
+  "best_position_bin_sufficiency_exploratory": 5,
+  "best_position_bin_sufficiency_mean": 0.04341473523527384,
+  "best_position_bin_necessity_exploratory": 5,
+  "best_position_bin_necessity_mean": 0.04249897909661134,
+  "head_position_cells_fdr_lt_0_05_in_both": [
+    {
+      "head": 0,
+      "bin_index": 4,
+      "sufficiency_mean": 0.0012240859990318616,
+      "sufficiency_q": 0.048397580120993954,
+      "necessity_mean": 0.0017983174572388332,
+      "necessity_q": 0.000599970001499925
+    },
+    {
+      "head": 0,
+      "bin_index": 5,
+      "sufficiency_mean": 0.04478038288652897,
+      "sufficiency_q": 0.000599970001499925,
+      "necessity_mean": 0.044482024386525154,
+      "necessity_q": 0.000599970001499925
+    },
+    {
+      "head": 3,
+      "bin_index": 3,
+      "sufficiency_mean": -0.0011390428990125656,
+      "sufficiency_q": 0.04391780410979451,
+      "necessity_mean": -0.001061937150855859,
+      "necessity_q": 0.020998950052497377
+    },
+    {
+      "head": 3,
+      "bin_index": 5,
+      "sufficiency_mean": -0.0016053523868322372,
+      "sufficiency_q": 0.000599970001499925,
+      "necessity_mean": -0.0013675686592857044,
+      "necessity_q": 0.020998950052497377
+    }
+  ],
+  "head_profile": [
+    {
+      "head": 0,
+      "direct_sufficiency_mean": 0.04705274570733309,
+      "direct_sufficiency_ci_low": 0.044132871693000196,
+      "direct_sufficiency_ci_high": 0.05009574002275864,
+      "direct_necessity_mean": 0.04721143438170353,
+      "direct_necessity_ci_low": 0.04426290527917445,
+      "direct_necessity_ci_high": 0.050299172778613864,
+      "leave_one_out_marginal_sufficiency_mean": 0.04823351837694645,
+      "leave_one_out_marginal_sufficiency_ci_low": 0.045186868077144025,
+      "leave_one_out_marginal_sufficiency_ci_high": 0.05148320112687846,
+      "leave_one_out_marginal_necessity_mean": 0.047278569700817265,
+      "leave_one_out_marginal_necessity_ci_low": 0.04423520617031803,
+      "leave_one_out_marginal_necessity_ci_high": 0.050501733886388435
+    },
+    {
+      "head": 1,
+      "direct_sufficiency_mean": -0.0003604423254728317,
+      "direct_sufficiency_ci_low": -0.0009810287815829118,
+      "direct_sufficiency_ci_high": 0.00026232643673817255,
+      "direct_necessity_mean": 3.8290085891882576e-05,
+      "direct_necessity_ci_low": -0.0006478921277448535,
+      "direct_necessity_ci_high": 0.0007047450169920919,
+      "leave_one_out_marginal_sufficiency_mean": 8.086021989583969e-05,
+      "leave_one_out_marginal_sufficiency_ci_low": -0.00042185271934916575,
+      "leave_one_out_marginal_sufficiency_ci_high": 0.0005693447388087709,
+      "leave_one_out_marginal_necessity_mean": 0.00017506939669450125,
+      "leave_one_out_marginal_necessity_ci_low": -0.0006098829908296466,
+      "leave_one_out_marginal_necessity_ci_high": 0.0009255278312290694
+    },
+    {
+      "head": 2,
+      "direct_sufficiency_mean": -0.0012918437520662944,
+      "direct_sufficiency_ci_low": -0.001999715785495937,
+      "direct_sufficiency_ci_high": -0.000575595403400561,
+      "direct_necessity_mean": -0.0008520179738601049,
+      "direct_necessity_ci_low": -0.00144591488254567,
+      "direct_necessity_ci_high": -0.0003069414058700204,
+      "leave_one_out_marginal_sufficiency_mean": -0.0004892066741983095,
+      "leave_one_out_marginal_sufficiency_ci_low": -0.001168649806641042,
+      "leave_one_out_marginal_sufficiency_ci_high": 0.00020531069021671917,
+      "leave_one_out_marginal_necessity_mean": -0.0008433377370238304,
+      "leave_one_out_marginal_necessity_ci_low": -0.0014529288513585924,
+      "leave_one_out_marginal_necessity_ci_high": -0.00021018157713115261
+    },
+    {
+      "head": 3,
+      "direct_sufficiency_mean": -0.003971696520845096,
+      "direct_sufficiency_ci_low": -0.004877781084117789,
+      "direct_sufficiency_ci_high": -0.003068422138070068,
+      "direct_necessity_mean": -0.0028554374972979226,
+      "direct_necessity_ci_low": -0.003729134619546433,
+      "direct_necessity_ci_high": -0.0019787586914996333,
+      "leave_one_out_marginal_sufficiency_mean": -0.0033282053967316947,
+      "leave_one_out_marginal_sufficiency_ci_low": -0.004108756819429497,
+      "leave_one_out_marginal_sufficiency_ci_high": -0.002597771251263718,
+      "leave_one_out_marginal_necessity_mean": -0.002576087601482868,
+      "leave_one_out_marginal_necessity_ci_low": -0.0033095606680338583,
+      "leave_one_out_marginal_necessity_ci_high": -0.0018138586465890208
+    }
+  ],
+  "position_profile": [
+    {
+      "bin_index": 0,
+      "sufficiency_mean": -0.001697109080851078,
+      "sufficiency_ci_low": -0.0025116455586006244,
+      "sufficiency_ci_high": -0.0009179675641159218,
+      "necessity_mean": -0.0007237369815508524,
+      "necessity_ci_low": -0.0015192676180352767,
+      "necessity_ci_high": 4.676022411634507e-05,
+      "sufficiency_fraction_of_full": -0.03906289986977655,
+      "necessity_fraction_of_full": -0.016539148135685515
+    },
+    {
+      "bin_index": 1,
+      "sufficiency_mean": -0.00107196190704902,
+      "sufficiency_ci_low": -0.0018361326151837905,
+      "sufficiency_ci_high": -0.00030583637611319726,
+      "necessity_mean": -0.00014345968763033548,
+      "necessity_ci_low": -0.0008964429919918379,
+      "necessity_ci_high": 0.0006160574189076812,
+      "sufficiency_fraction_of_full": -0.024673688398550876,
+      "necessity_fraction_of_full": -0.0032784023556913884
+    },
+    {
+      "bin_index": 2,
+      "sufficiency_mean": 7.219674686590831e-05,
+      "sufficiency_ci_low": -0.000637862435542047,
+      "sufficiency_ci_high": 0.0007543809013441204,
+      "necessity_mean": 0.00021370562414328256,
+      "necessity_ci_low": -0.0004235489371543129,
+      "necessity_ci_high": 0.0008182505456109838,
+      "sufficiency_fraction_of_full": 0.0016617755013910356,
+      "necessity_fraction_of_full": 0.004883692646962705
+    },
+    {
+      "bin_index": 3,
+      "sufficiency_mean": -0.0002513912816842397,
+      "sufficiency_ci_low": -0.0009604436267788212,
+      "sufficiency_ci_high": 0.0004560045277078946,
+      "necessity_mean": -0.00023372812817494074,
+      "necessity_ci_low": -0.0009189500783880551,
+      "necessity_ci_high": 0.00044660034279028575,
+      "sufficiency_fraction_of_full": -0.005786353143335729,
+      "necessity_fraction_of_full": -0.005341255502901533
+    },
+    {
+      "bin_index": 4,
+      "sufficiency_mean": 0.0010855070625742276,
+      "sufficiency_ci_low": 0.0002891467728962501,
+      "sufficiency_ci_high": 0.0018728939893965903,
+      "necessity_mean": 0.001206646052499612,
+      "necessity_ci_low": 0.0003859933000057936,
+      "necessity_ci_high": 0.00208625072458138,
+      "sufficiency_fraction_of_full": 0.02498546155442627,
+      "necessity_fraction_of_full": 0.02757479349316489
+    },
+    {
+      "bin_index": 5,
+      "sufficiency_mean": 0.04341473523527384,
+      "sufficiency_ci_low": 0.04069865365357449,
+      "sufficiency_ci_high": 0.04612610162391017,
+      "necessity_mean": 0.04249897909661134,
+      "necessity_ci_low": 0.03966216099603723,
+      "necessity_ci_high": 0.04545941600420823,
+      "sufficiency_fraction_of_full": 0.9992907789509247,
+      "necessity_fraction_of_full": 0.971204911193099
+    }
+  ],
+  "decision_rule": "Head or position concentration requires causal sufficiency and necessity. The 24 head×position cells are exploratory and must satisfy BH-FDR in both effect families before being prioritized for independent replication."
+}

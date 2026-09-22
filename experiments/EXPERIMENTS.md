@@ -27,6 +27,7 @@
 | EXP07 | H21–H28 注意力头输出是否因果中介？ | 完成，NEGATIVE/部分正 | AllAttention suff/nec −0.015/−0.016（负）；Top16 suff≈0，nec +0.0018（弱正）；K≥32 负；**注意力头输出不构成可移植的充分性中介** | `0281b2f` |
 | EXP08 | H15–H20 内部哪里是 causal handoff？ | 完成，紧凑多层核心 | H20=+0.049（62% full）、H15:H19=+0.052（66%）；full−H20=+0.030、full−H15:H19=+0.027（均显著）；**H18–H20 即 97% 全效应，H15–H17 可移除**；既非 H20 单层 handoff 亦非全宽均匀累积 | `186b370` |
 | EXP09 | H18–H20 残差经 Q/K/V 投影状态传递？ | 完成，POSITIVE | H20 KV suff=+0.046（94%）/nec=+0.044（91%）；**V 单通道即 89%**，K≈0、Q 为负；chain_KV=+0.066（full 的 84%）；**KV>Q 确认**（+0.051/+0.050）但机制为 V 主导 | `62eb9a9` |
+| EXP10 | GQA V-head × token 位置定位？ | 完成，稀疏收敛 | **KV0 单头承载全部 V 效应**（direct +0.047 ≈ full +0.043）；**B5（最末端指令区）即 99.9% full**；KV0×B5 单 cell（suff +0.0448, q=0.0006 / nec +0.0445, q=0.0006）≈ full_V 的 103%；KV1≈0、KV2/3 微负；B0–B4 无效 | 待 commit |
 
 ---
 
@@ -1502,6 +1503,141 @@ null / negative                →  拒绝便携 QKV 中介，转归一化/残�
 
 ---
 
+# EXP10 — GQA Value-Head × Token-Position Causal Localization（GQA V-head × token 位置因果定位）
+
+## 状态
+已完成 — **单一 KV head（KV0）× 最靠近 generation boundary 的 bin（B5）** 承载全部 V 效应：KV0×B5 suff +0.0448（q=0.0006）/ nec +0.0445（q=0.0006），即 full_V 的 ~103%。
+
+## 日期
+2026-09-22
+
+## 提交
+待 commit
+
+## 科学动机
+
+EXP09 把 H20 V/KV 投影状态确认为第一个同时满足强充分性（94%）与强必要性（91%）的便携下游接口，且 V 单通道即承载 89%。下一刀：**这个 V-routing 接口到底落在 4 个 GQA KV head 中的哪几个、以及对齐 prompt 的哪些 token 位置**。Qwen2.5-Coder-7B-Instruct 官方配置 28 query heads / 4 KV heads，`repeat_kv` 将 4 个 KV head 扩展给 28 个 query heads（每 KV head 对应 7 个 query heads）——因此 KV-head 级定位是架构上明确的下一步。
+
+## 研究问题
+
+1. 4 个 GQA value heads 中，H20 V 效应由谁承载？（direct suff/nec + leave-one-out marginal）
+2. exact common suffix 内，效应写在哪些 token 位置？（6 个归一化连续 bin B0–B5）
+3. 4 heads × 6 bins = 24 cells 的交互矩阵中，是否有 cell 同时满足 suff 与 nec 的 FDR 显著性？
+
+## 范围边界（用户修正）
+
+位置定位仅限于 **exact common suffix**——donor/recipient 在 Skill 措辞/顺序文本已经发生差异之后、重新变得 token-identical 的共享下游上下文。因此 EXP10 定位的是 **Skill-induced procedural state 被写入共享 downstream context 的什么位置**，而不是 Skill tokens 本身。
+
+## 设计
+
+- 与 EXP04–EXP09 完全一致：same task / same wording / opposite state donor / exact common suffix 对齐；48 任务，任务级 paired bootstrap 95% CI（seed 5010）。
+- 干预位点：block 20 `v_proj` 输出（pre-RoPE），reshape 为 `[batch, seq, 4 KV heads, 128]`，按 head × token 位置编辑。
+- Part A（KV-head 定位）：`head{h}_sufficiency` / `head{h}_necessity_loss`（h=0..3）+ `all_except_head{h}_suff/nec` → direct 与 leave-one-out marginal 效应。
+- Part B（位置定位）：`suffix_bins()` 用 `np.array_split` 将每个 common suffix 切成 6 个连续归一化区域 B0（最早）…B5（最靠近 generation boundary）；全 4 heads 只 patch 一个 bin → `bin{b}_allheads_suff/nec`。
+- Part C（交互矩阵）：24 cells 全标记 **exploratory**，各做 suff + nec；对 suff 与 nec **分别**做 task-level sign-flip test + **Benjamini-Hochberg FDR**；仅当同一 cell 的 suff q<0.05 **且** nec q<0.05 才进入下一轮独立 replication。
+- 控制：full-V self / same-state cross-wording / opposite-state cross-wording；另复现 H20 residual reference。
+- Token audit：`token_position_map.csv` 记录 task/wording/suffix_index/offset_from_generation_boundary/bin_index/token_id/decoded_token。
+
+## 主要结果（48 个任务）
+
+### 复现核验（先看）
+
+| 指标 | mean | 95% CI | 与 EXP09 一致性 |
+|---|---:|---:|---|
+| `H20_residual_reference` | **+0.0488** | [0.0440, 0.0537] | = EXP08/EXP09 逐位一致 ✓ |
+| `full_V_sufficiency` | **+0.0434** | [0.0406, 0.0464] | = EXP09 V suff 0.0434 逐位一致 ✓ |
+| `full_V_necessity` | **+0.0438** | [0.0406, 0.0471] | = EXP09 V nec 0.0438 逐位一致 ✓ |
+
+控制：self +0.00004；same-state cross-wording −0.0012；opposite cross-wording suff +0.0439 / nec +0.0417（同号正）。全部通过。
+
+### Part A — KV-head profile（决定性）
+
+| head | direct suff | direct nec | leave-one-out marginal suff | marginal nec |
+|---|---:|---:|---:|---:|
+| **KV0** | **+0.0471** [0.0441, 0.0501] | **+0.0472** [0.0443, 0.0503] | **+0.0482** | **+0.0473** |
+| KV1 | −0.0004 [−0.0010, +0.0003] | +0.00004 [−0.0006, +0.0007] | +0.0001 | +0.0002 |
+| KV2 | −0.0013 [−0.0020, −0.0006] | −0.0009 [−0.0014, −0.0003] | −0.0005 | −0.0008 |
+| KV3 | −0.0040 [−0.0049, −0.0031] | −0.0029 [−0.0037, −0.0020] | −0.0033 | −0.0026 |
+
+- **KV0 单头即承载全部 V 效应**：direct suff +0.0471 甚至略高于 full_V +0.0434（其余头拖累）；leave-one-out marginal +0.0482 ≈ full_V + 0.005。
+- KV1 ≈ 0；**KV2/KV3 为负**（移除它们反而增强，轻微抑制性）。
+
+### Part B — position profile（决定性）
+
+| bin | suff mean | nec mean | suff fraction of full | nec fraction of full |
+|---|---:|---:|---:|---:|
+| B0（最早） | −0.0017 | −0.0007 | −0.039 | −0.017 |
+| B1 | −0.0011 | −0.0001 | −0.025 | −0.003 |
+| B2 | +0.0001 | +0.0002 | +0.002 | +0.005 |
+| B3 | −0.0003 | −0.0002 | −0.006 | −0.005 |
+| B4 | +0.0011 | +0.0012 | +0.025 | +0.028 |
+| **B5（最靠近 generation）** | **+0.0434** | **+0.0425** | **0.999** | **0.971** |
+
+- **B5 单独即 full_V 的 99.9%（suff）/ 97.1%（nec）**；B0–B4 全部 ≈ 0 或微负。
+
+### Part C — head × position 矩阵（24 cells，全部 exploratory）
+
+两族 FDR 后同时 q<0.05 的 cell（`head_position_cells_fdr_lt_0_05_in_both`）：
+
+```text
+            B0   B1   B2   B3   B4   B5
+KV0         .    .    .    .    +    ++      ← KV0×B5: suff +0.0448 (q=0.0006) / nec +0.0445 (q=0.0006)
+KV1         .    .    .    .    .    .
+KV2         .    .    .    .    .    .
+KV3         .    .    .    -    .    -
+```
+
+- **唯一正效应 cell：KV0×B5**（suff +0.0448 / nec +0.0445，q 均 0.0006）——即 full_V 的 ~103%，**单一 GQA value head × 单一最末端位置 bin**；
+- KV0×B4 小正（+0.0012/+0.0018，q 临界）但量级微不足道（full 的 2.5%）；
+- KV3×B3 / KV3×B5 为小负显著（−0.0011/−0.0016）——量级微小，且与 KV3 的抑制性一致；
+- 其余 20 cells 均不显著。
+
+### Token 语义（B5 对回文本）
+
+B5（~17 token，offset −17..−1）固定包含：
+
+```text
+...icts the expected behavior.\n\n Choose the single next action now.\n
+<|im_end|>\n <|im_start|>assistant\n
+```
+
+即 **「Choose the single next action now.」最终指令句 + chat template 的 assistant turn 开始边界**——Skill 决定的状态被写入**紧邻 generation boundary 的最终指令上下文**，而不是技能叙述/代码片段（B0–B4 均无效）。
+
+## 数据质量核验
+
+- H20 residual / full_V suff / full_V nec 三项与 EXP09 **逐位一致**（float32）→ 干预管线零漂移；
+- 48 任务 × 4 条目全量记录；exit 0 一次通过；seed 5010；
+- sign-flip p 使用 20000 置换分块计算，BH 仅在 exploratory head×position family 内、suff/nec 分别校正。
+
+## 解释结果 — 稀疏 head×position 收敛：KV0 × B5 为唯一因果 cell
+
+> **H20 V 效应 = KV0 value head 在 B5（最末端 final-instruction/assistant-boundary 区域）写入的内容状态。** KV0×B5 一个 cell（suff +0.0448 ≈ full_V 103%）即完整复现 full-V 效应；KV1 中性、KV2/KV3 轻微抑制；B0–B4 全部无效。这是本链条上第一次把 causal 载体收缩到 **单一 GQA value head × 单一 token 区域**。
+
+- 与 GQA 结构吻合：4 个 KV head 中 1 个承担全部内容路由，其余 3 个近乎空载/微抑制——**head 高度不对称**；
+- 位置高度不对称：**全部写在共享上下文最末端**（final instruction + assistant 起始），早期技能叙述/代码文本（B0–B4）不承载可移植效应；
+- 保守性：24 cells 全 exploratory + 双族 FDR，仅 KV0×B5 是量级可观的正 cell；KV0×B4、KV3×B3/B5 虽 q<0.05 但量级 <2.5% full，不进入优先 replication。
+
+## 对证据链的影响
+
+- 证据链收束为：**Skill → H18–H20 核心 → H20 V-projection → KV0 value head → B5 末端上下文**；
+- 与 ACL 2026 *Patches of Nonlinearity* 对照进一步精确：不是"某层某头是通用 instruction vector"，而是 **KV0 在 generation-boundary 前把程序条件状态写入最终指令区**；
+- "稀疏电路"从 6 层核心收窄到 **1 head × 1 区域**，为 EXP11 的精确 token-offset 与 query-head 归因提供了明确锚点。
+
+## 下一步（决策触发）
+
+按预注册决策树：
+
+```text
+稀疏 head × 稀疏位置（少数 cell）  ✓（KV0 × B5）
+均匀分布                          ✗（KV1-3 ≈ 0/负，B0-B4 ≈ 0）
+```
+
+进入 **EXP11**（不再大范围扫描）：
+
+> **causal KV head（KV0）× causal coarse bin（B5）→ exact token-offset 定位 → 对应 7 个 query heads → query→value path patching。** B5 内逐 token offset 扫描 KV0 的 suff/nec，随后定位读取 KV0 的 7 个 query heads（GQA: 4 KV heads × 7 query heads/组）中哪几个在 B5 位置读出该状态。
+
+---
+
 # 当前证据总结
 
 EXP01–EXP04 逐步建立：
@@ -1550,23 +1686,30 @@ MLP 神经元因果中介                 否（EXP06 证伪：无充分性/必�
         v
 残差 → Q/K/V 消费接口             是（EXP09：H20 KV suff 94%/nec 91%；V 单通道即 89%，
                                    K≈0、Q 负；chain_KV 恢复 full 的 84%；KV>Q 确认但为 V 主导）
+        |
+        v
+GQA V-head × token-position        稀疏收敛（EXP10：KV0 单头承载全部 V 效应；B5 即 99.9%；
+                                   KV0×B5 一个 cell = full_V 103%，q<0.001 双族；KV1-3 ≈ 0/负）
 ```
 
 ## 当前主张边界
 
-EXP09 之后，可辩护的项目级声明：
+EXP10 之后，可辩护的项目级声明：
 
 > **可恢复的干预位点**：早期窗口内行为效应的因果载体集中在 **H18–H20 三层**（full_H15_H20 = +0.0784；suffix_H18_H20 = +0.0760，即 97% 全效应；H20 单层 +0.0488 为最强单层，但仅 62%，far from sufficient；H15–H17 可移除）。该恢复不需要干预 H21–H28，即可因果转移技能条件化动作偏好。下游两条通路（MLP 中间神经元 EXP06、注意力头输出 EXP07）均已被独立证伪为可移植中介，其 recovery 不对称是伴随表现。
 
 > **消费接口**：H20 残差效应主要通过 block 20 的 **V（KV）投影状态**传递——suff +0.0460（94% 残差）/ nec +0.0443（91%），CI 均排除 0；V 单通道即 89%，K≈0，Q 为负；三层 chain（H18+H19+H20 的 KV/QKV 同时移植）恢复 full 的 82–84%。预注册 KV > Q 假设确认（配对差 +0.051/+0.050 均显著正），但机制细节是 **V 单通道主导**而非 K+V 组合。
 
-> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位；④「Q/K/V 三通道共同负载路由」——H20 上 K≈0、Q 为负，实际是 V 近单通道；⑤「V 投影状态就是最末端载体」——V 状态仍需进入 attention 加权聚合→MLP，其后各步是否可进一步归因仍未实验。
+> **稀疏 head×position 收敛**：H20 V 效应集中于 **单一 GQA value head（KV0）× 最末端 token 区域（B5，"Choose the single next action now" + assistant turn 边界）**——KV0×B5 一个 cell（suff +0.0448 / nec +0.0445，q 均 <0.001）即完整复现 full-V 效应（~103%）；KV1 近空载，KV2/KV3 轻微抑制；B0–B4 全部无效。procedural state 的路由接口是 **1 head × ~17 token 最末端区域**。
+
+> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位；④「Q/K/V 三通道共同负载路由」——H20 上 K≈0、Q 为负，实际是 V 近单通道；⑤「V 投影状态就是最末端载体」——V 状态仍需进入 attention 加权聚合→MLP，其后各步是否可进一步归因仍未实验；⑥「多个 GQA KV head 协同负载」——H20 上 4 个 head 高度不对称，KV0 承载全部正效应；⑦「effect 广泛分布于 prompt 前段内容」——B0–B4 全无效，写入仅发生在 generation boundary 前的最终指令区域。
 
 尚不可声明：
 
-> 「真正的因果机制完全是一个分布式电路。」或「行为转移经由某个特定的下游神经元/通路组件承载。」或「H18–H20 各层贡献可线性叠加。」或「已定位到单个 GQA KV head / 单个 token 位置的完整路径。」
+> 「真正的因果机制完全是一个分布式电路。」——已不成立；EXP10 证伪了分布式假设，路由接口是高度稀疏的。
+> 「已定位到单个 GQA KV head / 单个 token 位置的完整路径。」——KV0×B5 定位完成，但 B5 仍有约 17 token 宽，且尚未归因到具体 query heads。
 
-已验证的排除项（EXP01–EXP09）：
+已验证的排除项（EXP01–EXP10）：
 
 1. 全局线性操控方向（EXP02，否）；
 2. 单 token 精确残差互换（EXP03，否）；
@@ -1576,16 +1719,19 @@ EXP09 之后，可辩护的项目级声明：
 6. H20 单层作为独立 handoff state（EXP08，仅 62% full，full−H20 显著正）；
 7. H15–H17 对早期窗口的必要性（EXP08，单层为负/≈0，H16–H20 与 full 不可区分）；
 8. H20 Q 投影作为中介（EXP09，Q suff/nec 均为负，加 Q 反而压低 QKV<KV）；
-9. H20 K 投影作为中介（EXP09，suff +0.0001 ≈ 0，nec 仅 +0.025）。
+9. H20 K 投影作为中介（EXP09，suff +0.0001 ≈ 0，nec 仅 +0.025）；
+10. 多 GQA KV head 协同负载假设（EXP10：KV1 ≈ 0、KV2/KV3 轻微抑制，仅 KV0 承载正效应）；
+11. Prompt 位置均匀/前段分布假设（EXP10：B0–B4 全无效，100% 集中于 B5 末端）。
 
 尚未完成的验证：
 
-1. H18–H20 内部 4 个 GQA KV-head、token 位置的局部化（EXP10 计划）；
-2. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
-3. H18–H20 状态的维度分解（SAE/SNMF）；
-4. 跨模型复现；
-5. 跨 Skill / 任务泛化。
+1. B5 内逐 token offset 精确归因（EXP11 计划：KV0 × B5 → exact token offsets）；
+2. 读取 KV0 的 7 个 query heads 中哪几个执行该 B5 位置的路由（EXP11 计划：Q→KV0 query→value path patching）；
+3. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
+4. H18–H20 状态的维度分解（SAE/SNMF）；
+5. 跨模型复现；
+6. 跨 Skill / 任务泛化。
 
-> 「证据排除了九个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影——效应集中在 H18–H20 三层（H20 单层最强但仅 62%），且 H20 残差效应绝大部分经 block 20 的 V（KV）投影状态传递（suff 94%/nec 91%，chain 恢复 full 的 84%）；两条主要下游通路（MLP / attention）均已独立证伪为可移植中介；下一步按决策树进入 EXP10 GQA KV-head × token-position 路径定位。」
+> 「证据排除了十一个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影、多 KV head 协同负载、位置均匀分布——效应收缩为：H20 残差 → block 20 V-projection → KV0 value head → B5（最末端 17 token 指令区+assistant 边界）；下一步 EXP11 精确 token offset + 对应 7 个 query heads 归因。」
 
 此措辞应保留，直到 EXP09 定位到各层内部投影（Q/K/V/MLP）的 causal handoff 结构。
