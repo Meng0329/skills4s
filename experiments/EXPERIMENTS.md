@@ -29,7 +29,7 @@
 | EXP09 | H18–H20 残差经 Q/K/V 投影状态传递？ | 完成，POSITIVE | H20 KV suff=+0.046（94%）/nec=+0.044（91%）；**V 单通道即 89%**，K≈0、Q 为负；chain_KV=+0.066（full 的 84%）；**KV>Q 确认**（+0.051/+0.050）但机制为 V 主导 | `62eb9a9` |
 | EXP10 | GQA V-head × token 位置定位？ | 完成，稀疏收敛 | **KV0 单头承载全部 V 效应**（direct +0.047 ≈ full +0.043）；**B5（最末端指令区）即 99.9% full**；KV0×B5 单 cell（suff +0.0448, q=0.0006 / nec +0.0445, q=0.0006）≈ full_V 的 103%；KV1≈0、KV2/3 微负；B0–B4 无效 | `a3ed568` |
 | EXP11 | B5 内精确 offset + KV0 reader heads？ | 完成，收敛到边界标记 | **offset -5（`<|im_end|>`）即 56% full、-1（assistant 起始）21%**；reader heads **Q0 73% / Q3 37% / Q5 14%**（Q2/4/6 负）；sanity 全过（Q7–Q27 delta=0、leakage ratio=0、all7 重建=full 逐位）；**1 KV head × 2 边界 token × 3 query heads** | `6b48aee` |
-| EXP12 | 冻结电路在新 family 独立复制？ | 完成，分层（confirmatory=FALSE） | **reader register 复制成功**：frozen readers {Q0,Q3,Q5} 4/4 新 family 显著正（suff +0.076/nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、contrast +0.16/+0.17、措辞稳定；**positional 编码未复制**：frozen offsets V suff −0.013（方向反）、内容 token 负对照反而为正、cross-wording 负、措辞间翻转；3 硬 sanity 全 bit-exact；specificity：skill−direct 全 5 指标×4 family 显著正（procedural specificity） | `待 commit` |
+| EXP12 | 冻结电路在新 family 独立复制？ | 完成，分层（confirmatory=FALSE） | **reader register 复制成功**：frozen readers {Q0,Q3,Q5} 4/4 新 family 显著正（suff +0.076/nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、contrast +0.16/+0.17、措辞稳定；**positional 编码未复制**：frozen offsets V suff −0.013（方向反）、内容 token 负对照反而为正、cross-wording 负、措辞间翻转；3 硬 sanity 全 bit-exact；specificity：skill−direct 全 5 指标×4 family 显著正（procedural specificity） | `0d5d6c8` |
 
 ---
 
@@ -1758,7 +1758,7 @@ EXP11 已把路径收敛到很小规模。按预注册：
 2026-09-22
 
 ## 提交
-`待 commit`
+`0d5d6c8`
 
 ## 科学动机
 
