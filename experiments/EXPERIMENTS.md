@@ -29,6 +29,7 @@
 | EXP09 | H18–H20 残差经 Q/K/V 投影状态传递？ | 完成，POSITIVE | H20 KV suff=+0.046（94%）/nec=+0.044（91%）；**V 单通道即 89%**，K≈0、Q 为负；chain_KV=+0.066（full 的 84%）；**KV>Q 确认**（+0.051/+0.050）但机制为 V 主导 | `62eb9a9` |
 | EXP10 | GQA V-head × token 位置定位？ | 完成，稀疏收敛 | **KV0 单头承载全部 V 效应**（direct +0.047 ≈ full +0.043）；**B5（最末端指令区）即 99.9% full**；KV0×B5 单 cell（suff +0.0448, q=0.0006 / nec +0.0445, q=0.0006）≈ full_V 的 103%；KV1≈0、KV2/3 微负；B0–B4 无效 | `a3ed568` |
 | EXP11 | B5 内精确 offset + KV0 reader heads？ | 完成，收敛到边界标记 | **offset -5（`<|im_end|>`）即 56% full、-1（assistant 起始）21%**；reader heads **Q0 73% / Q3 37% / Q5 14%**（Q2/4/6 负）；sanity 全过（Q7–Q27 delta=0、leakage ratio=0、all7 重建=full 逐位）；**1 KV head × 2 边界 token × 3 query heads** | `6b48aee` |
+| EXP12 | 冻结电路在新 family 独立复制？ | 完成，分层（confirmatory=FALSE） | **reader register 复制成功**：frozen readers {Q0,Q3,Q5} 4/4 新 family 显著正（suff +0.076/nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、contrast +0.16/+0.17、措辞稳定；**positional 编码未复制**：frozen offsets V suff −0.013（方向反）、内容 token 负对照反而为正、cross-wording 负、措辞间翻转；3 硬 sanity 全 bit-exact；specificity：skill−direct 全 5 指标×4 family 显著正（procedural specificity） | `待 commit` |
 
 ---
 
@@ -1748,6 +1749,137 @@ EXP11 已把路径收敛到很小规模。按预注册：
 
 ---
 
+# EXP12 — Frozen-Circuit Independent Replication（冻结电路的独立复制）
+
+## 状态
+已完成 — **confirmatory_replication_pass = FALSE（分层结果）**。冻结 **reader register 层独立复制成功**：frozen readers {Q0,Q3,Q5} 在全部 4 个新 family 显著为正（suff +0.076 / nec +0.062），negative readers {Q2,Q4,Q6} 显著为负，frozen−negative reader contrast +0.16/+0.17，且措辞稳定；但冻结 **positional 编码层未复制**：frozen offsets {-13,-5,-3,-1} 的 V suff/nec 均显著为负（-0.013/-0.015，方向反转），内容 token 负对照 {-12,-10,-8,-6} 反而为正（+0.011/+0.012），frozen−negative offset contrast 显著为负，cross-wording V 亦为负。三条硬 sanity 全部 bit-exact 通过。specificity falsification：冻结路径在 procedural Skill 下显著强于 direct action instruction（skill−direct 全部 5 指标 × 4 family 显著为正）→ 支持 procedural specificity。
+
+## 日期
+2026-09-22
+
+## 提交
+`待 commit`
+
+## 科学动机
+
+EXP11 在**同一批 48 synthetic tasks** 上发现「1 KV head × 4 边界 offset（-13/-5/-3/-1）× 3 reader heads（Q0/Q3/Q5）」。按 EXP11 预注册，EXP12 **不做任何 circuit discovery**：把 EXP11 的发现完全冻结为预注册目标，在**全新任务/全新 Skill family/全新 action 词表**上做独立复制，检验这一稀疏路径是否任务一般（task-general），并加一个对论文至关重要的 falsification——procedural Skill vs direct action instruction。
+
+## 设计
+
+- **冻结电路**：H20 → block20 V → KV0 → offsets {-13,-5,-3,-1} → readers {Q0,Q3,Q5} → action preference。无发现性扫描。
+- **独立数据**：64 个全新任务 = 4 个新 Skill family（test_edit / search_edit / config_command / docs_code）× 16；action 词表全部更换（run_tests / open_file / search_code / inspect_config / run_command / search_docs 等）；SKILL_TEXT 4 family × 2 label × 2 wording（canonical / paraphrase）。
+- **预注册双负对照**（事后不可改）：Frozen offsets {-13,-5,-3,-1}（边界结构 token）vs Negative offsets {-12,-10,-8,-6}（普通内容 token）；Frozen readers {Q0,Q3,Q5} vs Negative readers {Q2,Q4,Q6}。
+- **confirmatory 判定**（全部 10 项需同时成立，全 task-level paired bootstrap 95% CI）：4 endpoints（frozen V suff>0、frozen V nec>0、target reader suff>0、target reader nec>0）+ 4 paired contrasts（frozen−negative offsets suff/nec、frozen−negative readers suff/nec）+ 2 cross-wording flags（cross frozen V suff/nec>0）。
+- **硬 anchor 断言**：模型加载前验证 offset -5 解码 == `<|im_end|>`、-3 == `<|im_start|>`，不满足立即停止（防 tokenizer 结构漂移）。
+- **specificity falsification**：同一批任务以 direct action instruction（"The required next action is ..."）重跑，用完全相同的冻结电路测；skill−direct 差异决定能否叫 procedural Skill circuit 还是只能叫 instruction-conditioned action-selection boundary circuit。
+- 保留 EXP11 三条硬 sanity：all7 重健=full V、all7 移除=full、Q7–Q27 induced delta≈0 + leakage ratio 度量；o_proj-input delta path patching 原样沿用。
+- 架构断言：28 Q / 4 KV heads、ratio 7、block20 v_proj 几何，不符即停。seed 5212，phase=all（双 cohort）。
+
+## 主要结果（64 个新任务）
+
+### Anchor 预审计（模型加载前硬断言，3072 行全覆盖）
+
+| offset | decoded token | 角色 |
+|---|---:|---|
+| -13 | `")\n\n` | 边界结构（assistant tool-call 收尾）✓ |
+| **-5** | **`<|im_end|>`** | 边界（硬断言通过，151645）✓ |
+| **-3** | **`<|im_start|>`** | 边界（硬断言通过，151644）✓ |
+| -1 | `\n`（assistant 起始） | 边界 ✓ |
+| -12 / -10 / -8 / -6 | `Choose` / ` single` / ` action` / `.` | 普通内容 token（负对照语义干净）✓ |
+
+### Sanity checks（全部 bit-exact 通过）
+
+| check | 值 | 预期 | 结果 |
+|---|---:|---:|---|
+| `all7_minus_verified_suff_mean` | **0.0** | ≈ 0 | ✓ |
+| `all7_minus_verified_nec_mean` | **0.0** | ≈ 0 | ✓ |
+| `non_kv0_reader_sufficiency_mean` | **0.0** | ≈ 0 | ✓ |
+| `non_kv0_reader_necessity_mean` | **0.0** | ≈ 0 | ✓ |
+| `mean_reader_leakage_ratio` | **0.0** | ≈ 0 | ✓ 零泄漏 |
+| `max_abs_reader_baseline_margin_diff` / `max_abs_reader_v_effect_diff` | **0.0** | ≈ 0 | ✓ o_proj 管线与 logit 管线逐位一致 |
+
+→ 测量装置在新 family 上完好（Q0–Q6 all7 精确重建 V 效应、Q7–Q27 精确零 delta），reader 分解数字可信。
+
+### 预注册 confirmatory 判定（全部 task-level paired bootstrap）
+
+| 判据（n=64） | mean | 95% CI | 通过? |
+|---|---:|---|---|
+| frozen_V_sufficiency | **-0.0131** | [-0.0194, -0.0071] | ❌ 显著为负 |
+| frozen_V_necessity_loss | **-0.0150** | [-0.0211, -0.0091] | ❌ 显著为负 |
+| target_reader_sufficiency | **+0.0763** | [+0.0726, +0.0801] | ✅ |
+| target_reader_necessity | **+0.0620** | [+0.0597, +0.0642] | ✅ |
+| frozen_offsets−negative_offsets suff | **-0.0240** | [-0.0308, -0.0172] | ❌ frozen 输 |
+| frozen_offsets−negative_offsets nec | **-0.0274** | [-0.0346, -0.0204] | ❌ frozen 输 |
+| frozen_readers−negative_readers suff | **+0.1609** | [+0.1519, +0.1697] | ✅ |
+| frozen_readers−negative_readers nec | **+0.1672** | [+0.1585, +0.1760] | ✅ |
+| cross_frozen_V_sufficiency | -0.0130 | [-0.0193, -0.0067] | ❌ 显著为负 |
+| cross_frozen_V_necessity_loss | -0.0128 | [-0.0197, -0.0060] | ❌ 显著为负 |
+
+**`confirmatory_replication_pass = FALSE`（10 项中 5 过 5 败：reader 4 项全过；positional-V 4 项 + cross 2 项全败）**
+
+### Family 级复制
+
+| family | frozen_V_suff | frozen_V_nec | reader_suff | reader_nec |
+|---|---:|---:|---:|---:|
+| test_edit | **+0.0044** ✅ | **+0.0060** ✅ | +0.0937 ✅ | +0.0693 ✅ |
+| search_edit | **-0.0153** ❌ | **-0.0134** ❌ | +0.0760 ✅ | +0.0672 ✅ |
+| config_command | +0.0104 ✅ | +0.0014（CI 过 0）~ | +0.0592 ✅ | +0.0530 ✅ |
+| docs_code | **-0.0518** ❌ | **-0.0540** ❌ | +0.0764 ✅ | +0.0584 ✅ |
+
+→ **frozen readers {Q0,Q3,Q5} 4/4 family 同向显著正**；frozen-offset V 编码方向随 family 翻转（2 正 2 负）。
+
+### Specificity falsification（procedural Skill[canonical] vs direct action instruction）
+
+| metric | skill_mean | direct_mean | skill−direct [95% CI] |
+|---|---:|---:|---|
+| H20_residual_reference | 1.2919 | 1.1577 | **+0.1342** [+0.0635, +0.2039] |
+| frozen_V_sufficiency | +0.0073 | **-0.0644** | **+0.0717** [+0.0637, +0.0791] |
+| frozen_V_necessity_loss | +0.0027 (不显著) | -0.0309 | +0.0336 [+0.0278, +0.0392] |
+| target_reader_sufficiency | +0.0998 | +0.0320 | +0.0678 [+0.0629, +0.0727] |
+| target_reader_necessity | +0.0832 | +0.0236 | +0.0596 [+0.0549, +0.0644] |
+
+→ **skill−direct 全部 5 指标 × 4 family 显著为正**（含 docs_code V suff +0.0721）。direct 指令下冻结 V 效应显著为负（-0.0644）→ 冻结 reader 路径是 **procedural-Skill 条件化**的，而非通用的指令动作选择边界。direct 基线行为准确率 100%、skill 94.9%（任务行为层完全可用）。
+
+### 关键伴随发现
+
+- **H20 residual 转移 +1.164 [1.109, 1.220]**——新 family 上比旧 48 任务（+0.049）强 ~24 倍，且 block20 KV0 V 分支只承担其中 ~1% → 新 family 上动作选择转移的因果主通道在残差的其他分支。
+- **negative offsets（内容 token）V suff +0.0109 / nec +0.0124 显著为正**，与 frozen 符号相反。
+- **措辞不稳定性（新发现）**：canonical-only skill frozen_V_suff +0.0073 vs 全措辞（canonical+paraphrase）-0.0131 → paraphrase 条目约 -0.034；**边界-V 方向在语义等价的两种措辞间翻转**。reader 层措辞稳定（canonical-only +0.0998 vs 全措辞 +0.0763，同号）。
+- **same_state_frozen_V_control -0.0065 [-0.0084, -0.0047]**（同态对照轻微负，语义控制杂质可控）。
+- **机械解释**：块20 对 frozen-V patch 的实际下游响应 = Q0/Q3/Q5（促 donor）+0.076 ⊕ Q2/Q4/Q6（推 anti-donor）-0.085 ≈ 净 -0.013 → 新 family 上正负 reader **近对消并把净方向翻负**；EXP11 中 Q2/Q4/Q6 仅轻微负。
+- baseline_behavior_accuracy（skill）= 94.9%、baseline_signed_preference = +0.633 [0.606, 0.661]。
+
+## 数据质量核验
+
+- replication_results 5120 行（64 task × 4 entries × 20 metrics）+ specificity_results 1536 行（64 × 2 direct × 12），64 task 全覆盖；
+- 3 条硬 sanity 全部 bit-exact（all7−verified=0.0、non_kv0=0.0、leakage=0.0、margin/effect diff=0.0）；
+- anchor 预审计 3072 行，硬断言 -5==`<|im_end|>`、-3==`<|im_start|>` 模型加载前通过；
+- exit 0 一次通过；seed 5212；双 A6000；run_manifest 记录 git_commit=9544113（运行基线）、script/model config sha256。
+
+## 解释结果 — 分层复制：reader register 稳健，positional 编码未复制
+
+> **EXP12 把 EXP11 的发现拆成两个复制状态不同的结论：** ①**reader register 层（哪些 query heads 读 KV0 的 value 输出）——任务一般性成立**：Q0/Q3/Q5 在 4 个全新 family、全新词表、两种措辞下全部显著促 donor，Q2/Q4/Q6 显著推 anti-donor；②**positional 编码层（边界 token {-13,-5,-3,-1} 是携带 donor-aligned V 状态的因果位置）——未复制**：在新 family 上方向反转（V 效应显著为负）、内容 token 负对照反而为正、cross-wording/V 均负、措辞间符号翻转。
+
+- reader 注册表（KV0→Q0/Q3/Q5 读、Q2/Q4/Q6 抑）在 GQA 架构层面稳定：新 family 上 Q2/Q4/Q6 由 EXP11 的"轻微负"变为强负，正负头近乎对消，把净 V 方向翻负——**读侧选择性稳定，正负平衡随任务族变化**；
+- positional 编码的方向/有效性随 family 与措辞波动 → 边界 token 位置编码更可能是**任务结构/词表特征**（EXP10/EXP11 任务集的属性），而非通用的 procedural Skill 机制；
+- specificity 结果守护 reader 层：冻结路径在 procedural Skill 下显著强于 direct 指令（skill−direct 全正）→ 即使 positional 层未复制，reader 路径的行为耦合仍具 procedural 特异性。
+
+## 对证据链的影响
+
+- 证据链**不升级**为「task-general frozen sparse circuit」（confirmatory=FALSE）；
+- 可辩护的最强声明修正为：**task-general reader register（{Q0,Q3,Q5} 正读 / {Q2,Q4,Q6} 抑读；procedural 条件化；跨 family / 词表 / 措辞复制成功）＋ family-contingent positional coding（{-13,-5,-3,-1} 方向随 family 与措辞翻转，非任务一般机制）**；
+- reader 层证据强度从 discovered（EXP11）升级为同模型跨任务族 replicated（EXP12）；positional 层停留在 discovered 且复制失败。
+
+## 下一步（决策触发）
+
+按 EXP11 的预注册约定，EXP12 未通过 confirmatory → **证据链不升级**。建议（供用户决策）：
+
+1. 先在 4 个新 family 内部**重扫 offsets**，判定 {-13,-5,-3,-1} 是 family 特异还是实验构建 artifact（position code 是否仅是变更任务模板后的偶然）；
+2. 若重扫确认 positional 层不稳，EXP13 的跨模型复现目标应锁定在 **reader register 层面**（Q0/Q3/Q5 正读、Q2/Q4/Q6 抑读 + procedural specificity），而非整条冻结 circuit；
+3. 明确反对在新任务上继续"往更细钻"——那不能替代独立复制（已由 EXP12 显示其不可靠）。
+
+---
+
 # 当前证据总结
 
 EXP01–EXP04 逐步建立：
@@ -1805,6 +1937,13 @@ GQA V-head × token-position        稀疏收敛（EXP10：KV0 单头承载全�
 exact offset × reader query-head   收敛到边界标记（EXP11：offset -5 im_end 56% + -1 21%；
                                    reader heads Q0 73% / Q3 37% / Q5 14%，Q2/4/6 负；
                                    sanity 全过：Q7-Q27 delta=0、leakage=0、all7 重建=full）
+        |
+        v
+独立复制（新 family/词表）         分层：reader register 复制成功（EXP12：frozen readers
+                                   {Q0,Q3,Q5} 4/4 family 显著正、negative {Q2,Q4,Q6} 负、
+                                   contrast +0.16/+0.17、cross-wording 同向、措辞稳定）；
+                                   positional 编码未复制（frozen offsets V suff −0.013 方向
+                                   反转、负对照正、cross 负、措辞翻转）→ confirmatory=FALSE
 ```
 
 ## 当前主张边界
@@ -1819,13 +1958,15 @@ EXP10 之后，可辩护的项目级声明：
 
 > **精确 path（EXP11）**：B5 内部效应写在 **4 个 causal offset**（-13 `.\n\n`、-5 `<|im_end|>` 56%、-3 `<|im_start|>`、-1 `\n` 21%）——集中在 **chat-template 边界标记与指令尾部**；读取者收敛到 **Q0（73%）、Q3（37%）、Q5（14%）** 三个 query heads（Q2/Q4/Q6 转移 delta 为负，近似线性叠加）；三条 sanity 全部严格通过（Q7–Q27 delta 精确 0、non-KV0 leakage ratio 0.0、all7 重建/移除与 full V effect 逐位相等）→ 该分解是真实因果路径而非事后挑选。
 
-> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位；④「Q/K/V 三通道共同负载路由」——H20 上 K≈0、Q 为负，实际是 V 近单通道；⑤「V 投影状态就是最末端载体」——V 状态仍需进入 attention 加权聚合→MLP，其后各步是否可进一步归因仍未实验；⑥「多个 GQA KV head 协同负载」——H20 上 4 个 head 高度不对称，KV0 承载全部正效应；⑦「effect 广泛分布于 prompt 前段内容」——B0–B4 全无效，写入仅发生在 generation boundary 前的最终指令区域；⑧「全部 7 个 reader query heads 协同读取」——EXP11 仅 Q0/Q3/Q5 正贡献（Q0 73%），Q2/Q4/Q6 为负；⑨「B5 内效应均匀铺开」——仅 4 个 offset 显著，其中 -5/-1 即 77%。
+> **EXP12 分层复制**：冻结 **reader register 复制成功**——frozen readers {Q0,Q3,Q5} 在 4 个新 family 全部显著正（suff +0.076 / nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、frozen−negative reader contrast +0.16/+0.17、cross-wording 同向、措辞稳定（canonical-only +0.0998 vs 全措辞 +0.0763）；冻结 **positional 编码未复制**——frozen-offset V suff/nec 显著为负（-0.013/-0.015，方向反转）、内容 token 负对照反而为正（+0.011/+0.012）、frozen−negative offset contrast 显著为负、cross-wording V 亦负、措辞间符号翻转（canonical +0.007 vs paraphrase 约 -0.034）。**confirmatory_replication_pass = FALSE**（10 项 5 过 5 败）。specificity falsification：skill−direct 全部 5 指标 × 4 family 显著为正（frozen-V suff +0.072、reader suff +0.068）→ 冻结路径在 procedural Skill 下显著强于 direct action instruction，direct 下 frozen-V 甚至显著为负 → 支持 **procedural specificity**。
+
+> **不能声称的**：①「H20 单层是 handoff state」——H20 仅 62% 且 full−H20 = +0.030 显著正；②「H15–H20 全宽均匀分布式」——H15–H17 单独为负、可移除；③「H15–H20 residual 本身就是最终因果载体」——Qwen2 block 为 joint computation，前层输出是后层整体计算的输入条件，H18–H20 内部各层各自的 causal contribution 仍未逐层定位；④「Q/K/V 三通道共同负载路由」——H20 上 K≈0、Q 为负，实际是 V 近单通道；⑤「V 投影状态就是最末端载体」——V 状态仍需进入 attention 加权聚合→MLP，其后各步是否可进一步归因仍未实验；⑥「多个 GQA KV head 协同负载」——H20 上 4 个 head 高度不对称，KV0 承载全部正效应；⑦「effect 广泛分布于 prompt 前段内容」——B0–B4 全无效，写入仅发生在 generation boundary 前的最终指令区域；⑧「全部 7 个 reader query heads 协同读取」——EXP11 仅 Q0/Q3/Q5 正贡献（Q0 73%），Q2/Q4/Q6 为负；⑨「B5 内效应均匀铺开」——仅 4 个 offset 显著，其中 -5/-1 即 77%；⑩「frozen offset 编码（{-13,-5,-3,-1} 边界 token）是任务一般的因果 position 载体」——EXP12 在新 family 上方向翻转、负对照为正、措辞不稳定，positional 层未复制；⑪「完整 circuit（1 KV head × 边界 token × 3 readers）是 task-general 的」——EXP12 confirmatory=FALSE，仅 reader register 层复制成功。
 
 尚不可声明：
 
 > 「真正的因果机制完全是一个分布式电路。」——已不成立；EXP10 证伪了分布式假设，路由接口是高度稀疏的。
 > 「已定位到单个 GQA KV head / 单个 token 位置的完整路径。」——KV0×B5 定位完成，但 B5 仍有约 17 token 宽，且尚未归因到具体 query heads。
-> 「完整 circuit 已证明。」——EXP11 的 offsets/readers 是在同一 48 synthetic tasks 上探索性发现的，需在**新 Skill/task family 上独立 replication（EXP12）** 后才能作为预注册确证；同一批数据上继续钻更深不能替代独立复现。
+> 「完整 circuit 已证明。」——已由 EXP12 明确否决（confirmatory_replication_pass = FALSE，10 项中 position 层 6 项全败）；当前可辩护的最强声明是 **task-general reader register（Q0/Q3/Q5 正读、Q2/Q4/Q6 抑读，procedural 条件化，跨 family/词表/措辞复制成功）+ family-contingent positional coding（{-13,-5,-3,-1} 方向随 family 与措辞翻转，非任务一般机制）**。
 
 已验证的排除项（EXP01–EXP11）：
 
@@ -1841,16 +1982,17 @@ EXP10 之后，可辩护的项目级声明：
 10. 多 GQA KV head 协同负载假设（EXP10：KV1 ≈ 0、KV2/KV3 轻微抑制，仅 KV0 承载正效应）；
 11. Prompt 位置均匀/前段分布假设（EXP10：B0–B4 全无效，100% 集中于 B5 末端）；
 12. 全部 7 个 reader query heads 协同读取（EXP11：Q0 73% 主导、Q3/Q5 次要，Q2/Q4/Q6 负）；
-13. B5 内效应均匀铺开（EXP11：仅 offset -13/-5/-3/-1 显著，其余 ≈ 0）。
+13. B5 内效应均匀铺开（EXP11：仅 offset -13/-5/-3/-1 显著，其余 ≈ 0）；
+14. **边界-token position coding 作为任务一般的因果载体**（EXP12：新 4 family 上 frozen-offset V 效应显著为负、内容 token 负对照显著为正、cross-wording 亦负、措辞间符号翻转——position 层未复制；注意：reader register {Q0,Q3,Q5} 的正选择性在全部 4 family 复制成功，不在此排除项内）。
 
 尚未完成的验证：
 
-1. **EXP11 发现的 exact offsets + query heads 在新 Skill/task family 上的独立 replication（EXP12 计划）**；
-2. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
-3. H18–H20 状态的维度分解（SAE/SNMF）；
-4. 跨模型复现；
-5. 跨 Skill / 任务泛化（与 1 合并为同一 EXP12 主线）。
+1. **position code 的 family 特异性判定**（EXP12 遗留）：在 4 个新 family 内重扫 offsets，判定 {-13,-5,-3,-1} 是 family/任务结构特异还是实验构建 artifact——决定 EXP13 跨模型复现目标是否锁定在 reader register 层；
+2. **reader register 的跨模型复现**：将 {Q0,Q3,Q5} 正读 / {Q2,Q4,Q6} 抑读 + procedural specificity 在另一个模型家族上预注册复制（position 层不冻结）；
+3. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
+4. H18–H20 状态的维度分解（SAE/SNMF）；
+5. 跨真实 agent 泛化。
 
-> 「证据排除了十三个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影、多 KV head 协同负载、位置均匀分布、7 reader heads 协同读取、B5 均匀铺开——路径收缩为：**H20 残差 → block20 V-projection → KV0 → B5 的 chat-template 边界 token（<|im_end|>、assistant 起始）→ Q0/Q3/Q5 读取 → o_proj → 动作偏好**；EXP11 的 offsets/readers 待在新 Skill/task family 上独立 replication（EXP12）后冻结为确证电路。」
+> 「证据排除了十四个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影、多 KV head 协同负载、位置均匀分布、7 reader heads 协同读取、B5 均匀铺开、边界-token position coding 的任务一般性——路径收缩为：**H20 残差 → block20 V-projection → KV0 → reader register {Q0/Q3/Q5} 正读 / {Q2/Q4/Q6} 抑读（跨 4 个新 family、新词表、双措辞独立复制成功；procedural 条件化：skill−direct 全指标显著为正）**。positional 编码（{-13,-5,-3,-1} 边界 token）在 EXP12 新 family 上方向翻转未复制，不能作为任务一般机制。EXP12 confirmatory_replication_pass=FALSE，证据链**不升级**为 task-general frozen sparse circuit；跨模型复现（EXP13）目标应锁定在 reader register 层。」
 
 此措辞应保留，直到 EXP09 定位到各层内部投影（Q/K/V/MLP）的 causal handoff 结构。

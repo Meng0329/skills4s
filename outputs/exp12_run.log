@@ -1,0 +1,416 @@
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:00<01:33,  3.63it/s]Loading weights:   2%|▏         | 6/339 [00:00<00:18, 18.18it/s]Loading weights:   5%|▌         | 17/339 [00:00<00:06, 46.24it/s]Loading weights:   8%|▊         | 28/339 [00:00<00:04, 65.73it/s]Loading weights:  11%|█         | 38/339 [00:00<00:03, 76.03it/s]Loading weights:  14%|█▍        | 47/339 [00:00<00:03, 73.01it/s]Loading weights:  17%|█▋        | 56/339 [00:00<00:03, 71.55it/s]Loading weights:  19%|█▉        | 64/339 [00:01<00:03, 72.97it/s]Loading weights:  22%|██▏       | 76/339 [00:01<00:03, 77.24it/s]Loading weights:  26%|██▌       | 88/339 [00:01<00:02, 88.20it/s]Loading weights:  29%|██▉       | 100/339 [00:01<00:02, 88.08it/s]Loading weights:  33%|███▎      | 111/339 [00:01<00:02, 85.01it/s]Loading weights:  36%|███▌      | 122/339 [00:01<00:02, 91.06it/s]Loading weights:  39%|███▉      | 132/339 [00:01<00:02, 82.26it/s]Loading weights:  42%|████▏     | 141/339 [00:01<00:02, 78.77it/s]Loading weights:  44%|████▍     | 150/339 [00:02<00:02, 75.79it/s]Loading weights:  47%|████▋     | 161/339 [00:02<00:02, 83.44it/s]Loading weights:  51%|█████     | 172/339 [00:02<00:02, 72.48it/s]Loading weights:  54%|█████▍    | 184/339 [00:02<00:01, 82.78it/s]Loading weights:  58%|█████▊    | 196/339 [00:02<00:01, 91.84it/s]Loading weights:  61%|██████▏   | 208/339 [00:02<00:01, 88.84it/s]Loading weights:  65%|██████▍   | 220/339 [00:02<00:01, 87.81it/s]Loading weights:  68%|██████▊   | 230/339 [00:02<00:01, 90.69it/s]Loading weights:  71%|███████   | 240/339 [00:03<00:01, 86.41it/s]Loading weights:  73%|███████▎  | 249/339 [00:03<00:01, 84.09it/s]Loading weights:  76%|███████▌  | 258/339 [00:03<00:01, 79.06it/s]Loading weights:  80%|███████▉  | 270/339 [00:03<00:00, 82.51it/s]Loading weights:  83%|████████▎ | 281/339 [00:03<00:00, 89.36it/s]Loading weights:  86%|████████▌ | 292/339 [00:03<00:00, 94.18it/s]Loading weights:  90%|████████▉ | 304/339 [00:03<00:00, 93.96it/s]Loading weights:  93%|█████████▎| 314/339 [00:03<00:00, 94.16it/s]Loading weights:  96%|█████████▌| 324/339 [00:04<00:00, 85.00it/s]Loading weights:  98%|█████████▊| 333/339 [00:04<00:00, 81.71it/s]Loading weights: 100%|██████████| 339/339 [00:04<00:00, 80.38it/s]
+========================================================================================
+EXP12: Frozen-Circuit Independent Replication
+Model: /data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct
+Tasks: 64 | families: ('test_edit', 'search_edit', 'config_command', 'docs_code')
+Frozen offsets: (-13, -5, -3, -1)
+Frozen readers: (0, 3, 5)
+Phase: all
+========================================================================================
+[001/064] exp12_test_edit_00 (test_edit)
+[002/064] exp12_test_edit_01 (test_edit)
+[003/064] exp12_test_edit_02 (test_edit)
+[004/064] exp12_test_edit_03 (test_edit)
+[005/064] exp12_test_edit_04 (test_edit)
+[006/064] exp12_test_edit_05 (test_edit)
+[007/064] exp12_test_edit_06 (test_edit)
+[008/064] exp12_test_edit_07 (test_edit)
+[009/064] exp12_test_edit_08 (test_edit)
+[010/064] exp12_test_edit_09 (test_edit)
+[011/064] exp12_test_edit_10 (test_edit)
+[012/064] exp12_test_edit_11 (test_edit)
+[013/064] exp12_test_edit_12 (test_edit)
+[014/064] exp12_test_edit_13 (test_edit)
+[015/064] exp12_test_edit_14 (test_edit)
+[016/064] exp12_test_edit_15 (test_edit)
+[017/064] exp12_search_edit_00 (search_edit)
+[018/064] exp12_search_edit_01 (search_edit)
+[019/064] exp12_search_edit_02 (search_edit)
+[020/064] exp12_search_edit_03 (search_edit)
+[021/064] exp12_search_edit_04 (search_edit)
+[022/064] exp12_search_edit_05 (search_edit)
+[023/064] exp12_search_edit_06 (search_edit)
+[024/064] exp12_search_edit_07 (search_edit)
+[025/064] exp12_search_edit_08 (search_edit)
+[026/064] exp12_search_edit_09 (search_edit)
+[027/064] exp12_search_edit_10 (search_edit)
+[028/064] exp12_search_edit_11 (search_edit)
+[029/064] exp12_search_edit_12 (search_edit)
+[030/064] exp12_search_edit_13 (search_edit)
+[031/064] exp12_search_edit_14 (search_edit)
+[032/064] exp12_search_edit_15 (search_edit)
+[033/064] exp12_config_command_00 (config_command)
+[034/064] exp12_config_command_01 (config_command)
+[035/064] exp12_config_command_02 (config_command)
+[036/064] exp12_config_command_03 (config_command)
+[037/064] exp12_config_command_04 (config_command)
+[038/064] exp12_config_command_05 (config_command)
+[039/064] exp12_config_command_06 (config_command)
+[040/064] exp12_config_command_07 (config_command)
+[041/064] exp12_config_command_08 (config_command)
+[042/064] exp12_config_command_09 (config_command)
+[043/064] exp12_config_command_10 (config_command)
+[044/064] exp12_config_command_11 (config_command)
+[045/064] exp12_config_command_12 (config_command)
+[046/064] exp12_config_command_13 (config_command)
+[047/064] exp12_config_command_14 (config_command)
+[048/064] exp12_config_command_15 (config_command)
+[049/064] exp12_docs_code_00 (docs_code)
+[050/064] exp12_docs_code_01 (docs_code)
+[051/064] exp12_docs_code_02 (docs_code)
+[052/064] exp12_docs_code_03 (docs_code)
+[053/064] exp12_docs_code_04 (docs_code)
+[054/064] exp12_docs_code_05 (docs_code)
+[055/064] exp12_docs_code_06 (docs_code)
+[056/064] exp12_docs_code_07 (docs_code)
+[057/064] exp12_docs_code_08 (docs_code)
+[058/064] exp12_docs_code_09 (docs_code)
+[059/064] exp12_docs_code_10 (docs_code)
+[060/064] exp12_docs_code_11 (docs_code)
+[061/064] exp12_docs_code_12 (docs_code)
+[062/064] exp12_docs_code_13 (docs_code)
+[063/064] exp12_docs_code_14 (docs_code)
+[064/064] exp12_docs_code_15 (docs_code)
+{
+  "experiment": "EXP12_independent_replication",
+  "phase": "all",
+  "frozen_offsets": [
+    -13,
+    -5,
+    -3,
+    -1
+  ],
+  "negative_offsets": [
+    -12,
+    -10,
+    -8,
+    -6
+  ],
+  "frozen_readers": [
+    0,
+    3,
+    5
+  ],
+  "negative_readers": [
+    2,
+    4,
+    6
+  ],
+  "num_tasks": 64,
+  "families": [
+    "test_edit",
+    "search_edit",
+    "config_command",
+    "docs_code"
+  ],
+  "replication": {
+    "baseline_behavior_accuracy": 0.94921875,
+    "primary_endpoint_flags": {
+      "frozen_V_sufficiency": false,
+      "frozen_V_necessity_loss": false,
+      "target_reader_sufficiency": true,
+      "target_reader_necessity": true
+    },
+    "paired_control_flags": {
+      "frozen_offsets_minus_negative_offsets_sufficiency": false,
+      "frozen_offsets_minus_negative_offsets_necessity": false,
+      "frozen_readers_minus_negative_readers_sufficiency": true,
+      "frozen_readers_minus_negative_readers_necessity": true
+    },
+    "cross_wording_flags": {
+      "cross_frozen_V_sufficiency_positive": false,
+      "cross_frozen_V_necessity_positive": false
+    },
+    "sanity": {
+      "all7_minus_verified_suff_mean": 0.0,
+      "all7_minus_verified_nec_mean": 0.0,
+      "non_kv0_reader_sufficiency_mean": 0.0,
+      "non_kv0_reader_necessity_mean": 0.0,
+      "mean_reader_leakage_ratio": 0.0,
+      "max_abs_reader_baseline_margin_diff": 0.0,
+      "max_abs_reader_v_effect_diff": 0.0
+    },
+    "confirmatory_replication_pass": false,
+    "overall_metrics": [
+      {
+        "metric": "H20_residual_reference",
+        "mean": 1.164119690489315,
+        "ci_low": 1.1085711129017,
+        "ci_high": 1.2203534700356613,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "frozen_V_sufficiency",
+        "mean": -0.013089031199342571,
+        "ci_low": -0.01942367697338341,
+        "ci_high": -0.007143335308137468,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "frozen_V_necessity_loss",
+        "mean": -0.014992423595685977,
+        "ci_low": -0.021072930287664347,
+        "ci_high": -0.009051632056980454,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "negative_offset_V_sufficiency",
+        "mean": 0.010903417271038052,
+        "ci_low": 0.009294422647508327,
+        "ci_high": 0.01251475531244068,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "negative_offset_V_necessity_loss",
+        "mean": 0.012402600936184172,
+        "ci_low": 0.010627035470497504,
+        "ci_high": 0.014263175958330975,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "verified_v_effect",
+        "mean": -0.013089031199342571,
+        "ci_low": -0.019107762336716405,
+        "ci_high": -0.007113835686868698,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "target_reader_sufficiency",
+        "mean": 0.07630725860144594,
+        "ci_low": 0.07262923374664751,
+        "ci_high": 0.0800658210328038,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "target_reader_necessity",
+        "mean": 0.061980761121958494,
+        "ci_low": 0.059690304723699225,
+        "ci_high": 0.06422583104285877,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "negative_reader_sufficiency",
+        "mean": -0.08456786848546471,
+        "ci_low": -0.09135670390714949,
+        "ci_high": -0.07769851130442476,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "negative_reader_necessity",
+        "mean": -0.10523391798051307,
+        "ci_low": -0.11314226948325086,
+        "ci_high": -0.09716278299611077,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "all7_reader_sufficiency",
+        "mean": -0.013089031199342571,
+        "ci_low": -0.01944209033044899,
+        "ci_high": -0.007050422495740353,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "all7_reader_necessity",
+        "mean": -0.013089031199342571,
+        "ci_low": -0.01932801686507446,
+        "ci_high": -0.0071432415437811935,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "non_kv0_reader_sufficiency",
+        "mean": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "non_kv0_reader_necessity",
+        "mean": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "cross_H20_residual_reference",
+        "mean": 1.1648261068985448,
+        "ci_low": 1.1085816989831074,
+        "ci_high": 1.2173564301076112,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "cross_frozen_V_sufficiency",
+        "mean": -0.01302650180150522,
+        "ci_low": -0.019349113131465857,
+        "ci_high": -0.006696070276484534,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "cross_frozen_V_necessity_loss",
+        "mean": -0.012799820106010884,
+        "ci_low": -0.01974373678312986,
+        "ci_high": -0.006038338157304682,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "same_state_frozen_V_control",
+        "mean": -0.006533153860800667,
+        "ci_low": -0.00842386292770243,
+        "ci_high": -0.004702518028807393,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "behavior_correct",
+        "mean": 0.94921875,
+        "ci_low": 0.921875,
+        "ci_high": 0.97265625,
+        "num_tasks": 64,
+        "scope": "overall"
+      },
+      {
+        "metric": "baseline_signed_preference",
+        "mean": 0.6329911645661923,
+        "ci_low": 0.6061053059922414,
+        "ci_high": 0.6606939351888286,
+        "num_tasks": 64,
+        "scope": "overall"
+      }
+    ],
+    "paired_contrasts": [
+      {
+        "contrast": "frozen_offsets_minus_negative_offsets_sufficiency",
+        "metric_a": "frozen_V_sufficiency",
+        "metric_b": "negative_offset_V_sufficiency",
+        "mean_difference": -0.023992448470380623,
+        "ci_low": -0.030815385771347792,
+        "ci_high": -0.017208690539337112,
+        "num_tasks": 64
+      },
+      {
+        "contrast": "frozen_offsets_minus_negative_offsets_necessity",
+        "metric_a": "frozen_V_necessity_loss",
+        "metric_b": "negative_offset_V_necessity_loss",
+        "mean_difference": -0.02739502453187015,
+        "ci_low": -0.0346267062905099,
+        "ci_high": -0.020381208009530388,
+        "num_tasks": 64
+      },
+      {
+        "contrast": "frozen_readers_minus_negative_readers_sufficiency",
+        "metric_a": "target_reader_sufficiency",
+        "metric_b": "negative_reader_sufficiency",
+        "mean_difference": 0.16087512708691065,
+        "ci_low": 0.1518855063506635,
+        "ci_high": 0.16968053191285434,
+        "num_tasks": 64
+      },
+      {
+        "contrast": "frozen_readers_minus_negative_readers_necessity",
+        "metric_a": "target_reader_necessity",
+        "metric_b": "negative_reader_necessity",
+        "mean_difference": 0.16721467910247156,
+        "ci_low": 0.1584813657057566,
+        "ci_high": 0.1759911802922943,
+        "num_tasks": 64
+      }
+    ]
+  },
+  "specificity": {
+    "direct_choice_behavior_accuracy": 1.0,
+    "comparison": [
+      {
+        "scope": "overall",
+        "family": "ALL",
+        "metric": "H20_residual_reference",
+        "skill_mean": 1.2918557846278418,
+        "skill_ci_low": 1.2581590313824562,
+        "skill_ci_high": 1.3264161558381602,
+        "direct_mean": 1.1576568451382627,
+        "direct_ci_low": 1.085152630963148,
+        "direct_ci_high": 1.2318871379426126,
+        "skill_minus_direct_mean": 0.13419893948957906,
+        "skill_minus_direct_ci_low": 0.06352220603994284,
+        "skill_minus_direct_ci_high": 0.2038885936133738,
+        "num_tasks": 64
+      },
+      {
+        "scope": "overall",
+        "family": "ALL",
+        "metric": "frozen_V_sufficiency",
+        "skill_mean": 0.00727642368292436,
+        "skill_ci_low": 0.0012334912902588258,
+        "skill_ci_high": 0.01328499025075869,
+        "direct_mean": -0.06439519343803113,
+        "direct_ci_low": -0.07293606678663309,
+        "direct_ci_high": -0.05574321070594124,
+        "skill_minus_direct_mean": 0.07167161712095549,
+        "skill_minus_direct_ci_low": 0.06374902065103924,
+        "skill_minus_direct_ci_high": 0.0791484203991331,
+        "num_tasks": 64
+      },
+      {
+        "scope": "overall",
+        "family": "ALL",
+        "metric": "frozen_V_necessity_loss",
+        "skill_mean": 0.0027145165513502434,
+        "skill_ci_low": -0.0036692504974780603,
+        "skill_ci_high": 0.008518213080606074,
+        "direct_mean": -0.030891139580489835,
+        "direct_ci_low": -0.03567885484444559,
+        "direct_ci_high": -0.026131939604783837,
+        "skill_minus_direct_mean": 0.03360565613184008,
+        "skill_minus_direct_ci_low": 0.027812506783266144,
+        "skill_minus_direct_ci_high": 0.039223264656902755,
+        "num_tasks": 64
+      },
+      {
+        "scope": "overall",
+        "family": "ALL",
+        "metric": "target_reader_sufficiency",
+        "skill_mean": 0.09983351211121771,
+        "skill_ci_low": 0.0965905240864231,
+        "skill_ci_high": 0.1030313627790747,
+        "direct_mean": 0.03204115193875623,
+        "direct_ci_low": 0.027276293541581252,
+        "direct_ci_high": 0.036768087193922834,
+        "skill_minus_direct_mean": 0.06779236017246149,
+        "skill_minus_direct_ci_low": 0.06290234086281998,
+        "skill_minus_direct_ci_high": 0.07270210455380947,
+        "num_tasks": 64
+      },
+      {
+        "scope": "overall",
+        "family": "ALL",
+        "metric": "target_reader_necessity",
+        "skill_mean": 0.08318511646939442,
+        "skill_ci_low": 0.08002421652490739,
+        "skill_ci_high": 0.08647250562280533,
+        "direct_mean": 0.023594328953549848,
+        "direct_ci_low": 0.019453096810002533,
+        "direct_ci_high": 0.02760266817986121,
+        "skill_minus_direct_mean": 0.05959078751584457,
+        "skill_minus_direct_ci_low": 0.054854237580047996,
+        "skill_minus_direct_ci_high": 0.0643908838920197,
+        "num_tasks": 64
+      }
+    ],
+    "interpretation_rule": "If frozen-path effects are similar under procedural Skills and direct-choice instructions, broaden the claim to an instruction-conditioned action-selection boundary circuit. A positive skill-minus-direct difference supports procedural specificity; a negative difference indicates broader/general instruction routing."
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "experiment": "EXP12_independent_replication",
+  "git_commit": "9544113ed2e32921a10c0a74a4d4d05fc8c36f47",
+  "seed": 5212,
+  "phase": "all",
+  "model_dir": "/data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct",
+  "model_name": "Qwen2.5-Coder-7B-Instruct",
+  "num_tasks": 64,
+  "tasks_per_family": 16,
+  "families": [
+    "test_edit",
+    "search_edit",
+    "config_command",
+    "docs_code"
+  ],
+  "source_hidden_index": 20,
+  "consumer_decoder_block": 20,
+  "kv_head": 0,
+  "frozen_offsets": [
+    -13,
+    -5,
+    -3,
+    -1
+  ],
+  "negative_offsets": [
+    -12,
+    -10,
+    -8,
+    -6
+  ],
+  "frozen_readers": [
+    0,
+    3,
+    5
+  ],
+  "negative_readers": [
+    2,
+    4,
+    6
+  ],
+  "num_attention_heads": 28,
+  "num_key_value_heads": 4,
+  "head_dim": 128,
+  "anchor_signature": {
+    "-13": [
+      "\")\n\n"
+    ],
+    "-12": [
+      "Choose"
+    ],
+    "-10": [
+      " single"
+    ],
+    "-8": [
+      " action"
+    ],
+    "-6": [
+      "."
+    ],
+    "-5": [
+      "<|im_end|>"
+    ],
+    "-3": [
+      "<|im_start|>"
+    ],
+    "-1": [
+      "\n"
+    ]
+  },
+  "script_sha256": "e5388d7c4cf8191e3325e881d4ded20f230eccfd47f31f721f133db5149e660a",
+  "model_config_sha256": "c0242402ad6a13b331ea320feea8c7e3776ffb7a4eff0757b9cd667e116d9a28",
+  "python": "3.13.12",
+  "torch": "2.9.1+cu128",
+  "transformers": "5.3.0",
+  "cuda_available": true,
+  "cuda_version": "12.8",
+  "gpu": "NVIDIA RTX A6000",
+  "offline_only": true
+}
