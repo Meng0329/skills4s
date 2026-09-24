@@ -29,7 +29,8 @@
 | EXP09 | H18–H20 残差经 Q/K/V 投影状态传递？ | 完成，POSITIVE | H20 KV suff=+0.046（94%）/nec=+0.044（91%）；**V 单通道即 89%**，K≈0、Q 为负；chain_KV=+0.066（full 的 84%）；**KV>Q 确认**（+0.051/+0.050）但机制为 V 主导 | `62eb9a9` |
 | EXP10 | GQA V-head × token 位置定位？ | 完成，稀疏收敛 | **KV0 单头承载全部 V 效应**（direct +0.047 ≈ full +0.043）；**B5（最末端指令区）即 99.9% full**；KV0×B5 单 cell（suff +0.0448, q=0.0006 / nec +0.0445, q=0.0006）≈ full_V 的 103%；KV1≈0、KV2/3 微负；B0–B4 无效 | `a3ed568` |
 | EXP11 | B5 内精确 offset + KV0 reader heads？ | 完成，收敛到边界标记 | **offset -5（`<|im_end|>`）即 56% full、-1（assistant 起始）21%**；reader heads **Q0 73% / Q3 37% / Q5 14%**（Q2/4/6 负）；sanity 全过（Q7–Q27 delta=0、leakage ratio=0、all7 重建=full 逐位）；**1 KV head × 2 边界 token × 3 query heads** | `6b48aee` |
-| EXP12 | 冻结电路在新 family 独立复制？ | 完成，分层（confirmatory=FALSE） | **reader register 复制成功**：frozen readers {Q0,Q3,Q5} 4/4 新 family 显著正（suff +0.076/nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、contrast +0.16/+0.17、措辞稳定；**positional 编码未复制**：frozen offsets V suff −0.013（方向反）、内容 token 负对照反而为正、cross-wording 负、措辞间翻转；3 硬 sanity 全 bit-exact；specificity：skill−direct 全 5 指标×4 family 显著正（procedural specificity） | `0d5d6c8` |
+| EXP12 | 冻结电路在新 family 独立复制？ | 完成，分层（confirmatory=FALSE） | **reader register 复制成功**：frozen readers {Q0,Q3,Q5} 4/4 新 family 显著正（suff +0.076/nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、contrast +0.16/+0.17、措辞稳定；**writer 层未按冻结位点复制**：frozen offsets V suff −0.013（方向反）、负对照为正、cross 负、措辞间翻转；**非 absolute-position artifact**（同 token 同位置符号随 context 翻转）；3 硬 sanity 全 bit-exact；specificity：skill−direct 全正（procedural specificity） | `0d5d6c8` |
+| EXP13 | 上下文条件化 schema 写点能否重映射？ | 计划 | 8 strata × 9 语义 anchor 双向 discovery；8/8 held-out 确认；reader {Q0,Q3,Q5} 全冻结；判定 context/schema-dependent writer → stable reader | 待运行 |
 
 ---
 
@@ -1856,27 +1857,77 @@ EXP11 在**同一批 48 synthetic tasks** 上发现「1 KV head × 4 边界 offs
 - anchor 预审计 3072 行，硬断言 -5==`<|im_end|>`、-3==`<|im_start|>` 模型加载前通过；
 - exit 0 一次通过；seed 5212；双 A6000；run_manifest 记录 git_commit=9544113（运行基线）、script/model config sha256。
 
-## 解释结果 — 分层复制：reader register 稳健，positional 编码未复制
+## 解释结果 — 分层复制：reader register 稳健，writer 编码上下文条件化（非 absolute-position artifact）
 
-> **EXP12 把 EXP11 的发现拆成两个复制状态不同的结论：** ①**reader register 层（哪些 query heads 读 KV0 的 value 输出）——任务一般性成立**：Q0/Q3/Q5 在 4 个全新 family、全新词表、两种措辞下全部显著促 donor，Q2/Q4/Q6 显著推 anti-donor；②**positional 编码层（边界 token {-13,-5,-3,-1} 是携带 donor-aligned V 状态的因果位置）——未复制**：在新 family 上方向反转（V 效应显著为负）、内容 token 负对照反而为正、cross-wording/V 均负、措辞间符号翻转。
+> **EXP12 把 EXP11 的发现拆成两个复制状态不同的结论：** ①**reader register 层（哪些 query heads 读 KV0 的 value 输出）——任务一般性成立**：Q0/Q3/Q5 在 4 个全新 family、全新词表、两种措辞下全部显著促 donor，Q2/Q4/Q6 显著推 anti-donor；②**writer 层（V 状态写在哪里、以何种极性）——未按冻结位点复制**：在新 family 上方向反转（V 效应显著为负）、内容 token 负对照反而为正、cross-wording 均负、措辞间符号翻转。
+
+> **重要修正（2026-09-23 用户实际核验 outputs 后）——不能解释成单纯的 absolute-position artifact**：`token_anchor_audit.csv` 显示 frozen offsets {-13,-5,-3,-1} 在 4 个 family、canonical/paraphrase、两个 label 下解码出的 token 完全一致（-5 恒为 `<|im_end|>`、-3 恒为 `<|im_start|>`、-1 恒为 `\n`、-13 恒为 `")\n\n`），但冻结 V 的因果方向仍强烈依赖上下文。例如 same-wording frozen-V suff：test_edit canonical +0.0115 vs paraphrase −0.0027；config_command +0.0369 vs −0.0161；docs_code −0.0280 vs −0.0756。且 action direction 不对称：test_edit 中 recipient label0 frozen V suff = −0.0480、label1 = +0.0567。同 token 同位置在不同 instruction context 可携带不同甚至相反的因果作用 → 这不是"换个 offset 就能解决"的现象。
 
 - reader 注册表（KV0→Q0/Q3/Q5 读、Q2/Q4/Q6 抑）在 GQA 架构层面稳定：新 family 上 Q2/Q4/Q6 由 EXP11 的"轻微负"变为强负，正负头近乎对消，把净 V 方向翻负——**读侧选择性稳定，正负平衡随任务族变化**；
-- positional 编码的方向/有效性随 family 与措辞波动 → 边界 token 位置编码更可能是**任务结构/词表特征**（EXP10/EXP11 任务集的属性），而非通用的 procedural Skill 机制；
-- specificity 结果守护 reader 层：冻结路径在 procedural Skill 下显著强于 direct 指令（skill−direct 全正）→ 即使 positional 层未复制，reader 路径的行为耦合仍具 procedural 特异性。
+- 写侧机制的最可辩护表述改为 **context-conditioned writer/code → stable reader register**：write site 与局部 value code 随 family×wording×label 上下文条件化，而非可移植的固定位点；
+- specificity 结果守护 reader 层：冻结路径在 procedural Skill 下显著强于 direct 指令（skill−direct 全正）→ 即使 writer 层未按冻结位点复制，reader 路径的行为耦合仍具 procedural 特异性。
 
 ## 对证据链的影响
 
 - 证据链**不升级**为「task-general frozen sparse circuit」（confirmatory=FALSE）；
-- 可辩护的最强声明修正为：**task-general reader register（{Q0,Q3,Q5} 正读 / {Q2,Q4,Q6} 抑读；procedural 条件化；跨 family / 词表 / 措辞复制成功）＋ family-contingent positional coding（{-13,-5,-3,-1} 方向随 family 与措辞翻转，非任务一般机制）**；
-- reader 层证据强度从 discovered（EXP11）升级为同模型跨任务族 replicated（EXP12）；positional 层停留在 discovered 且复制失败。
+- 可辩护的最强声明修正为：**task-general reader register（{Q0,Q3,Q5} 正读 / {Q2,Q4,Q6} 抑读；procedural 条件化；跨 family / 词表 / 措辞复制成功）＋ context-conditioned writer（write site 与局部 V 极性随 family×wording×label 上下文变化，非 absolute-position 可移植载体）**；
+- reader 层证据强度从 discovered（EXP11）升级为同模型跨任务族 replicated（EXP12）；writer 层停留 discovered 且未按固定位点复制——触发 EXP13 语义 anchor 重映射检验。
 
 ## 下一步（决策触发）
 
-按 EXP11 的预注册约定，EXP12 未通过 confirmatory → **证据链不升级**。建议（供用户决策）：
+按 EXP11 的预注册约定，EXP12 未通过 confirmatory → **证据链不升级**。用户实际核验 outputs 后修正方向（2026-09-23）：**不做简单的 offset 重扫**——同 token 同位置的符号翻转说明这是 context-conditioned writer 而非可移植位点问题。下一轮 **EXP13 — Context-Conditioned Schema Write-Site Remapping**（预注册）：在 4 family × 2 wording = 8 strata 内对 9 个语义 anchor（SKILL_END/SYSTEM_END/ISSUE_END/DETAIL_END/ACTION0_END/ACTION1_END/FINAL_INSTRUCTION_END/USER_END/GENERATION_BOUNDARY，各 6-token window）做双向 writer discovery（score = min(S0,S1,N0,N1)），8/8 任务 held-out 确认，reader register {Q0,Q3,Q5} 全冻结不允许重选。判定：writer+reader 双过且 strata 选点不同 → context/schema-dependent writer → stable reader register（强于 EXP11 fixed-token circuit）；writer 败 reader 过 → 永久停止 token-position scan，转向"Q0/Q3/Q5 读取的功能性隐变量"识别。
 
-1. 先在 4 个新 family 内部**重扫 offsets**，判定 {-13,-5,-3,-1} 是 family 特异还是实验构建 artifact（position code 是否仅是变更任务模板后的偶然）；
-2. 若重扫确认 positional 层不稳，EXP13 的跨模型复现目标应锁定在 **reader register 层面**（Q0/Q3/Q5 正读、Q2/Q4/Q6 抑读 + procedural specificity），而非整条冻结 circuit；
-3. 明确反对在新任务上继续"往更细钻"——那不能替代独立复制（已由 EXP12 显示其不可靠）。
+---
+
+# EXP13 — Context-Conditioned Schema Write-Site Remapping（上下文条件化 schema 写点重映射）
+
+## 状态
+PLANNED — **基于 EXP12 outputs 实际核验修正设计**：EXP12 不能解释为 absolute-position artifact（同 token 同位置符号随 family/wording/label 翻转），故不再做 offset 重扫，改为检验 **context-conditioned writer → stable reader register** 假设。
+
+## 日期
+2026-09-23
+
+## 提交
+待运行
+
+## 科学动机（EXP12_OUTPUT_AUDIT 摘要）
+
+EXP12 实际 outputs 核验（summary.json / replication_summary.csv / replication_contrasts.csv / family_summary.csv / specificity_comparison.csv / replication_results.csv / token_anchor_audit.csv / run_manifest.json）得出：
+
+1. `frozen_V_sufficiency = -0.013089`、`frozen_V_necessity = -0.014992`（负）；
+2. 负对照（内容 token）反而为正（+0.010903 / +0.012403）；
+3. target readers 保持正（+0.076307 / +0.061981），negative readers 强负（-0.084568 / -0.105234）；
+4. target−negative reader contrasts = +0.160875 / +0.167215；
+5. all7 重建/移除 exact、non-KV0 leakage 0；
+6. 冻结 offset token 在全部 family/wording 条件下完全相同（-13 `")\n\n`、-5 `<|im_end|>`、-3 `<|im_start|>`、-1 `\n`）；
+7. canonical−paraphrase frozen-V suff 系统性差（config_command 约 +0.053、docs_code +0.048、search_edit +0.048、test_edit +0.014）；
+8. 多个 family×wording×label cell 符号反转 → frozen 写点下 writer 不可双向移植；
+9. reader register 在所有 family 与两种措辞下保持正，但 paraphrase 下幅度更弱。
+
+→ 拒绝简单 absolute-position 解释，驱动 EXP13 的 family×wording writer discovery + 显式双向性约束。
+
+## 设计（预注册）
+
+- **冻结组件**：H20 → block20 V → KV0 → readers {Q0,Q3,Q5}（target）/ {Q2,Q4,Q6}（negative）/ all7 / non-KV0；reader 与 layer/head 全部冻结，不允许重选。
+- **数据集**：精确复用 EXP12 64 任务（import `experiments/exp12_independent_replication/run.py`，importlib 加载，len==64 硬断言，无任务模板复制）。
+- **Split**：每 family 16 任务确定性 seeded shuffle（split seed 5313，per-family RNG = 5313 + family index）→ 8 discovery / 8 confirmation（32 held-out 任务）。
+- **9 个语义 anchor**（各固定 6-token window，终止于该语义边界）：SKILL_END、SYSTEM_END、ISSUE_END、DETAIL_END、ACTION0_END、ACTION1_END、FINAL_INSTRUCTION_END、USER_END、GENERATION_BOUNDARY。SKILL_END/SYSTEM_END 允许 writer 落在 Skill/system 区（此前只搜公共后缀根本找不到）。
+- **8 个 discovery strata**：4 family × 2 wording（canonical/paraphrase）。label 不作 strata（用于双向得分）。
+- **双向选择得分**：`score(a) = min(S0(a), S1(a), N0(a), N1(a))`（S/N = discovery 任务 suff/nec 均值，0/1 = recipient label）。选最高分，tie-break 用固定 anchor 序；同时冻结 runner-up。
+- **necessity 局部化**：每个 anchor 单独检验其自身 H20 → KV0-V 局部 mediation：residual_eff = donor H20 residual 在 anchor window 局部恢复；suff = donor KV0 V 在该 window 单独传递；nec = residual_eff − retained（retained = donor H20 局部 residual + 该位置 KV0 V clamp 回 recipient baseline）。不再用"公共后缀整体 residual patch"去解释可能位于 system/Skill 区的 writer。
+- **Held-out confirmation**（每 strata）：selected V suff/nec、OLD_ABSOLUTE {-13,-5,-3,-1}（降级为 historical diagnostic，4 稀疏 token 不作 6-token window 的主控制）、runner-up（matched-width control）、label0/1 分别、cross-wording（recipient 用自己 wording 的 selected anchor、donor 用自己 wording 的 selected anchor = 功能位置映射）、same-state 控制、reader {Q0,Q3,Q5} vs {Q2,Q4,Q6}（全冻结）、all7 重建/移除 + Q7–Q27 零泄漏。
+- **判定**：writer_pass = selected V suff/nec CI>0 + cross suff/nec CI>0 + selected−runner_up suff/nec CI>0 + bidir_ok（label0/1 均 CI>0）；reader_pass = target suff/nec CI>0 + target−negative reader suff/nec CI>0；sanity_pass = all7−verified≈0、non_kv0≈0、leakage<1e-6、baseline/verified diff<5e-5；confirmatory_pass = 三者全过。机制 pattern：strata 选点唯一 → schema_stable_writer_plus_stable_reader；>1 → contextual_writer_plus_stable_reader；writer 败 reader 过 → portable_writer_not_confirmed_stable_reader_survives（→ 永久停止 token-position scan，转向功能性隐变量识别）。
+
+## 输出
+
+`outputs/exp13_contextual_write_remap/`：split.json、schema_audit.csv、discovery_results.csv、discovery_summary.csv、selected_schema.json、confirmation_results.csv、confirmation_summary.csv、directional_confirmation.csv、family_wording_confirmation.csv、paired_contrasts.csv、summary.json、run_manifest.json（+ discovery_profile.png / confirmation_profile.png）。
+
+## 运行
+
+```bash
+python experiments/exp13_contextual_write_remap/run.py --phase discovery   # 先 discovery
+python experiments/exp13_contextual_write_remap/run.py --phase confirmation  # 不人工改 selected_schema.json
+```
 
 ---
 
@@ -1983,16 +2034,16 @@ EXP10 之后，可辩护的项目级声明：
 11. Prompt 位置均匀/前段分布假设（EXP10：B0–B4 全无效，100% 集中于 B5 末端）；
 12. 全部 7 个 reader query heads 协同读取（EXP11：Q0 73% 主导、Q3/Q5 次要，Q2/Q4/Q6 负）；
 13. B5 内效应均匀铺开（EXP11：仅 offset -13/-5/-3/-1 显著，其余 ≈ 0）；
-14. **边界-token position coding 作为任务一般的因果载体**（EXP12：新 4 family 上 frozen-offset V 效应显著为负、内容 token 负对照显著为正、cross-wording 亦负、措辞间符号翻转——position 层未复制；注意：reader register {Q0,Q3,Q5} 的正选择性在全部 4 family 复制成功，不在此排除项内）。
+14. **固定绝对位点 writer 作为任务一般的因果载体**（EXP12：新 4 family 上冻结位点 {-13,-5,-3,-1} 的 V 效应显著为负、内容 token 负对照显著为正、cross-wording 亦负、措辞间符号翻转——同 token 同位置符号随 context 翻转，非 absolute-position artifact 而是 context-conditioned writer，固定位点不可移植；注意：reader register {Q0,Q3,Q5} 的正选择性在全部 4 family 复制成功，不在此排除项内）。
 
 尚未完成的验证：
 
-1. **position code 的 family 特异性判定**（EXP12 遗留）：在 4 个新 family 内重扫 offsets，判定 {-13,-5,-3,-1} 是 family/任务结构特异还是实验构建 artifact——决定 EXP13 跨模型复现目标是否锁定在 reader register 层；
-2. **reader register 的跨模型复现**：将 {Q0,Q3,Q5} 正读 / {Q2,Q4,Q6} 抑读 + procedural specificity 在另一个模型家族上预注册复制（position 层不冻结）；
+1. **EXP13：context-conditioned schema write-site remapping**（预注册，planning→running）——检验 writer 是否随 family×wording×label 上下文条件化而 reader register 恒定；成败判定与停止规则已预注册（见 EXP13 计划段）；
+2. **reader register 的跨模型复现**：将 {Q0,Q3,Q5} 正读 / {Q2,Q4,Q6} 抑读 + procedural specificity 在另一个模型家族上预注册复制（writer 层不冻结）；
 3. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
 4. H18–H20 状态的维度分解（SAE/SNMF）；
 5. 跨真实 agent 泛化。
 
-> 「证据排除了十四个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影、多 KV head 协同负载、位置均匀分布、7 reader heads 协同读取、B5 均匀铺开、边界-token position coding 的任务一般性——路径收缩为：**H20 残差 → block20 V-projection → KV0 → reader register {Q0/Q3/Q5} 正读 / {Q2/Q4/Q6} 抑读（跨 4 个新 family、新词表、双措辞独立复制成功；procedural 条件化：skill−direct 全指标显著为正）**。positional 编码（{-13,-5,-3,-1} 边界 token）在 EXP12 新 family 上方向翻转未复制，不能作为任务一般机制。EXP12 confirmatory_replication_pass=FALSE，证据链**不升级**为 task-general frozen sparse circuit；跨模型复现（EXP13）目标应锁定在 reader register 层。」
+> 「证据排除了十四个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影、多 KV head 协同负载、位置均匀分布、7 reader heads 协同读取、B5 均匀铺开、固定绝对位点 writer 的任务一般性——路径收缩为：**H20 残差 → block20 V-projection → KV0 → reader register {Q0/Q3/Q5} 正读 / {Q2/Q4/Q6} 抑读（跨 4 个新 family、新词表、双措辞独立复制成功；procedural 条件化：skill−direct 全指标显著为正）**。写侧机制为 **context-conditioned writer**：同 token 同位置（-13/-5/-3/-1）的 V 因果方向随 family×wording×label 上下文翻转，固定位点不可移植，非 absolute-position artifact。EXP12 confirmatory_replication_pass=FALSE，证据链**不升级**为 task-general frozen sparse circuit；EXP13 预注册检验 9 语义 anchor × 8 strata 的 schema 重映射，若 writer 仍不可移植而 reader register 存续，则永久停止 token-position scan 并转向功能性隐变量识别。」
 
 此措辞应保留，直到 EXP09 定位到各层内部投影（Q/K/V/MLP）的 causal handoff 结构。

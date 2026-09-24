@@ -1,0 +1,555 @@
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:01<09:30,  1.69s/it]Loading weights:   1%|          | 2/339 [00:09<29:23,  5.23s/it]Loading weights:   1%|          | 4/339 [00:10<12:07,  2.17s/it]Loading weights:   1%|▏         | 5/339 [00:11<09:56,  1.79s/it]Loading weights:   2%|▏         | 6/339 [00:11<08:10,  1.47s/it]Loading weights:   2%|▏         | 8/339 [00:12<04:36,  1.20it/s]Loading weights:   4%|▎         | 12/339 [00:12<02:03,  2.65it/s]Loading weights:   4%|▍         | 14/339 [00:12<02:01,  2.69it/s]Loading weights:   5%|▍         | 16/339 [00:13<01:59,  2.71it/s]Loading weights:   5%|▌         | 17/339 [00:14<02:20,  2.28it/s]Loading weights:   5%|▌         | 18/339 [00:15<02:36,  2.06it/s]Loading weights:   6%|▌         | 19/339 [00:15<02:08,  2.49it/s]Loading weights:   6%|▋         | 22/339 [00:15<01:15,  4.20it/s]Loading weights:   7%|▋         | 24/339 [00:15<00:57,  5.44it/s]Loading weights:   8%|▊         | 26/339 [00:16<01:13,  4.26it/s]Loading weights:   8%|▊         | 28/339 [00:16<01:12,  4.30it/s]Loading weights:   9%|▊         | 29/339 [00:17<01:27,  3.54it/s]Loading weights:   9%|▉         | 30/339 [00:17<02:01,  2.54it/s]Loading weights:  10%|▉         | 33/339 [00:18<01:10,  4.36it/s]Loading weights:  10%|█         | 35/339 [00:18<00:53,  5.71it/s]Loading weights:  11%|█         | 37/339 [00:18<00:45,  6.68it/s]Loading weights:  12%|█▏        | 39/339 [00:18<00:47,  6.34it/s]Loading weights:  12%|█▏        | 41/339 [00:21<02:41,  1.84it/s]Loading weights:  12%|█▏        | 42/339 [00:21<02:19,  2.14it/s]Loading weights:  13%|█▎        | 43/339 [00:21<02:03,  2.40it/s]Loading weights:  14%|█▍        | 47/339 [00:22<01:05,  4.44it/s]Loading weights:  14%|█▍        | 48/339 [00:22<01:07,  4.30it/s]Loading weights:  15%|█▌        | 52/339 [00:24<01:33,  3.06it/s]Loading weights:  16%|█▌        | 53/339 [00:25<02:24,  1.97it/s]Loading weights:  16%|█▌        | 54/339 [00:26<02:55,  1.62it/s]Loading weights:  16%|█▌        | 55/339 [00:26<02:28,  1.92it/s]Loading weights:  17%|█▋        | 56/339 [00:27<02:09,  2.18it/s]Loading weights:  17%|█▋        | 58/339 [00:27<01:34,  2.98it/s]Loading weights:  18%|█▊        | 61/339 [00:28<01:21,  3.42it/s]Loading weights:  19%|█▉        | 64/339 [00:29<01:33,  2.95it/s]Loading weights:  19%|█▉        | 65/339 [00:30<02:04,  2.19it/s]Loading weights:  19%|█▉        | 66/339 [00:31<02:23,  1.91it/s]Loading weights:  20%|█▉        | 67/339 [00:31<02:08,  2.12it/s]Loading weights:  21%|██        | 72/339 [00:31<00:57,  4.68it/s]Loading weights:  22%|██▏       | 73/339 [00:32<00:59,  4.44it/s]Loading weights:  22%|██▏       | 75/339 [00:32<01:09,  3.79it/s]Loading weights:  22%|██▏       | 76/339 [00:34<02:20,  1.87it/s]Loading weights:  23%|██▎       | 78/339 [00:35<01:58,  2.21it/s]Loading weights:  24%|██▍       | 81/339 [00:35<01:22,  3.11it/s]Loading weights:  25%|██▍       | 84/339 [00:35<00:56,  4.51it/s]Loading weights:  25%|██▌       | 85/339 [00:36<01:08,  3.70it/s]Loading weights:  26%|██▌       | 88/339 [00:39<02:15,  1.86it/s]Loading weights:  27%|██▋       | 90/339 [00:40<02:23,  1.74it/s]Loading weights:  27%|██▋       | 91/339 [00:40<02:07,  1.94it/s]Loading weights:  28%|██▊       | 94/339 [00:40<01:17,  3.14it/s]Loading weights:  28%|██▊       | 96/339 [00:41<01:02,  3.89it/s]Loading weights:  29%|██▉       | 98/339 [00:41<01:02,  3.87it/s]Loading weights:  29%|██▉       | 99/339 [00:42<01:28,  2.71it/s]Loading weights:  30%|██▉       | 101/339 [00:43<01:27,  2.71it/s]Loading weights:  30%|███       | 102/339 [00:44<01:57,  2.01it/s]Loading weights:  32%|███▏      | 108/339 [00:44<00:58,  3.94it/s]Loading weights:  33%|███▎      | 113/339 [00:46<01:00,  3.76it/s]Loading weights:  34%|███▎      | 114/339 [00:47<01:15,  2.99it/s]Loading weights:  34%|███▍      | 115/339 [00:47<01:11,  3.15it/s]Loading weights:  37%|███▋      | 125/339 [00:47<00:25,  8.56it/s]Loading weights:  38%|███▊      | 128/339 [00:47<00:21,  9.61it/s]Loading weights:  40%|████      | 136/339 [00:48<00:14, 13.55it/s]Loading weights:  41%|████      | 139/339 [00:48<00:21,  9.39it/s]Loading weights:  42%|████▏     | 141/339 [00:48<00:19, 10.06it/s]Loading weights:  42%|████▏     | 144/339 [00:49<00:16, 11.49it/s]Loading weights:  44%|████▍     | 149/339 [00:49<00:17, 10.88it/s]Loading weights:  45%|████▍     | 151/339 [00:50<00:33,  5.69it/s]Loading weights:  45%|████▌     | 154/339 [00:50<00:26,  7.07it/s]Loading weights:  47%|████▋     | 158/339 [00:50<00:18,  9.60it/s]Loading weights:  47%|████▋     | 160/339 [00:52<00:37,  4.72it/s]Loading weights:  48%|████▊     | 162/339 [00:54<01:07,  2.63it/s]Loading weights:  49%|████▊     | 165/339 [00:54<00:49,  3.54it/s]Loading weights:  49%|████▉     | 167/339 [00:54<00:40,  4.24it/s]Loading weights:  50%|████▉     | 169/339 [00:54<00:35,  4.81it/s]Loading weights:  50%|█████     | 171/339 [00:55<00:47,  3.53it/s]Loading weights:  51%|█████     | 173/339 [00:56<00:47,  3.48it/s]Loading weights:  51%|█████▏    | 174/339 [00:57<01:01,  2.69it/s]Loading weights:  53%|█████▎    | 178/339 [00:57<00:35,  4.57it/s]Loading weights:  54%|█████▍    | 183/339 [00:58<00:30,  5.08it/s]Loading weights:  55%|█████▍    | 186/339 [00:59<00:35,  4.30it/s]Loading weights:  57%|█████▋    | 192/339 [00:59<00:22,  6.57it/s]Loading weights:  57%|█████▋    | 194/339 [00:59<00:19,  7.40it/s]Loading weights:  58%|█████▊    | 196/339 [01:01<00:34,  4.18it/s]Loading weights:  58%|█████▊    | 198/339 [01:02<00:55,  2.56it/s]Loading weights:  59%|█████▊    | 199/339 [01:03<00:52,  2.65it/s]Loading weights:  60%|██████    | 205/339 [01:04<00:41,  3.22it/s]Loading weights:  61%|██████    | 207/339 [01:05<00:44,  2.97it/s]Loading weights:  62%|██████▏   | 209/339 [01:06<00:44,  2.95it/s]Loading weights:  62%|██████▏   | 210/339 [01:06<00:46,  2.77it/s]Loading weights:  63%|██████▎   | 213/339 [01:06<00:30,  4.09it/s]Loading weights:  64%|██████▍   | 217/339 [01:08<00:31,  3.85it/s]Loading weights:  65%|██████▍   | 220/339 [01:08<00:25,  4.59it/s]Loading weights:  65%|██████▌   | 221/339 [01:09<00:41,  2.85it/s]Loading weights:  65%|██████▌   | 222/339 [01:10<00:49,  2.38it/s]Loading weights:  66%|██████▌   | 223/339 [01:10<00:43,  2.67it/s]Loading weights:  67%|██████▋   | 226/339 [01:10<00:26,  4.30it/s]Loading weights:  68%|██████▊   | 229/339 [01:11<00:21,  5.14it/s]Loading weights:  68%|██████▊   | 232/339 [01:11<00:20,  5.24it/s]Loading weights:  69%|██████▊   | 233/339 [01:12<00:31,  3.39it/s]Loading weights:  69%|██████▉   | 234/339 [01:13<00:40,  2.58it/s]Loading weights:  70%|███████   | 238/339 [01:13<00:24,  4.17it/s]Loading weights:  71%|███████▏  | 242/339 [01:14<00:15,  6.17it/s]Loading weights:  72%|███████▏  | 244/339 [01:14<00:22,  4.26it/s]Loading weights:  72%|███████▏  | 245/339 [01:15<00:28,  3.27it/s]Loading weights:  73%|███████▎  | 246/339 [01:16<00:35,  2.62it/s]Loading weights:  73%|███████▎  | 249/339 [01:16<00:21,  4.11it/s]Loading weights:  74%|███████▎  | 250/339 [01:16<00:20,  4.37it/s]Loading weights:  75%|███████▌  | 255/339 [01:17<00:17,  4.90it/s]Loading weights:  76%|███████▌  | 257/339 [01:18<00:20,  4.03it/s]Loading weights:  76%|███████▌  | 258/339 [01:19<00:27,  2.91it/s]Loading weights:  76%|███████▋  | 259/339 [01:19<00:24,  3.27it/s]Loading weights:  79%|███████▉  | 268/339 [01:19<00:07,  9.67it/s]Loading weights:  83%|████████▎ | 280/339 [01:19<00:03, 19.60it/s]Loading weights:  86%|████████▌ | 291/339 [01:19<00:01, 27.76it/s]Loading weights:  90%|████████▉ | 305/339 [01:20<00:00, 40.73it/s]Loading weights:  94%|█████████▎| 317/339 [01:20<00:00, 50.58it/s]Loading weights:  97%|█████████▋| 328/339 [01:20<00:00, 53.64it/s]Loading weights:  99%|█████████▉| 336/339 [01:21<00:00, 27.08it/s]Loading weights: 100%|██████████| 339/339 [01:21<00:00,  4.18it/s]
+============================================================================================
+EXP13: Context-Conditioned Schema Write-Site Remapping
+EXP12 code: /data/mzb/skills4s/experiments/exp12_independent_replication/run.py
+EXP12 sha256: e5388d7c4cf8191e3325e881d4ded20f230eccfd47f31f721f133db5149e660a
+Model: /data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct
+Tasks: 64
+Split seed: 5313
+Anchors: ('SKILL_END', 'SYSTEM_END', 'ISSUE_END', 'DETAIL_END', 'ACTION0_END', 'ACTION1_END', 'FINAL_INSTRUCTION_END', 'USER_END', 'GENERATION_BOUNDARY')
+Frozen readers: (0, 3, 5)
+Phase: all
+============================================================================================
+[discovery 001/032] exp12_test_edit_00 (test_edit)
+[discovery 002/032] exp12_test_edit_01 (test_edit)
+[discovery 003/032] exp12_test_edit_03 (test_edit)
+[discovery 004/032] exp12_test_edit_05 (test_edit)
+[discovery 005/032] exp12_test_edit_07 (test_edit)
+[discovery 006/032] exp12_test_edit_08 (test_edit)
+[discovery 007/032] exp12_test_edit_09 (test_edit)
+[discovery 008/032] exp12_test_edit_15 (test_edit)
+[discovery 009/032] exp12_search_edit_01 (search_edit)
+[discovery 010/032] exp12_search_edit_03 (search_edit)
+[discovery 011/032] exp12_search_edit_05 (search_edit)
+[discovery 012/032] exp12_search_edit_09 (search_edit)
+[discovery 013/032] exp12_search_edit_10 (search_edit)
+[discovery 014/032] exp12_search_edit_12 (search_edit)
+[discovery 015/032] exp12_search_edit_13 (search_edit)
+[discovery 016/032] exp12_search_edit_15 (search_edit)
+[discovery 017/032] exp12_config_command_03 (config_command)
+[discovery 018/032] exp12_config_command_05 (config_command)
+[discovery 019/032] exp12_config_command_06 (config_command)
+[discovery 020/032] exp12_config_command_08 (config_command)
+[discovery 021/032] exp12_config_command_09 (config_command)
+[discovery 022/032] exp12_config_command_10 (config_command)
+[discovery 023/032] exp12_config_command_11 (config_command)
+[discovery 024/032] exp12_config_command_12 (config_command)
+[discovery 025/032] exp12_docs_code_00 (docs_code)
+[discovery 026/032] exp12_docs_code_01 (docs_code)
+[discovery 027/032] exp12_docs_code_03 (docs_code)
+[discovery 028/032] exp12_docs_code_08 (docs_code)
+[discovery 029/032] exp12_docs_code_09 (docs_code)
+[discovery 030/032] exp12_docs_code_11 (docs_code)
+[discovery 031/032] exp12_docs_code_12 (docs_code)
+[discovery 032/032] exp12_docs_code_14 (docs_code)
+[confirmation 001/032] exp12_test_edit_02 (test_edit)
+[confirmation 002/032] exp12_test_edit_04 (test_edit)
+[confirmation 003/032] exp12_test_edit_06 (test_edit)
+[confirmation 004/032] exp12_test_edit_10 (test_edit)
+[confirmation 005/032] exp12_test_edit_11 (test_edit)
+[confirmation 006/032] exp12_test_edit_12 (test_edit)
+[confirmation 007/032] exp12_test_edit_13 (test_edit)
+[confirmation 008/032] exp12_test_edit_14 (test_edit)
+[confirmation 009/032] exp12_search_edit_00 (search_edit)
+[confirmation 010/032] exp12_search_edit_02 (search_edit)
+[confirmation 011/032] exp12_search_edit_04 (search_edit)
+[confirmation 012/032] exp12_search_edit_06 (search_edit)
+[confirmation 013/032] exp12_search_edit_07 (search_edit)
+[confirmation 014/032] exp12_search_edit_08 (search_edit)
+[confirmation 015/032] exp12_search_edit_11 (search_edit)
+[confirmation 016/032] exp12_search_edit_14 (search_edit)
+[confirmation 017/032] exp12_config_command_00 (config_command)
+[confirmation 018/032] exp12_config_command_01 (config_command)
+[confirmation 019/032] exp12_config_command_02 (config_command)
+[confirmation 020/032] exp12_config_command_04 (config_command)
+[confirmation 021/032] exp12_config_command_07 (config_command)
+[confirmation 022/032] exp12_config_command_13 (config_command)
+[confirmation 023/032] exp12_config_command_14 (config_command)
+[confirmation 024/032] exp12_config_command_15 (config_command)
+[confirmation 025/032] exp12_docs_code_02 (docs_code)
+[confirmation 026/032] exp12_docs_code_04 (docs_code)
+[confirmation 027/032] exp12_docs_code_05 (docs_code)
+[confirmation 028/032] exp12_docs_code_06 (docs_code)
+[confirmation 029/032] exp12_docs_code_07 (docs_code)
+[confirmation 030/032] exp12_docs_code_10 (docs_code)
+[confirmation 031/032] exp12_docs_code_13 (docs_code)
+[confirmation 032/032] exp12_docs_code_15 (docs_code)
+{
+  "experiment": "EXP13_contextual_write_remap",
+  "phase": "all",
+  "exp12_output_audit_applied": true,
+  "discovery": {
+    "selected_schema": {
+      "selection_rule": "Per family×wording select anchor maximizing min(mean_suff_label0, mean_suff_label1, mean_nec_label0, mean_nec_label1).",
+      "anchor_order": [
+        "SKILL_END",
+        "SYSTEM_END",
+        "ISSUE_END",
+        "DETAIL_END",
+        "ACTION0_END",
+        "ACTION1_END",
+        "FINAL_INSTRUCTION_END",
+        "USER_END",
+        "GENERATION_BOUNDARY"
+      ],
+      "strata": {
+        "config_command::canonical": {
+          "family": "config_command",
+          "wording": "canonical",
+          "selected_anchor": "FINAL_INSTRUCTION_END",
+          "runner_up_anchor": "USER_END",
+          "selected_bidirectional_score": 0.009913111105561256,
+          "runner_up_bidirectional_score": 0.0030910782516002655,
+          "selected_discovery_components": {
+            "suff_label0": 0.009913111105561256,
+            "suff_label0_ci_low": 0.006037650629878044,
+            "suff_label0_ci_high": 0.013590934546664355,
+            "nec_label0": 0.01207030564546585,
+            "nec_label0_ci_low": 0.009845970198512077,
+            "nec_label0_ci_high": 0.014319624425843357,
+            "suff_label1": 0.03346876404248178,
+            "suff_label1_ci_low": 0.027489261934533715,
+            "suff_label1_ci_high": 0.04057114425813779,
+            "nec_label1": 0.016653365222737193,
+            "nec_label1_ci_low": 0.014036356878932565,
+            "nec_label1_ci_high": 0.02021640606690198
+          }
+        },
+        "config_command::paraphrase": {
+          "family": "config_command",
+          "wording": "paraphrase",
+          "selected_anchor": "USER_END",
+          "runner_up_anchor": "FINAL_INSTRUCTION_END",
+          "selected_bidirectional_score": 0.008896434679627419,
+          "runner_up_bidirectional_score": 0.0045552439987659454,
+          "selected_discovery_components": {
+            "suff_label0": 0.008896434679627419,
+            "suff_label0_ci_low": 0.0044917741790413855,
+            "suff_label0_ci_high": 0.013136165402829643,
+            "nec_label0": 0.013741248287260532,
+            "nec_label0_ci_low": 0.009748335927724838,
+            "nec_label0_ci_high": 0.018260369077324867,
+            "suff_label1": 0.03629500791430473,
+            "suff_label1_ci_low": 0.030429513193666935,
+            "suff_label1_ci_high": 0.041479827556759115,
+            "nec_label1": 0.016454800963401794,
+            "nec_label1_ci_low": 0.011812398489564658,
+            "nec_label1_ci_high": 0.021181564778089523
+          }
+        },
+        "docs_code::canonical": {
+          "family": "docs_code",
+          "wording": "canonical",
+          "selected_anchor": "USER_END",
+          "runner_up_anchor": "FINAL_INSTRUCTION_END",
+          "selected_bidirectional_score": 0.010816607158631086,
+          "runner_up_bidirectional_score": 0.002124588470906019,
+          "selected_discovery_components": {
+            "suff_label0": 0.021940039936453104,
+            "suff_label0_ci_low": 0.014017695398069917,
+            "suff_label0_ci_high": 0.02915441009681671,
+            "nec_label0": 0.010816607158631086,
+            "nec_label0_ci_low": 0.0038920524530112743,
+            "nec_label0_ci_high": 0.019685457798186683,
+            "suff_label1": 0.019253142178058624,
+            "suff_label1_ci_low": 0.010949099506251513,
+            "suff_label1_ci_high": 0.026787333004176614,
+            "nec_label1": 0.01697204215452075,
+            "nec_label1_ci_low": 0.009439038252457977,
+            "nec_label1_ci_high": 0.02410126394825056
+          }
+        },
+        "docs_code::paraphrase": {
+          "family": "docs_code",
+          "wording": "paraphrase",
+          "selected_anchor": "USER_END",
+          "runner_up_anchor": "FINAL_INSTRUCTION_END",
+          "selected_bidirectional_score": 0.005511899013072252,
+          "runner_up_bidirectional_score": 0.005177455255761743,
+          "selected_discovery_components": {
+            "suff_label0": 0.026075948029756546,
+            "suff_label0_ci_low": 0.020596304442733526,
+            "suff_label0_ci_high": 0.03136608540080488,
+            "nec_label0": 0.005511899013072252,
+            "nec_label0_ci_low": -0.002865819283761084,
+            "nec_label0_ci_high": 0.013866542838513851,
+            "suff_label1": 0.03193329181522131,
+            "suff_label1_ci_low": 0.02048702279571444,
+            "suff_label1_ci_high": 0.041958236531354484,
+            "nec_label1": 0.040819114074110985,
+            "nec_label1_ci_low": 0.0307919904589653,
+            "nec_label1_ci_high": 0.05147879673168063
+          }
+        },
+        "search_edit::canonical": {
+          "family": "search_edit",
+          "wording": "canonical",
+          "selected_anchor": "USER_END",
+          "runner_up_anchor": "SKILL_END",
+          "selected_bidirectional_score": 0.021525903372094035,
+          "runner_up_bidirectional_score": -0.00010390300303697586,
+          "selected_discovery_components": {
+            "suff_label0": 0.06550247455015779,
+            "suff_label0_ci_low": 0.0603872062638402,
+            "suff_label0_ci_high": 0.07050077221356332,
+            "nec_label0": 0.021525903372094035,
+            "nec_label0_ci_low": 0.01475748525117524,
+            "nec_label0_ci_high": 0.02834603905212134,
+            "suff_label1": 0.13828912749886513,
+            "suff_label1_ci_low": 0.12995491011533886,
+            "suff_label1_ci_high": 0.14852611636742946,
+            "nec_label1": 0.15783777926117182,
+            "nec_label1_ci_low": 0.14976167439017446,
+            "nec_label1_ci_high": 0.16566706355661154
+          }
+        },
+        "search_edit::paraphrase": {
+          "family": "search_edit",
+          "wording": "paraphrase",
+          "selected_anchor": "USER_END",
+          "runner_up_anchor": "FINAL_INSTRUCTION_END",
+          "selected_bidirectional_score": 0.011760081863030791,
+          "runner_up_bidirectional_score": 0.0038657670374959707,
+          "selected_discovery_components": {
+            "suff_label0": 0.01588084129616618,
+            "suff_label0_ci_low": 0.01183761134161614,
+            "suff_label0_ci_high": 0.019921100506326183,
+            "nec_label0": 0.011760081863030791,
+            "nec_label0_ci_low": 0.005763318855315447,
+            "nec_label0_ci_high": 0.018760747386841102,
+            "suff_label1": 0.0689889919012785,
+            "suff_label1_ci_low": 0.060541500616818664,
+            "suff_label1_ci_high": 0.07772775432094926,
+            "nec_label1": 0.09943856298923492,
+            "nec_label1_ci_low": 0.08901912986766547,
+            "nec_label1_ci_high": 0.11099200993776319
+          }
+        },
+        "test_edit::canonical": {
+          "family": "test_edit",
+          "wording": "canonical",
+          "selected_anchor": "USER_END",
+          "runner_up_anchor": "ACTION0_END",
+          "selected_bidirectional_score": 0.06677316268905997,
+          "runner_up_bidirectional_score": 0.0036718742921948433,
+          "selected_discovery_components": {
+            "suff_label0": 0.06677316268905997,
+            "suff_label0_ci_low": 0.059931292897090316,
+            "suff_label0_ci_high": 0.07344302767887712,
+            "nec_label0": 0.10591275966726243,
+            "nec_label0_ci_low": 0.09766782814986072,
+            "nec_label0_ci_high": 0.11553160120383836,
+            "suff_label1": 0.10476601123809814,
+            "suff_label1_ci_low": 0.1006577324355021,
+            "suff_label1_ci_high": 0.10895228439476341,
+            "nec_label1": 0.091345121152699,
+            "nec_label1_ci_low": 0.08472009757533669,
+            "nec_label1_ci_high": 0.09659729390405118
+          }
+        },
+        "test_edit::paraphrase": {
+          "family": "test_edit",
+          "wording": "paraphrase",
+          "selected_anchor": "USER_END",
+          "runner_up_anchor": "ACTION0_END",
+          "selected_bidirectional_score": 0.01509845838882029,
+          "runner_up_bidirectional_score": -0.0017901165410876274,
+          "selected_discovery_components": {
+            "suff_label0": 0.04183750553056598,
+            "suff_label0_ci_low": 0.03758870320161804,
+            "suff_label0_ci_high": 0.04651001501479186,
+            "nec_label0": 0.01509845838882029,
+            "nec_label0_ci_low": 0.006599357514642179,
+            "nec_label0_ci_high": 0.02357195853255689,
+            "suff_label1": 0.10912894550710917,
+            "suff_label1_ci_low": 0.10305536172818393,
+            "suff_label1_ci_high": 0.11477288417518139,
+            "nec_label1": 0.15747117903083563,
+            "nec_label1_ci_low": 0.1513177663553506,
+            "nec_label1_ci_high": 0.16344411994796246
+          }
+        }
+      }
+    },
+    "num_strata": 8,
+    "num_candidate_anchors": 9
+  },
+  "confirmation": {
+    "confirmatory_pass": true,
+    "writer_pass": true,
+    "reader_pass": true,
+    "bidirectional_writer_pass": true,
+    "sanity_pass": true,
+    "mechanism_pattern": "contextual_writer_plus_stable_reader",
+    "selected_anchors": {
+      "config_command::canonical": "FINAL_INSTRUCTION_END",
+      "config_command::paraphrase": "USER_END",
+      "docs_code::canonical": "USER_END",
+      "docs_code::paraphrase": "USER_END",
+      "search_edit::canonical": "USER_END",
+      "search_edit::paraphrase": "USER_END",
+      "test_edit::canonical": "USER_END",
+      "test_edit::paraphrase": "USER_END"
+    },
+    "unique_selected_anchor_count": 2,
+    "endpoint_flags": {
+      "selected_V_sufficiency": true,
+      "selected_V_necessity_loss": true,
+      "reader_target_sufficiency": true,
+      "reader_target_necessity": true,
+      "cross_selected_V_sufficiency": true,
+      "cross_selected_V_necessity_loss": true
+    },
+    "contrast_flags": {
+      "selected_minus_old_absolute_sufficiency": true,
+      "selected_minus_old_absolute_local_necessity": true,
+      "selected_minus_runner_up_sufficiency": true,
+      "selected_minus_runner_up_necessity": true,
+      "target_minus_negative_reader_sufficiency": true,
+      "target_minus_negative_reader_necessity": true
+    },
+    "directional_endpoints": {
+      "label0_selected_V_sufficiency": {
+        "mean": 0.03025153954513371,
+        "ci_low": 0.024329698764267958,
+        "ci_high": 0.036364077215694124
+      },
+      "label0_selected_V_necessity_loss": {
+        "mean": 0.02420211906428449,
+        "ci_low": 0.017406030916026792,
+        "ci_high": 0.03176613304676719
+      },
+      "label1_selected_V_sufficiency": {
+        "mean": 0.0643286521662958,
+        "ci_low": 0.052944735197525,
+        "ci_high": 0.07616216919777798
+      },
+      "label1_selected_V_necessity_loss": {
+        "mean": 0.0688418006466236,
+        "ci_low": 0.05402102282241685,
+        "ci_high": 0.08434996787545969
+      }
+    },
+    "same_state_selected_V_control_mean": -0.00019808557408396155,
+    "sanity": {
+      "all7_minus_verified_suff_mean": 0.0,
+      "all7_minus_verified_nec_mean": 0.0,
+      "non_kv0_sufficiency_mean": 0.0,
+      "non_kv0_necessity_mean": 0.0,
+      "mean_reader_leakage_ratio": 0.0,
+      "max_abs_reader_baseline_margin_diff": 0.0,
+      "max_abs_reader_verified_v_diff": 0.0
+    },
+    "overall_metrics": [
+      {
+        "relation": "opposite_cross_wording",
+        "metric": "cross_selected_V_necessity_loss",
+        "mean": 0.04851328304357594,
+        "ci_low": 0.03827711143403576,
+        "ci_high": 0.05901427227781823,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_cross_wording",
+        "metric": "cross_selected_V_sufficiency",
+        "mean": 0.04366436797135975,
+        "ci_low": 0.035275172645560814,
+        "ci_high": 0.052141491511065396,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "old_absolute_V_sufficiency",
+        "mean": -0.013754691695794463,
+        "ci_low": -0.02222811501706019,
+        "ci_high": -0.005554066383410831,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "old_absolute_local_V_necessity_loss",
+        "mean": -0.019696886374731548,
+        "ci_low": -0.02858459671479068,
+        "ci_high": -0.011004169645821097,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_all7_necessity",
+        "mean": 0.04729009585571475,
+        "ci_low": 0.03870807378425525,
+        "ci_high": 0.055948447673836194,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_all7_sufficiency",
+        "mean": 0.04729009585571475,
+        "ci_low": 0.03871666464001464,
+        "ci_high": 0.05638453053998091,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_negative_necessity",
+        "mean": -0.032610242822556756,
+        "ci_low": -0.03632076940521074,
+        "ci_high": -0.029161533403021172,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_negative_sufficiency",
+        "mean": -0.028110816623666324,
+        "ci_low": -0.031359012398388585,
+        "ci_high": -0.024997017355053688,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_non_kv0_necessity",
+        "mean": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_non_kv0_sufficiency",
+        "mean": 0.0,
+        "ci_low": 0.0,
+        "ci_high": 0.0,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_target_necessity",
+        "mean": 0.06573142067645676,
+        "ci_low": 0.05739906527160201,
+        "ci_high": 0.07433893281322525,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_target_sufficiency",
+        "mean": 0.06665312366385479,
+        "ci_low": 0.058107909516547804,
+        "ci_high": 0.07581964310265903,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "reader_verified_v_effect",
+        "mean": 0.04729009585571475,
+        "ci_low": 0.038910427198607066,
+        "ci_high": 0.056238653998479986,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "runner_up_V_necessity_loss",
+        "mean": 0.01592080026603071,
+        "ci_low": 0.012448477133875712,
+        "ci_high": 0.019486862872508937,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "runner_up_V_sufficiency",
+        "mean": 0.018939889123430476,
+        "ci_low": 0.013100440813832392,
+        "ci_high": 0.025327443755304553,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "selected_H20_residual_effect",
+        "mean": 0.08620833448367193,
+        "ci_low": 0.07041574138529541,
+        "ci_high": 0.10139500468321781,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "selected_V_necessity_loss",
+        "mean": 0.04652195985545404,
+        "ci_low": 0.03702321430428128,
+        "ci_high": 0.05645402069094416,
+        "num_tasks": 32
+      },
+      {
+        "relation": "opposite_same_wording",
+        "metric": "selected_V_sufficiency",
+        "mean": 0.04729009585571475,
+        "ci_low": 0.03880372457169869,
+        "ci_high": 0.05578210610110545,
+        "num_tasks": 32
+      },
+      {
+        "relation": "same_state_cross_wording",
+        "metric": "same_state_selected_V_control",
+        "mean": -0.00019808557408396155,
+        "ci_low": -0.002059006700437749,
+        "ci_high": 0.001419525807068566,
+        "num_tasks": 32
+      }
+    ],
+    "paired_contrasts": [
+      {
+        "contrast": "selected_minus_old_absolute_sufficiency",
+        "metric_a": "selected_V_sufficiency",
+        "metric_b": "old_absolute_V_sufficiency",
+        "mean_difference": 0.061044787551509216,
+        "ci_low": 0.050003001940785906,
+        "ci_high": 0.07111965157037048,
+        "num_tasks": 32
+      },
+      {
+        "contrast": "selected_minus_old_absolute_local_necessity",
+        "metric_a": "selected_V_necessity_loss",
+        "metric_b": "old_absolute_local_V_necessity_loss",
+        "mean_difference": 0.06621884623018559,
+        "ci_low": 0.05751730437841616,
+        "ci_high": 0.07404436103461194,
+        "num_tasks": 32
+      },
+      {
+        "contrast": "selected_minus_runner_up_sufficiency",
+        "metric_a": "selected_V_sufficiency",
+        "metric_b": "runner_up_V_sufficiency",
+        "mean_difference": 0.028350206732284278,
+        "ci_low": 0.01513911062029365,
+        "ci_high": 0.04223259523241721,
+        "num_tasks": 32
+      },
+      {
+        "contrast": "selected_minus_runner_up_necessity",
+        "metric_a": "selected_V_necessity_loss",
+        "metric_b": "runner_up_V_necessity_loss",
+        "mean_difference": 0.030601159589423332,
+        "ci_low": 0.01806295146125194,
+        "ci_high": 0.04384341332843177,
+        "num_tasks": 32
+      },
+      {
+        "contrast": "target_minus_negative_reader_sufficiency",
+        "metric_a": "reader_target_sufficiency",
+        "metric_b": "reader_negative_sufficiency",
+        "mean_difference": 0.09476394028752111,
+        "ci_low": 0.08481318700833071,
+        "ci_high": 0.1047266872235923,
+        "num_tasks": 32
+      },
+      {
+        "contrast": "target_minus_negative_reader_necessity",
+        "metric_a": "reader_target_necessity",
+        "metric_b": "reader_negative_necessity",
+        "mean_difference": 0.09834166349901352,
+        "ci_low": 0.08685279368837655,
+        "ci_high": 0.10939398799637275,
+        "num_tasks": 32
+      }
+    ]
+  },
+  "decision_rule": "Writer claim requires held-out positive sufficiency/necessity, bidirectionality, superiority to old absolute and frozen runner-up, cross-wording mapping, plus the frozen Q0/Q3/Q5 reader register outperforming Q2/Q4/Q6 under exact decomposition sanity."
+}
