@@ -30,7 +30,7 @@
 | EXP10 | GQA V-head × token 位置定位？ | 完成，稀疏收敛 | **KV0 单头承载全部 V 效应**（direct +0.047 ≈ full +0.043）；**B5（最末端指令区）即 99.9% full**；KV0×B5 单 cell（suff +0.0448, q=0.0006 / nec +0.0445, q=0.0006）≈ full_V 的 103%；KV1≈0、KV2/3 微负；B0–B4 无效 | `a3ed568` |
 | EXP11 | B5 内精确 offset + KV0 reader heads？ | 完成，收敛到边界标记 | **offset -5（`<|im_end|>`）即 56% full、-1（assistant 起始）21%**；reader heads **Q0 73% / Q3 37% / Q5 14%**（Q2/4/6 负）；sanity 全过（Q7–Q27 delta=0、leakage ratio=0、all7 重建=full 逐位）；**1 KV head × 2 边界 token × 3 query heads** | `6b48aee` |
 | EXP12 | 冻结电路在新 family 独立复制？ | 完成，分层（confirmatory=FALSE） | **reader register 复制成功**：frozen readers {Q0,Q3,Q5} 4/4 新 family 显著正（suff +0.076/nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、contrast +0.16/+0.17、措辞稳定；**writer 层未按冻结位点复制**：frozen offsets V suff −0.013（方向反）、负对照为正、cross 负、措辞间翻转；**非 absolute-position artifact**（同 token 同位置符号随 context 翻转）；3 硬 sanity 全 bit-exact；specificity：skill−direct 全正（procedural specificity） | `0d5d6c8` |
-| EXP13 | 上下文条件化 schema 写点能否重映射？ | 计划 | 8 strata × 9 语义 anchor 双向 discovery；8/8 held-out 确认；reader {Q0,Q3,Q5} 全冻结；判定 context/schema-dependent writer → stable reader | 待运行 |
+| EXP13 | 上下文条件化 schema 写点能否重映射？ | 完成，confirmatory=TRUE（Pattern A） | **writer 高度 schema-stable：USER_END 7/8 strata 选中**（唯一例外 config_command::canonical=FINAL_INSTRUCTION_END，其 runner-up 即 USER_END）；held-out 双向 V suff/nec 全正（+0.0473/+0.0465，CI>0）、selected−old_absolute +0.061/+0.066、selected−runner_up +0.028/+0.031、cross-wording +0.044/+0.049、target reader 0.067 vs negative −0.028（contrast +0.095/+0.098）；old absolute 再次为负（−0.014）；sanity 全过（all7=selected=verified 精确相等、Q7..Q27 泄漏 0、non-KV0 0）；label0/label1 均正 → bidirectional_writer_pass | `d706328` |
 
 ---
 
@@ -1888,7 +1888,7 @@ PLANNED — **基于 EXP12 outputs 实际核验修正设计**：EXP12 不能解�
 2026-09-23
 
 ## 提交
-待运行
+d706328
 
 ## 科学动机（EXP12_OUTPUT_AUDIT 摘要）
 
@@ -2038,7 +2038,7 @@ EXP10 之后，可辩护的项目级声明：
 
 尚未完成的验证：
 
-1. **EXP13：context-conditioned schema write-site remapping**（预注册，planning→running）——检验 writer 是否随 family×wording×label 上下文条件化而 reader register 恒定；成败判定与停止规则已预注册（见 EXP13 计划段）；
+1. ~~**EXP13：context-conditioned schema write-site remapping**（预注册，已完成 → d706328）~~——writer 高度 schema-stable（USER_END 7/8 strata），其 V 因果效应双向显著正、优于 old absolute 与 runner-up、cross-wording 迁移正；reader register {Q0,Q3,Q5} 全部冻结保持。**结论：不升级为"跨上下文可移植的固定位点 writer"**——writer 位点基本稳定但效应幅度随 family×wording 波动，机制更接近 "schema-stable writer + stable reader"（Pattern B 倾向），已触发下一检验：EXP14 应识别 reader register 消耗的功能性隐变量或测试 USER_END 位点分辨率，而非继续 token-position scan。
 2. **reader register 的跨模型复现**：将 {Q0,Q3,Q5} 正读 / {Q2,Q4,Q6} 抑读 + procedural specificity 在另一个模型家族上预注册复制（writer 层不冻结）；
 3. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
 4. H18–H20 状态的维度分解（SAE/SNMF）；
