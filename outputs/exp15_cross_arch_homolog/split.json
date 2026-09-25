@@ -1,0 +1,94 @@
+{
+  "seed": 5313,
+  "discovery_per_family": 8,
+  "families": {
+    "config_command": {
+      "discovery": [
+        "exp12_config_command_08",
+        "exp12_config_command_11",
+        "exp12_config_command_09",
+        "exp12_config_command_10",
+        "exp12_config_command_12",
+        "exp12_config_command_06",
+        "exp12_config_command_03",
+        "exp12_config_command_05"
+      ],
+      "confirmation": [
+        "exp12_config_command_15",
+        "exp12_config_command_14",
+        "exp12_config_command_07",
+        "exp12_config_command_04",
+        "exp12_config_command_02",
+        "exp12_config_command_13",
+        "exp12_config_command_00",
+        "exp12_config_command_01"
+      ]
+    },
+    "docs_code": {
+      "discovery": [
+        "exp12_docs_code_03",
+        "exp12_docs_code_14",
+        "exp12_docs_code_01",
+        "exp12_docs_code_00",
+        "exp12_docs_code_11",
+        "exp12_docs_code_08",
+        "exp12_docs_code_09",
+        "exp12_docs_code_12"
+      ],
+      "confirmation": [
+        "exp12_docs_code_15",
+        "exp12_docs_code_10",
+        "exp12_docs_code_13",
+        "exp12_docs_code_05",
+        "exp12_docs_code_07",
+        "exp12_docs_code_04",
+        "exp12_docs_code_02",
+        "exp12_docs_code_06"
+      ]
+    },
+    "search_edit": {
+      "discovery": [
+        "exp12_search_edit_13",
+        "exp12_search_edit_09",
+        "exp12_search_edit_15",
+        "exp12_search_edit_12",
+        "exp12_search_edit_05",
+        "exp12_search_edit_01",
+        "exp12_search_edit_03",
+        "exp12_search_edit_10"
+      ],
+      "confirmation": [
+        "exp12_search_edit_08",
+        "exp12_search_edit_11",
+        "exp12_search_edit_06",
+        "exp12_search_edit_04",
+        "exp12_search_edit_00",
+        "exp12_search_edit_14",
+        "exp12_search_edit_07",
+        "exp12_search_edit_02"
+      ]
+    },
+    "test_edit": {
+      "discovery": [
+        "exp12_test_edit_00",
+        "exp12_test_edit_15",
+        "exp12_test_edit_03",
+        "exp12_test_edit_08",
+        "exp12_test_edit_05",
+        "exp12_test_edit_07",
+        "exp12_test_edit_09",
+        "exp12_test_edit_01"
+      ],
+      "confirmation": [
+        "exp12_test_edit_14",
+        "exp12_test_edit_02",
+        "exp12_test_edit_10",
+        "exp12_test_edit_04",
+        "exp12_test_edit_11",
+        "exp12_test_edit_13",
+        "exp12_test_edit_12",
+        "exp12_test_edit_06"
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "model_dir": "/data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct",
+    "name": "Qwen2.5-Coder-7B-Instruct",
+    "model_type": "qwen2",
+    "architectures": [
+      "Qwen2ForCausalLM"
+    ],
+    "num_hidden_layers": 28,
+    "hidden_size": 3584,
+    "num_attention_heads": 28,
+    "num_key_value_heads": 4,
+    "head_dim": 128,
+    "attention_kind": "GQA",
+    "qwen2_family": true,
+    "config_sha256": "c0242402ad6a13b331ea320feea8c7e3776ffb7a4eff0757b9cd667e116d9a28"
+  },
+  {
+    "model_dir": "/data/mzb/skills4s/models/Mistral-7B-Instruct-v0.3",
+    "name": "Mistral-7B-Instruct-v0.3",
+    "model_type": "mistral",
+    "architectures": [
+      "MistralForCausalLM"
+    ],
+    "num_hidden_layers": 32,
+    "hidden_size": 4096,
+    "num_attention_heads": 32,
+    "num_key_value_heads": 8,
+    "head_dim": 128,
+    "attention_kind": "GQA",
+    "qwen2_family": false,
+    "config_sha256": "affafc6478ec0fd07a32f0ca57aa2fc57743f4d17d6730f86a96ac24d1507f99"
+  },
+  {
+    "model_dir": "/data/mzb/ar2_scratch/models/Qwen2-7B-Instruct",
+    "name": "Qwen2-7B-Instruct",
+    "model_type": "qwen2",
+    "architectures": [
+      "Qwen2ForCausalLM"
+    ],
+    "num_hidden_layers": 28,
+    "hidden_size": 3584,
+    "num_attention_heads": 28,
+    "num_key_value_heads": 4,
+    "head_dim": 128,
+    "attention_kind": "GQA",
+    "qwen2_family": true,
+    "config_sha256": "8b9a4f6c0acf4854a2d301616d4203039c3d7972cb0a557dae98686b6c3ae4b2"
+  }
+]

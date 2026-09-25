@@ -1,0 +1,72 @@
+{
+  "experiment": "EXP15_cross_arch_homolog",
+  "git_commit": "0e0c20969ae314d861442d33763419231006bb5e",
+  "seed": 5515,
+  "model_dir": "/data/mzb/skills4s/models/Mistral-7B-Instruct-v0.3",
+  "model_config_sha256": "affafc6478ec0fd07a32f0ca57aa2fc57743f4d17d6730f86a96ac24d1507f99",
+  "exp14_code_sha256": "3c2e2a96ce4622a8032febfd7111e65fbdc8f7bf0c7615a8a2a92f7cae9b26b4",
+  "exp12_code_sha256": "e5388d7c4cf8191e3325e881d4ded20f230eccfd47f31f721f133db5149e660a",
+  "script_sha256": "e9aa8a6ef74a84d85327c454539d5c6f08f7bc68fdbd475f8383450605488e33",
+  "architecture": {
+    "layer_path": "model.layers",
+    "num_layers": 32,
+    "num_attention_heads": 32,
+    "num_key_value_heads": 8,
+    "head_dim": 128,
+    "attention_kind": "GQA",
+    "model_type": "mistral",
+    "architectures": [
+      "MistralForCausalLM"
+    ],
+    "qwen2_family": false,
+    "self_attn_has_v_proj": true,
+    "self_attn_has_o_proj": true,
+    "coarse_layers": [
+      3,
+      6,
+      9,
+      12,
+      16,
+      19,
+      22,
+      25,
+      28,
+      30
+    ]
+  },
+  "coarse_fractions": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    0.96
+  ],
+  "refine_radius": 2,
+  "phase_a_anchors": [
+    "USER_END",
+    "FINAL_INSTRUCTION_END"
+  ],
+  "anchors": [
+    "SKILL_END",
+    "SYSTEM_END",
+    "ISSUE_END",
+    "DETAIL_END",
+    "ACTION0_END",
+    "ACTION1_END",
+    "FINAL_INSTRUCTION_END",
+    "USER_END",
+    "GENERATION_BOUNDARY"
+  ],
+  "python": "3.13.12",
+  "torch": "2.9.1+cu128",
+  "transformers": "5.17.0",
+  "cuda_available": true,
+  "cuda_version": "12.8",
+  "gpu": "NVIDIA RTX A6000",
+  "offline_only": true
+}

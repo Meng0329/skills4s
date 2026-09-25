@@ -1,0 +1,830 @@
+{
+  "L_star": 30,
+  "k_star": 4,
+  "coarse_layers": [
+    3,
+    6,
+    9,
+    12,
+    16,
+    19,
+    22,
+    25,
+    28,
+    30
+  ],
+  "coarse_best": {
+    "L": 30,
+    "k": 4,
+    "score": 0.0022291362402029335,
+    "suff0": 0.0028192262398079038,
+    "suff1": 0.0022291362402029335,
+    "nec0": 0.0030896496609784663,
+    "nec1": 0.0022977649641688913
+  },
+  "refine_layers": [
+    28,
+    29,
+    30,
+    31
+  ],
+  "phase_a_best": {
+    "L": 30,
+    "k": 4,
+    "score": 0.0022291362402029335,
+    "suff0": 0.0028192262398079038,
+    "suff1": 0.0022291362402029335,
+    "nec0": 0.0030896496609784663,
+    "nec1": 0.0022977649641688913
+  },
+  "reader_pos_set": [
+    0,
+    16,
+    18
+  ],
+  "reader_neg_set": [
+    1,
+    17,
+    19
+  ],
+  "head_summary": {
+    "0": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "1": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "2": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "3": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "4": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "5": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "6": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "7": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "8": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "9": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "10": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "11": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "12": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "13": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "14": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "15": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "16": {
+      "mean_suff": 0.1503194210526999,
+      "mean_nec": 0.14764638294582255,
+      "positive_score": 0.14764638294582255,
+      "negative_score": 0.1503194210526999
+    },
+    "17": {
+      "mean_suff": -0.0014013127802172676,
+      "mean_nec": -0.001456506346585229,
+      "positive_score": -0.001456506346585229,
+      "negative_score": -0.0014013127802172676
+    },
+    "18": {
+      "mean_suff": 0.012055446961312555,
+      "mean_nec": 0.014037763408850878,
+      "positive_score": 0.012055446961312555,
+      "negative_score": 0.014037763408850878
+    },
+    "19": {
+      "mean_suff": -0.01835586578818038,
+      "mean_nec": -0.02343847678275779,
+      "positive_score": -0.02343847678275779,
+      "negative_score": -0.01835586578818038
+    },
+    "20": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "21": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "22": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "23": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "24": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "25": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "26": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "27": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "28": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "29": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "30": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    },
+    "31": {
+      "mean_suff": 0.0,
+      "mean_nec": 0.0,
+      "positive_score": 0.0,
+      "negative_score": 0.0
+    }
+  },
+  "strata": {
+    "test_edit::canonical": {
+      "family": "test_edit",
+      "wording": "canonical",
+      "selected_anchor": "GENERATION_BOUNDARY",
+      "runner_up_anchor": "ISSUE_END",
+      "selected_score": 0.12742562219500542,
+      "runner_up_score": 0.0006800247356295586,
+      "anchors": {
+        "SKILL_END": {
+          "suff0": -0.00040200911462306976,
+          "suff1": -0.0020712297409772873,
+          "nec0": -0.0021339990198612213,
+          "nec1": -0.0035508498549461365,
+          "bidirectional_score": -0.0035508498549461365
+        },
+        "SYSTEM_END": {
+          "suff0": -8.351169526576996e-05,
+          "suff1": 0.003971792757511139,
+          "nec0": 0.0008079195395112038,
+          "nec1": 0.0030478835105895996,
+          "bidirectional_score": -8.351169526576996e-05
+        },
+        "ISSUE_END": {
+          "suff0": 0.0006800247356295586,
+          "suff1": 0.002577478066086769,
+          "nec0": 0.0011154338717460632,
+          "nec1": 0.003005167469382286,
+          "bidirectional_score": 0.0006800247356295586
+        },
+        "DETAIL_END": {
+          "suff0": 0.0002979785203933716,
+          "suff1": 0.001319514587521553,
+          "nec0": -0.0009453929960727692,
+          "nec1": -0.0002130214124917984,
+          "bidirectional_score": -0.0009453929960727692
+        },
+        "ACTION0_END": {
+          "suff0": -0.000843757763504982,
+          "suff1": 0.0016439836472272873,
+          "nec0": -0.0003419099375605583,
+          "nec1": 0.0026189330965280533,
+          "bidirectional_score": -0.000843757763504982
+        },
+        "ACTION1_END": {
+          "suff0": -0.00016876962035894394,
+          "suff1": 0.00010346993803977966,
+          "nec0": 0.00011219829320907593,
+          "nec1": -0.0003893692046403885,
+          "bidirectional_score": -0.0003893692046403885
+        },
+        "FINAL_INSTRUCTION_END": {
+          "suff0": 0.00185457244515419,
+          "suff1": 0.004941176623106003,
+          "nec0": -0.0007326230406761169,
+          "nec1": 0.006567539647221565,
+          "bidirectional_score": -0.0007326230406761169
+        },
+        "USER_END": {
+          "suff0": 0.00185457244515419,
+          "suff1": 0.004941176623106003,
+          "nec0": -0.0007326230406761169,
+          "nec1": 0.006567539647221565,
+          "bidirectional_score": -0.0007326230406761169
+        },
+        "GENERATION_BOUNDARY": {
+          "suff0": 0.20937375538051128,
+          "suff1": 0.12742562219500542,
+          "nec0": 0.17798236571252346,
+          "nec1": 0.20026047620922327,
+          "bidirectional_score": 0.12742562219500542
+        }
+      }
+    },
+    "test_edit::paraphrase": {
+      "family": "test_edit",
+      "wording": "paraphrase",
+      "selected_anchor": "GENERATION_BOUNDARY",
+      "runner_up_anchor": "FINAL_INSTRUCTION_END",
+      "selected_score": 0.17314434051513672,
+      "runner_up_score": 0.0008853944018483162,
+      "anchors": {
+        "SKILL_END": {
+          "suff0": -0.0011273100972175598,
+          "suff1": 0.0006379410624504089,
+          "nec0": -6.579095497727394e-05,
+          "nec1": -0.0008457377552986145,
+          "bidirectional_score": -0.0011273100972175598
+        },
+        "SYSTEM_END": {
+          "suff0": 0.0012841643765568733,
+          "suff1": -0.00034038349986076355,
+          "nec0": -0.0005414858460426331,
+          "nec1": 0.0006856396794319153,
+          "bidirectional_score": -0.0005414858460426331
+        },
+        "ISSUE_END": {
+          "suff0": 0.0005600978620350361,
+          "suff1": 0.0007499903440475464,
+          "nec0": -0.0001536463387310505,
+          "nec1": 0.0005942359566688538,
+          "bidirectional_score": -0.0001536463387310505
+        },
+        "DETAIL_END": {
+          "suff0": 0.0004481016658246517,
+          "suff1": 0.0003567412495613098,
+          "nec0": -0.0007772799581289291,
+          "nec1": 6.83218240737915e-06,
+          "bidirectional_score": -0.0007772799581289291
+        },
+        "ACTION0_END": {
+          "suff0": 0.0006585703231394291,
+          "suff1": 0.00028277188539505005,
+          "nec0": 6.971880793571472e-06,
+          "nec1": 6.718933582305908e-05,
+          "bidirectional_score": 6.971880793571472e-06
+        },
+        "ACTION1_END": {
+          "suff0": 0.0005324832163751125,
+          "suff1": -0.0004946477711200714,
+          "nec0": 0.0002837427891790867,
+          "nec1": -0.0020650550723075867,
+          "bidirectional_score": -0.0020650550723075867
+        },
+        "FINAL_INSTRUCTION_END": {
+          "suff0": 0.0008853944018483162,
+          "suff1": 0.002793043851852417,
+          "nec0": 0.0010046819224953651,
+          "nec1": 0.006440445780754089,
+          "bidirectional_score": 0.0008853944018483162
+        },
+        "USER_END": {
+          "suff0": 0.0008853944018483162,
+          "suff1": 0.002793043851852417,
+          "nec0": 0.0010046819224953651,
+          "nec1": 0.006440445780754089,
+          "bidirectional_score": 0.0008853944018483162
+        },
+        "GENERATION_BOUNDARY": {
+          "suff0": 0.2264180495403707,
+          "suff1": 0.17314434051513672,
+          "nec0": 0.193632073700428,
+          "nec1": 0.2198920650407672,
+          "bidirectional_score": 0.17314434051513672
+        }
+      }
+    },
+    "search_edit::canonical": {
+      "family": "search_edit",
+      "wording": "canonical",
+      "selected_anchor": "GENERATION_BOUNDARY",
+      "runner_up_anchor": "FINAL_INSTRUCTION_END",
+      "selected_score": 0.11802589148283005,
+      "runner_up_score": 0.002168474718928337,
+      "anchors": {
+        "SKILL_END": {
+          "suff0": -0.00013095885515213013,
+          "suff1": -0.0009488984942436218,
+          "nec0": -1.4871358871459961e-05,
+          "nec1": -0.003392057493329048,
+          "bidirectional_score": -0.003392057493329048
+        },
+        "SYSTEM_END": {
+          "suff0": 0.0032252371311187744,
+          "suff1": 0.00025328807532787323,
+          "nec0": 0.002951204776763916,
+          "nec1": 4.9756839871406555e-05,
+          "bidirectional_score": 4.9756839871406555e-05
+        },
+        "ISSUE_END": {
+          "suff0": 0.0006316974759101868,
+          "suff1": 0.0007470641285181046,
+          "nec0": 0.0012184679508209229,
+          "nec1": -0.0002847854048013687,
+          "bidirectional_score": -0.0002847854048013687
+        },
+        "DETAIL_END": {
+          "suff0": 0.0018917545676231384,
+          "suff1": -0.0008133891969919205,
+          "nec0": -0.002468876540660858,
+          "nec1": 0.002103058621287346,
+          "bidirectional_score": -0.002468876540660858
+        },
+        "ACTION0_END": {
+          "suff0": -0.0010161250829696655,
+          "suff1": 0.0010682214051485062,
+          "nec0": -0.00048270076513290405,
+          "nec1": -0.0019444413483142853,
+          "bidirectional_score": -0.0019444413483142853
+        },
+        "ACTION1_END": {
+          "suff0": -0.002399921417236328,
+          "suff1": -0.0007459186017513275,
+          "nec0": 0.0007581189274787903,
+          "nec1": -0.002008475363254547,
+          "bidirectional_score": -0.002399921417236328
+        },
+        "FINAL_INSTRUCTION_END": {
+          "suff0": 0.0035574734210968018,
+          "suff1": 0.002168474718928337,
+          "nec0": 0.003338649868965149,
+          "nec1": 0.002605479210615158,
+          "bidirectional_score": 0.002168474718928337
+        },
+        "USER_END": {
+          "suff0": 0.0035574734210968018,
+          "suff1": 0.002168474718928337,
+          "nec0": 0.003338649868965149,
+          "nec1": 0.002605479210615158,
+          "bidirectional_score": 0.002168474718928337
+        },
+        "GENERATION_BOUNDARY": {
+          "suff0": 0.13150671869516373,
+          "suff1": 0.19105244055390358,
+          "nec0": 0.22259260341525078,
+          "nec1": 0.11802589148283005,
+          "bidirectional_score": 0.11802589148283005
+        }
+      }
+    },
+    "search_edit::paraphrase": {
+      "family": "search_edit",
+      "wording": "paraphrase",
+      "selected_anchor": "GENERATION_BOUNDARY",
+      "runner_up_anchor": "FINAL_INSTRUCTION_END",
+      "selected_score": 0.11570917442440987,
+      "runner_up_score": 0.000836788909509778,
+      "anchors": {
+        "SKILL_END": {
+          "suff0": -0.0028846412897109985,
+          "suff1": 0.0002757227048277855,
+          "nec0": 0.001345224678516388,
+          "nec1": -0.001307161757722497,
+          "bidirectional_score": -0.0028846412897109985
+        },
+        "SYSTEM_END": {
+          "suff0": -0.00020898878574371338,
+          "suff1": 0.0006762680131942034,
+          "nec0": 0.0020645111799240112,
+          "nec1": 0.0018178713507950306,
+          "bidirectional_score": -0.00020898878574371338
+        },
+        "ISSUE_END": {
+          "suff0": -0.0019127093255519867,
+          "suff1": 0.002702047349885106,
+          "nec0": 0.0014943256974220276,
+          "nec1": -0.0018979234155267477,
+          "bidirectional_score": -0.0019127093255519867
+        },
+        "DETAIL_END": {
+          "suff0": -0.0015573129057884216,
+          "suff1": 0.003623995464295149,
+          "nec0": -0.0001968182623386383,
+          "nec1": 0.002844518516212702,
+          "bidirectional_score": -0.0015573129057884216
+        },
+        "ACTION0_END": {
+          "suff0": -0.0009876340627670288,
+          "suff1": 0.002153236186131835,
+          "nec0": -0.0015594400465488434,
+          "nec1": 3.161071799695492e-05,
+          "bidirectional_score": -0.0015594400465488434
+        },
+        "ACTION1_END": {
+          "suff0": -0.001531451940536499,
+          "suff1": 0.003693709848448634,
+          "nec0": -0.00014936178922653198,
+          "nec1": 0.002458887407556176,
+          "bidirectional_score": -0.001531451940536499
+        },
+        "FINAL_INSTRUCTION_END": {
+          "suff0": 0.0014521628618240356,
+          "suff1": 0.00464559206739068,
+          "nec0": 0.0018776096403598785,
+          "nec1": 0.000836788909509778,
+          "bidirectional_score": 0.000836788909509778
+        },
+        "USER_END": {
+          "suff0": 0.0014521628618240356,
+          "suff1": 0.00464559206739068,
+          "nec0": 0.0018776096403598785,
+          "nec1": 0.000836788909509778,
+          "bidirectional_score": 0.000836788909509778
+        },
+        "GENERATION_BOUNDARY": {
+          "suff0": 0.11570917442440987,
+          "suff1": 0.14753354666754603,
+          "nec0": 0.1756988544948399,
+          "nec1": 0.11873763799667358,
+          "bidirectional_score": 0.11570917442440987
+        }
+      }
+    },
+    "config_command::canonical": {
+      "family": "config_command",
+      "wording": "canonical",
+      "selected_anchor": "GENERATION_BOUNDARY",
+      "runner_up_anchor": "SYSTEM_END",
+      "selected_score": 0.06643147021532059,
+      "runner_up_score": 0.0019988836720585823,
+      "anchors": {
+        "SKILL_END": {
+          "suff0": 0.00023321062326431274,
+          "suff1": -0.0009636422619223595,
+          "nec0": -3.37064266204834e-05,
+          "nec1": -0.0023857038468122482,
+          "bidirectional_score": -0.0023857038468122482
+        },
+        "SYSTEM_END": {
+          "suff0": 0.005139682441949844,
+          "suff1": 0.004616260528564453,
+          "nec0": 0.024833999574184418,
+          "nec1": 0.0019988836720585823,
+          "bidirectional_score": 0.0019988836720585823
+        },
+        "ISSUE_END": {
+          "suff0": 0.00042909756302833557,
+          "suff1": -0.00039228517562150955,
+          "nec0": -0.0006980225443840027,
+          "nec1": 0.0008736830204725266,
+          "bidirectional_score": -0.0006980225443840027
+        },
+        "DETAIL_END": {
+          "suff0": 0.0005909949541091919,
+          "suff1": -0.0004199426621198654,
+          "nec0": 0.0005944967269897461,
+          "nec1": 0.00016567204147577286,
+          "bidirectional_score": -0.0004199426621198654
+        },
+        "ACTION0_END": {
+          "suff0": -0.000287521630525589,
+          "suff1": -0.0007391534745693207,
+          "nec0": 1.3824552297592163e-05,
+          "nec1": 0.0006904387846589088,
+          "bidirectional_score": -0.0007391534745693207
+        },
+        "ACTION1_END": {
+          "suff0": 0.0004407614469528198,
+          "suff1": -0.0005178283900022507,
+          "nec0": 1.7520040273666382e-05,
+          "nec1": -0.0005261125043034554,
+          "bidirectional_score": -0.0005261125043034554
+        },
+        "FINAL_INSTRUCTION_END": {
+          "suff0": 0.004398517310619354,
+          "suff1": 0.0011456124484539032,
+          "nec0": 0.008402656763792038,
+          "nec1": 0.0007472401484847069,
+          "bidirectional_score": 0.0007472401484847069
+        },
+        "USER_END": {
+          "suff0": 0.004398517310619354,
+          "suff1": 0.0011456124484539032,
+          "nec0": 0.008402656763792038,
+          "nec1": 0.0007472401484847069,
+          "bidirectional_score": 0.0007472401484847069
+        },
+        "GENERATION_BOUNDARY": {
+          "suff0": 0.10358395427465439,
+          "suff1": 0.06643147021532059,
+          "nec0": 0.1068290239199996,
+          "nec1": 0.11041552200913429,
+          "bidirectional_score": 0.06643147021532059
+        }
+      }
+    },
+    "config_command::paraphrase": {
+      "family": "config_command",
+      "wording": "paraphrase",
+      "selected_anchor": "GENERATION_BOUNDARY",
+      "runner_up_anchor": "FINAL_INSTRUCTION_END",
+      "selected_score": 0.06585683673620224,
+      "runner_up_score": 0.00022005196660757065,
+      "anchors": {
+        "SKILL_END": {
+          "suff0": 0.0007600747048854828,
+          "suff1": 0.00014303624629974365,
+          "nec0": 9.892135858535767e-05,
+          "nec1": -0.0001925462856888771,
+          "bidirectional_score": -0.0001925462856888771
+        },
+        "SYSTEM_END": {
+          "suff0": 0.002586573362350464,
+          "suff1": 0.00040703825652599335,
+          "nec0": 0.0051330626010894775,
+          "nec1": -0.00015475787222385406,
+          "bidirectional_score": -0.00015475787222385406
+        },
+        "ISSUE_END": {
+          "suff0": 0.002216573804616928,
+          "suff1": 0.0006589032709598541,
+          "nec0": 0.0012709461152553558,
+          "nec1": -0.002192269079387188,
+          "bidirectional_score": -0.002192269079387188
+        },
+        "DETAIL_END": {
+          "suff0": 0.0003117658197879791,
+          "suff1": -1.0310672223567963e-05,
+          "nec0": -0.0016146190464496613,
+          "nec1": 0.0021148966625332832,
+          "bidirectional_score": -0.0016146190464496613
+        },
+        "ACTION0_END": {
+          "suff0": 0.00033676251769065857,
+          "suff1": 0.0004206877201795578,
+          "nec0": 0.000669620931148529,
+          "nec1": 0.00012375414371490479,
+          "bidirectional_score": 0.00012375414371490479
+        },
+        "ACTION1_END": {
+          "suff0": 4.5396387577056885e-05,
+          "suff1": 3.6740675568580627e-06,
+          "nec0": 0.00013606995344161987,
+          "nec1": -1.9039958715438843e-05,
+          "bidirectional_score": -1.9039958715438843e-05
+        },
+        "FINAL_INSTRUCTION_END": {
+          "suff0": 0.004171125590801239,
+          "suff1": 0.0004976596683263779,
+          "nec0": 0.0042494796216487885,
+          "nec1": 0.00022005196660757065,
+          "bidirectional_score": 0.00022005196660757065
+        },
+        "USER_END": {
+          "suff0": 0.004171125590801239,
+          "suff1": 0.0004976596683263779,
+          "nec0": 0.0042494796216487885,
+          "nec1": 0.00022005196660757065,
+          "bidirectional_score": 0.00022005196660757065
+        },
+        "GENERATION_BOUNDARY": {
+          "suff0": 0.11390488594770432,
+          "suff1": 0.06585683673620224,
+          "nec0": 0.08175835479050875,
+          "nec1": 0.10295575857162476,
+          "bidirectional_score": 0.06585683673620224
+        }
+      }
+    },
+    "docs_code::canonical": {
+      "family": "docs_code",
+      "wording": "canonical",
+      "selected_anchor": "GENERATION_BOUNDARY",
+      "runner_up_anchor": "FINAL_INSTRUCTION_END",
+      "selected_score": 0.12217207532376051,
+      "runner_up_score": 0.0003670160658657551,
+      "anchors": {
+        "SKILL_END": {
+          "suff0": -6.016762927174568e-05,
+          "suff1": -0.0008908463642001152,
+          "nec0": -0.0007596486248075962,
+          "nec1": -0.0006614984013140202,
+          "bidirectional_score": -0.0008908463642001152
+        },
+        "SYSTEM_END": {
+          "suff0": 0.0044048684649169445,
+          "suff1": -0.0012949425727128983,
+          "nec0": 0.005628663115203381,
+          "nec1": -0.0008469405584037304,
+          "bidirectional_score": -0.0012949425727128983
+        },
+        "ISSUE_END": {
+          "suff0": 0.0006323391571640968,
+          "suff1": -0.0011014314368367195,
+          "nec0": 0.0018849419429898262,
+          "nec1": 0.0010582935065031052,
+          "bidirectional_score": -0.0011014314368367195
+        },
+        "DETAIL_END": {
+          "suff0": -0.0003267996944487095,
+          "suff1": -0.0009492128156125546,
+          "nec0": 0.001606866717338562,
+          "nec1": -0.0020111161284148693,
+          "bidirectional_score": -0.0020111161284148693
+        },
+        "ACTION0_END": {
+          "suff0": 0.0009156395681202412,
+          "suff1": -0.0008986508473753929,
+          "nec0": 0.0007250490598380566,
+          "nec1": -0.0005353782325983047,
+          "bidirectional_score": -0.0008986508473753929
+        },
+        "ACTION1_END": {
+          "suff0": 0.000334419310092926,
+          "suff1": -0.0002810051664710045,
+          "nec0": -8.676201105117798e-06,
+          "nec1": 0.0020839781500399113,
+          "bidirectional_score": -0.0002810051664710045
+        },
+        "FINAL_INSTRUCTION_END": {
+          "suff0": 0.004519067704677582,
+          "suff1": 0.0003670160658657551,
+          "nec0": 0.0035187802277505398,
+          "nec1": 0.0016339616850018501,
+          "bidirectional_score": 0.0003670160658657551
+        },
+        "USER_END": {
+          "suff0": 0.004519067704677582,
+          "suff1": 0.0003670160658657551,
+          "nec0": 0.0035187802277505398,
+          "nec1": 0.0016339616850018501,
+          "bidirectional_score": 0.0003670160658657551
+        },
+        "GENERATION_BOUNDARY": {
+          "suff0": 0.1791977514512837,
+          "suff1": 0.12217207532376051,
+          "nec0": 0.14046480390243232,
+          "nec1": 0.16070033935829997,
+          "bidirectional_score": 0.12217207532376051
+        }
+      }
+    },
+    "docs_code::paraphrase": {
+      "family": "docs_code",
+      "wording": "paraphrase",
+      "selected_anchor": "GENERATION_BOUNDARY",
+      "runner_up_anchor": "FINAL_INSTRUCTION_END",
+      "selected_score": 0.10325263813138008,
+      "runner_up_score": -0.0006693876348435879,
+      "anchors": {
+        "SKILL_END": {
+          "suff0": 0.0016595181077718735,
+          "suff1": 0.00037862733006477356,
+          "nec0": 0.0009689871221780777,
+          "nec1": -0.0012836819514632225,
+          "bidirectional_score": -0.0012836819514632225
+        },
+        "SYSTEM_END": {
+          "suff0": 0.0009078597649931908,
+          "suff1": 8.182181045413017e-05,
+          "nec0": -0.0015862761065363884,
+          "nec1": 0.0033013434149324894,
+          "bidirectional_score": -0.0015862761065363884
+        },
+        "ISSUE_END": {
+          "suff0": 0.0001001628115773201,
+          "suff1": -0.000639770645648241,
+          "nec0": -0.0004516569897532463,
+          "nec1": -0.0014574616216123104,
+          "bidirectional_score": -0.0014574616216123104
+        },
+        "DETAIL_END": {
+          "suff0": 0.0006489977240562439,
+          "suff1": -0.0010672006756067276,
+          "nec0": -0.001359955407679081,
+          "nec1": -0.0028340723365545273,
+          "bidirectional_score": -0.0028340723365545273
+        },
+        "ACTION0_END": {
+          "suff0": -0.0002163127064704895,
+          "suff1": -0.002169176936149597,
+          "nec0": -0.0004833955317735672,
+          "nec1": 0.0032139187678694725,
+          "bidirectional_score": -0.002169176936149597
+        },
+        "ACTION1_END": {
+          "suff0": -1.596100628376007e-05,
+          "suff1": -0.0013187401928007603,
+          "nec0": 0.0009133666753768921,
+          "nec1": 0.00022915750741958618,
+          "bidirectional_score": -0.0013187401928007603
+        },
+        "FINAL_INSTRUCTION_END": {
+          "suff0": 0.0017154961824417114,
+          "suff1": 0.001274514477699995,
+          "nec0": 0.0030579622834920883,
+          "nec1": -0.0006693876348435879,
+          "bidirectional_score": -0.0006693876348435879
+        },
+        "USER_END": {
+          "suff0": 0.0017154961824417114,
+          "suff1": 0.001274514477699995,
+          "nec0": 0.0030579622834920883,
+          "nec1": -0.0006693876348435879,
+          "bidirectional_score": -0.0006693876348435879
+        },
+        "GENERATION_BOUNDARY": {
+          "suff0": 0.1543487347662449,
+          "suff1": 0.10325263813138008,
+          "nec0": 0.11034347303211689,
+          "nec1": 0.1474780449643731,
+          "bidirectional_score": 0.10325263813138008
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,121 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:25, 11.46it/s]Loading weights:   2%|▏         | 5/291 [00:00<00:23, 12.12it/s]Loading weights:   2%|▏         | 7/291 [00:00<00:20, 13.85it/s]Loading weights:   4%|▍         | 13/291 [00:00<00:10, 25.84it/s]Loading weights:   8%|▊         | 22/291 [00:00<00:07, 36.37it/s]Loading weights:   9%|▉         | 26/291 [00:01<00:22, 11.98it/s]Loading weights:  10%|▉         | 29/291 [00:01<00:19, 13.69it/s]Loading weights:  11%|█         | 32/291 [00:02<00:21, 11.84it/s]Loading weights:  14%|█▍        | 41/291 [00:02<00:12, 20.55it/s]Loading weights:  17%|█▋        | 50/291 [00:02<00:08, 29.42it/s]Loading weights:  20%|██        | 59/291 [00:02<00:06, 37.70it/s]Loading weights:  23%|██▎       | 68/291 [00:02<00:05, 43.91it/s]Loading weights:  25%|██▌       | 74/291 [00:03<00:07, 27.52it/s]Loading weights:  27%|██▋       | 79/291 [00:04<00:19, 10.82it/s]Loading weights:  31%|███       | 90/291 [00:04<00:11, 17.28it/s]Loading weights:  33%|███▎      | 96/291 [00:05<00:12, 16.12it/s]Loading weights:  35%|███▍      | 101/291 [00:05<00:10, 18.50it/s]Loading weights:  36%|███▌      | 105/291 [00:05<00:10, 17.11it/s]Loading weights:  39%|███▉      | 113/291 [00:05<00:07, 23.19it/s]Loading weights:  40%|████      | 117/291 [00:05<00:07, 23.57it/s]Loading weights:  42%|████▏     | 121/291 [00:06<00:06, 24.90it/s]Loading weights:  44%|████▎     | 127/291 [00:06<00:05, 30.73it/s]Loading weights:  45%|████▌     | 132/291 [00:06<00:09, 16.95it/s]Loading weights:  48%|████▊     | 140/291 [00:06<00:06, 24.49it/s]Loading weights:  51%|█████     | 149/291 [00:06<00:04, 33.43it/s]Loading weights:  54%|█████▍    | 157/291 [00:07<00:03, 39.83it/s]Loading weights:  57%|█████▋    | 165/291 [00:07<00:02, 43.62it/s]Loading weights:  59%|█████▉    | 171/291 [00:08<00:07, 15.93it/s]Loading weights:  60%|██████    | 176/291 [00:10<00:18,  6.30it/s]Loading weights:  62%|██████▏   | 179/291 [00:12<00:24,  4.55it/s]Loading weights:  63%|██████▎   | 182/291 [00:12<00:21,  5.18it/s]Loading weights:  64%|██████▍   | 186/291 [00:12<00:15,  6.71it/s]Loading weights:  67%|██████▋   | 194/291 [00:12<00:08, 11.06it/s]Loading weights:  69%|██████▉   | 202/291 [00:12<00:05, 15.89it/s]Loading weights:  71%|███████▏  | 208/291 [00:13<00:04, 20.05it/s]Loading weights:  73%|███████▎  | 213/291 [00:13<00:03, 20.83it/s]Loading weights:  76%|███████▌  | 221/291 [00:13<00:02, 27.62it/s]Loading weights:  79%|███████▊  | 229/291 [00:13<00:01, 34.34it/s]Loading weights:  82%|████████▏ | 238/291 [00:13<00:01, 42.25it/s]Loading weights:  85%|████████▍ | 247/291 [00:13<00:00, 49.68it/s]Loading weights:  87%|████████▋ | 254/291 [00:15<00:03, 10.47it/s]Loading weights:  89%|████████▉ | 259/291 [00:17<00:05,  5.98it/s]Loading weights:  90%|█████████ | 263/291 [00:19<00:05,  5.18it/s]Loading weights:  91%|█████████▏| 266/291 [00:20<00:05,  4.40it/s]Loading weights:  92%|█████████▏| 268/291 [00:20<00:05,  4.44it/s]Loading weights:  95%|█████████▍| 276/291 [00:20<00:01,  7.67it/s]Loading weights:  98%|█████████▊| 285/291 [00:20<00:00, 12.42it/s]Loading weights: 100%|██████████| 291/291 [00:20<00:00, 13.90it/s]
+============================================================================================
+EXP15: Cross-Architecture Functional Homolog Replication
+Model: /data/mzb/skills4s/models/Mistral-7B-Instruct-v0.3
+Architecture: {'layer_path': 'model.layers', 'num_layers': 32, 'num_attention_heads': 32, 'num_key_value_heads': 8, 'head_dim': 128, 'attention_kind': 'GQA', 'model_type': 'mistral', 'architectures': ['MistralForCausalLM'], 'qwen2_family': False, 'self_attn_has_v_proj': True, 'self_attn_has_o_proj': True, 'coarse_layers': [3, 6, 9, 12, 16, 19, 22, 25, 28, 30]}
+Phase: confirmation
+============================================================================================
+[confirmation 001/032] exp12_test_edit_02 (test_edit)
+[confirmation 002/032] exp12_test_edit_04 (test_edit)
+[confirmation 003/032] exp12_test_edit_06 (test_edit)
+[confirmation 004/032] exp12_test_edit_10 (test_edit)
+[confirmation 005/032] exp12_test_edit_11 (test_edit)
+[confirmation 006/032] exp12_test_edit_12 (test_edit)
+[confirmation 007/032] exp12_test_edit_13 (test_edit)
+[confirmation 008/032] exp12_test_edit_14 (test_edit)
+[confirmation 009/032] exp12_search_edit_00 (search_edit)
+[confirmation 010/032] exp12_search_edit_02 (search_edit)
+[confirmation 011/032] exp12_search_edit_04 (search_edit)
+[confirmation 012/032] exp12_search_edit_06 (search_edit)
+[confirmation 013/032] exp12_search_edit_07 (search_edit)
+[confirmation 014/032] exp12_search_edit_08 (search_edit)
+[confirmation 015/032] exp12_search_edit_11 (search_edit)
+[confirmation 016/032] exp12_search_edit_14 (search_edit)
+[confirmation 017/032] exp12_config_command_00 (config_command)
+[confirmation 018/032] exp12_config_command_01 (config_command)
+[confirmation 019/032] exp12_config_command_02 (config_command)
+[confirmation 020/032] exp12_config_command_04 (config_command)
+[confirmation 021/032] exp12_config_command_07 (config_command)
+[confirmation 022/032] exp12_config_command_13 (config_command)
+[confirmation 023/032] exp12_config_command_14 (config_command)
+[confirmation 024/032] exp12_config_command_15 (config_command)
+[confirmation 025/032] exp12_docs_code_02 (docs_code)
+[confirmation 026/032] exp12_docs_code_04 (docs_code)
+[confirmation 027/032] exp12_docs_code_05 (docs_code)
+[confirmation 028/032] exp12_docs_code_06 (docs_code)
+[confirmation 029/032] exp12_docs_code_07 (docs_code)
+[confirmation 030/032] exp12_docs_code_10 (docs_code)
+[confirmation 031/032] exp12_docs_code_13 (docs_code)
+[confirmation 032/032] exp12_docs_code_15 (docs_code)
+{
+  "experiment": "EXP15_cross_arch_homolog",
+  "model_dir": "/data/mzb/skills4s/models/Mistral-7B-Instruct-v0.3",
+  "architecture": {
+    "layer_path": "model.layers",
+    "num_layers": 32,
+    "num_attention_heads": 32,
+    "num_key_value_heads": 8,
+    "head_dim": 128,
+    "attention_kind": "GQA",
+    "model_type": "mistral",
+    "architectures": [
+      "MistralForCausalLM"
+    ],
+    "qwen2_family": false,
+    "self_attn_has_v_proj": true,
+    "self_attn_has_o_proj": true,
+    "coarse_layers": [
+      3,
+      6,
+      9,
+      12,
+      16,
+      19,
+      22,
+      25,
+      28,
+      30
+    ]
+  },
+  "verdict": {
+    "verdict": "PARTIAL / ALGORITHMIC HOMOLOG",
+    "endpoint_flags": {
+      "selected_V_sufficiency": true,
+      "selected_V_necessity_loss": true,
+      "cross_selected_V_sufficiency": true,
+      "reader_target_pos_sufficiency": true,
+      "reader_target_pos_necessity": true
+    },
+    "contrast_flags": {
+      "target_minus_negative_reader_sufficiency": true,
+      "target_minus_negative_reader_necessity": true
+    },
+    "reader_contrasts": {
+      "sufficiency": {
+        "mean": 0.18498423729033675,
+        "ci_low": 0.167786166208316,
+        "ci_high": 0.20059463876968947
+      },
+      "necessity": {
+        "mean": 0.18498423729033675,
+        "ci_low": 0.16731551213888451,
+        "ci_high": 0.20163185336859896
+      }
+    },
+    "fidelity": {
+      "same_state_control": {
+        "mean": 0.002016129728872329,
+        "ci_low": 0.0009496815830061678,
+        "ci_high": 0.003303707727900473
+      },
+      "reader_leakage_ratio": 0.0,
+      "selected_minus_runner_up_sufficiency": 0.13693910617439542,
+      "selected_minus_runner_up_necessity": -2.2226325764640933
+    },
+    "selected": {
+      "L_star": 30,
+      "k_star": 4,
+      "reader_pos_set": [
+        0,
+        16,
+        18
+      ],
+      "reader_neg_set": [
+        1,
+        17,
+        19
+      ]
+    }
+  },
+  "claim_boundary": "A negative result rules out replication of the Qwen-family V/KV-mediated functional organization in this model; it does not prove absence of all procedural-control mechanisms."
+}

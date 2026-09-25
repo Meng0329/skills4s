@@ -1,0 +1,27 @@
+{
+  "layer_path": "model.layers",
+  "num_layers": 32,
+  "num_attention_heads": 32,
+  "num_key_value_heads": 8,
+  "head_dim": 128,
+  "attention_kind": "GQA",
+  "model_type": "mistral",
+  "architectures": [
+    "MistralForCausalLM"
+  ],
+  "qwen2_family": false,
+  "self_attn_has_v_proj": true,
+  "self_attn_has_o_proj": true,
+  "coarse_layers": [
+    3,
+    6,
+    9,
+    12,
+    16,
+    19,
+    22,
+    25,
+    28,
+    30
+  ]
+}

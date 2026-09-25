@@ -34,3 +34,7 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# SentencePiece tokenizer models — re-downloadable (excluded to avoid Gitee LFS routing)
+models/**/tokenizer.model
+models/**/tokenizer.model.v3

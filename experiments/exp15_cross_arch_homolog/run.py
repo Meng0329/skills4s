@@ -353,6 +353,11 @@ def phase_a_scores(
     exp14, model, tok, layers, exp12, disc_tasks, baselines,
     layers_to_test, kv_heads, num_kv_heads, head_dim, out_rows
 ):
+    # GREEN-ZONE engineering optimization (EXP15 run note 1): residual_effect is
+    # k-independent (residual donor patch at layers[L-1], no v_heads involved), so
+    # it is computed once per (L, task, entry, anchor) and reused across all KV
+    # heads. Result-identical (deterministic inference, same inputs -> same float).
+    # For 8 KV heads this removes 8x redundant residual forwards in Phase A.
     scores = {}
     for L in layers_to_test:
         task_caches = {}
@@ -361,6 +366,27 @@ def phase_a_scores(
                 model, tok, layers, exp12, task,
                 exp12.make_skill_entries(task), L, num_kv_heads, head_dim,
             )
+
+        res_refs = {}
+        for task in disc_tasks:
+            entries = exp12.make_skill_entries(task)
+            maps = exp12.donor_maps_skill(entries)
+            for i, entry in enumerate(entries):
+                donor_i = maps[i]["opposite_same_wording"]
+                donor = entries[donor_i]
+                rec_cache = task_caches[task["task_id"]][i]
+                don_cache = task_caches[task["task_id"]][donor_i]
+                for anchor in PHASE_A_ANCHORS:
+                    rec_pos = exp14.anchor_positions(rec_cache, anchor)
+                    don_pos = exp14.anchor_positions(don_cache, anchor)
+                    res_ref = exp14.residual_effect(
+                        model, tok, layers, exp12,
+                        entry, rec_cache, donor, don_cache,
+                        baselines[(task["task_id"], i)],
+                        L, rec_pos, don_pos,
+                        num_kv_heads, head_dim,
+                    )
+                    res_refs[(task["task_id"], i, anchor)] = (res_ref, rec_pos, don_pos)
 
         for k in kv_heads:
             buckets = {
@@ -376,15 +402,7 @@ def phase_a_scores(
                     rec_cache = task_caches[task["task_id"]][i]
                     don_cache = task_caches[task["task_id"]][donor_i]
                     for anchor in PHASE_A_ANCHORS:
-                        rec_pos = exp14.anchor_positions(rec_cache, anchor)
-                        don_pos = exp14.anchor_positions(don_cache, anchor)
-                        res_ref = exp14.residual_effect(
-                            model, tok, layers, exp12,
-                            entry, rec_cache, donor, don_cache,
-                            baselines[(task["task_id"], i)],
-                            L, rec_pos, don_pos,
-                            num_kv_heads, head_dim,
-                        )
+                        res_ref, rec_pos, don_pos = res_refs[(task["task_id"], i, anchor)]
                         suff, nec = exp14.v_suff_nec(
                             model, tok, layers, exp12,
                             entry, rec_cache, donor, don_cache,
@@ -414,7 +432,7 @@ def phase_a_scores(
                 f"s0={means['suff0']:.5f} s1={means['suff1']:.5f} "
                 f"n0={means['nec0']:.5f} n1={means['nec1']:.5f}"
             )
-        del task_caches
+        del task_caches, res_refs
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
     return scores
