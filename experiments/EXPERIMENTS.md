@@ -32,6 +32,7 @@
 | EXP12 | 冻结电路在新 family 独立复制？ | 完成，分层（confirmatory=FALSE） | **reader register 复制成功**：frozen readers {Q0,Q3,Q5} 4/4 新 family 显著正（suff +0.076/nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、contrast +0.16/+0.17、措辞稳定；**writer 层未按冻结位点复制**：frozen offsets V suff −0.013（方向反）、负对照为正、cross 负、措辞间翻转；**非 absolute-position artifact**（同 token 同位置符号随 context 翻转）；3 硬 sanity 全 bit-exact；specificity：skill−direct 全正（procedural specificity） | `0d5d6c8` |
 | EXP13 | 上下文条件化 schema 写点能否重映射？ | 完成，confirmatory=TRUE（Pattern A） | **writer 高度 schema-stable：USER_END 7/8 strata 选中**（唯一例外 config_command::canonical=FINAL_INSTRUCTION_END，其 runner-up 即 USER_END）；held-out 双向 V suff/nec 全正（+0.0473/+0.0465，CI>0）、selected−old_absolute +0.061/+0.066、selected−runner_up +0.028/+0.031、cross-wording +0.044/+0.049、target reader 0.067 vs negative −0.028（contrast +0.095/+0.098）；old absolute 再次为负（−0.014）；sanity 全过（all7=selected=verified 精确相等、Q7..Q27 泄漏 0、non-KV0 0）；label0/label1 均正 → bidirectional_writer_pass | `d706328` |
 | EXP14 | 跨模型功能同构复现（冻结机制定义、不冻结索引）？ | 完成，**PARTIAL SUCCESS** | Model B=Qwen2-7B-Instruct（同 Qwen2 架构、独立权重、通用域）。discovery 冻结 **L=20,KV0**（自由搜索下与 Model A 的 H20/KV0 **逐索引一致**）、reader **{1,3,5}+/{2,4,6}−**（负集合与 Model A 完全一致）；held-out：selected V suff/nec +0.025/+0.027（CI>0）、label0/1 双向正、cross-wording +0.019、reader pos +0.038 vs neg −0.012（contrast +0.050）、non-set≈0、all28==verified 精确、skill≫direct specificity、old-absolute 仍负；**但 same-state 控制 −0.012 显著负（Model A=0）、leakage 0.153（Model A=0）、selected−runner_up nec −0.108 反常** → 结构同构复现、保真度降低 | `79388ea` |
+| EXP15 | 跨架构功能同构复现（冻结机制定义、不冻结索引）？ | **预注册（2026-09-25），待运行** | Model C=Mistral-7B-Instruct-v0.3（待下载，Llama-style MHA 架构，与 Qwen2 GQA 不同族）。预注册设计：行为闸门 → Stage A 相对深度粗网格（10%,20%,...,96%）× 全部 KV group × {USER_END, FINAL_INSTRUCTION_END}，score=min(suff0,suff1,nec0,nec1)，L\*±2 局部细化；Stage B 9 语义 anchor × family×wording stratum（同双向 score）；Stage C reader register（positive=min(mean_suff,mean_nec) 取 top3 / negative= max 取 bottom3）；held-out 冻结复现 + 全套 fidelity 控制（same-state、leakage、selected−runner_up、label0/1、cross-wording、all-reader）。仅随机种子不同（5515）。收敛判据：STRONG / PARTIAL-ALGORITHMIC / NO V-MEDIATED HOMOLOG / BEHAVIORAL GATE FAILURE。阴性结果有效且必须保留 | 待定 |
 
 ---
 
@@ -2171,10 +2172,118 @@ EXP10 之后，可辩护的项目级声明：
 
 1. ~~**EXP13：context-conditioned schema write-site remapping**（预注册，已完成 → d706328）~~——writer 高度 schema-stable（USER_END 7/8 strata），其 V 因果效应双向显著正、优于 old absolute 与 runner-up、cross-wording 迁移正；reader register {Q0,Q3,Q5} 全部冻结保持。**结论：不升级为"跨上下文可移植的固定位点 writer"**——writer 位点基本稳定但效应幅度随 family×wording 波动，机制更接近 "schema-stable writer + stable reader"（Pattern B 倾向），已触发下一检验：EXP14 应识别 reader register 消耗的功能性隐变量或测试 USER_END 位点分辨率，而非继续 token-position scan。
 2. ~~**reader register 与 writer 接口的跨模型复现**（EXP14，已完成 → PARTIAL SUCCESS）~~——Qwen2-7B-Instruct（通用域，独立权重）上冻结机制定义、不冻结索引：discovery 选出与 Model A **逐索引一致**的 (L=20, KV0)，reader register {1,3,5}+/{2,4,6}−（负集合与 Q2/Q4/Q6 完全一致，正集合 2/3 重叠）；held-out 双向 V suff/nec、cross-wording、分解恒等式、procedural specificity 全部复现；但 same-state 控制 −0.012（Model A=0）、leakage 0.153、效应减半 → 结构同构、保真度降。**跨架构复现（Llama/Mistral/Gemma）仍未验证**（需第三本地模型）。
-3. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
-4. H18–H20 状态的维度分解（SAE/SNMF）；
-5. 跨真实 agent 泛化。
+3. **EXP15：跨架构功能同构复现**（预注册 2026-09-25，待运行 → 关联提交待定）——模型 A/B 均为 Qwen2-family（GQA），EXP14 证明 V/KV 介导组织在**同架构**跨权重泛化但保真度降。EXP15 是首个**真正跨架构**检验：目标 Model C=Mistral-7B-Instruct-v0.3（Llama-style MHA：q=32 组头、kv=32、head_dim=128，32 层），冻结**功能组织**（context/schema-conditioned writer → 单 block V/KV 接口 → 正/抑 reader register → 下一动作偏好），**不冻结任何 Qwen 索引**（H20/KV0/Q0,Q3,Q5 均不预设）；discovery/confirmation 严格分离（64 任务复用 EXP14 确定性 32/32 split，seed 5515）；行为闸门先行；Stage A 相对深度粗网格 × 全部 KV group、Stage B 9 语义 anchor 逐 family×wording、Stage C 正/抑 reader（suff+nec 双指标）；held-out 冻结验证 + 全套 fidelity 控制；判据 STRONG/PARTIAL-ALGORITHMIC/NO V-MEDIATED HOMOLOG/BEHAVIORAL GATE FAILURE。**RED ZONE：不得事后修改确认标准；阴性结果有效且必须保留。**
+4. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
+5. H18–H20 状态的维度分解（SAE/SNMF）；
+6. 跨真实 agent 泛化。
 
 > 「证据排除了十四个假设——全局线性操控、单 token 精确互换、MLP 神经元级中介、MLP 全量中介、注意力头输出中介、H20 单层 handoff、H15–H17 必要性、H20 Q 投影、H20 K 投影、多 KV head 协同负载、位置均匀分布、7 reader heads 协同读取、B5 均匀铺开、固定绝对位点 writer 的任务一般性——路径收缩为：**H20 残差 → block20 V-projection → KV0 → reader register {Q0/Q3/Q5} 正读 / {Q2/Q4/Q6} 抑读（跨 4 个新 family、新词表、双措辞独立复制成功；procedural 条件化：skill−direct 全指标显著为正）**。写侧机制为 **context-conditioned writer**：同 token 同位置（-13/-5/-3/-1）的 V 因果方向随 family×wording×label 上下文翻转，固定位点不可移植，非 absolute-position artifact。EXP12 confirmatory_replication_pass=FALSE，证据链**不升级**为 task-general frozen sparse circuit；EXP13 预注册检验 9 语义 anchor × 8 strata 的 schema 重映射，若 writer 仍不可移植而 reader register 存续，则永久停止 token-position scan 并转向功能性隐变量识别。」
+
+---
+
+# EXP15 — Cross-Architecture Functional Homolog Replication（跨架构功能同构复现）
+
+## 日期
+2026-09-25
+
+## 提交
+待实验完成后关联（本次运行脚本位于 `experiments/exp15_cross_arch_homolog/`，尚未跟踪）。
+
+## 状态
+**预注册（PREREGISTERED）**——本段在读取任何结果之前写入，实验设计、判据与提交顺序全部事先固定。完成本跑后按结果更新本段；不得事后修改判据。
+
+## 为什么是 EXP15（问题）
+
+EXP14 证明 V/KV 介导的功能组织在**同架构**（Qwen2-family，GQA）两个域分歧检查点间复制成功（`79388ea`，PARTIAL SUCCESS：结构同构、保真度降）。但 Model A/B 属于同一模型族：同一 GQA 几何（28L/28H/4KV/128）、同一 chat-template、同一 tokenizer 后代。证据链的最大剩余泛化缺口是**跨架构**：该功能组织是否依赖 Qwen2 特有的架构实现细节（GQA KV-grouping、head_dim、宽度、深度等），还是存在于实现截然不同的解码器模型中？
+
+EXP15 是首个**真正跨架构**检验：在 **Llama-style / Mistral 架构**（MHA、无 KV-grouping、不同宽度/深度/激活）上测试同一**功能机制定义**。
+
+## 冻结的机制（Functional organization — 冻结定义，不冻结索引）
+
+与 EXP13/14 相同：
+
+```
+context/schema-conditioned writer（语义位点，chat-template 无关）
+→ 单 block 的 attention value/KV 投影接口（self_attn.v_proj → o_proj 之间的 KV 状态）
+→ 正读 reader register + 抑读 reader register（分别在 query heads 子集上）
+→ 下一动作偏好（Skill 条件化的 label 候选 token 边际对数概率）
+```
+
+**明确不冻结**（自由搜索，与 EXP14 同）：层索引 L、KV head 索引 k、reader 正/负 query head 集合 Q。不预设 H20/KV0/Q0,Q3,Q5 的任何等价物。
+
+## 目标模型（Model C）
+
+- **首选：`mistralai/Mistral-7B-Instruct-v0.3`**（Llama-style MHA：q=kv=32 组头、head_dim=128、32 层；架构族与 Qwen2 GQA 不同）。
+- 用户显式授权模型准备阶段联网下载（`snapshot_download` 至 `models/Mistral-7B-Instruct-v0.3`，`ignore_patterns=["consolidated.safetensors"]`，先查 `df -h`）；正式实验运行阶段固定本地 snapshot 并 `local_files_only` 离线运行。
+- 若 Mistral 下载失败：可改用另一**非 Qwen2 系** decod-only instruct 模型（7B–9B 档），必须记录更换原因；**不得因结果为负而更换模型**。
+
+## 行为闸门（先于一切机制发现）
+
+在 discovery/confirmation 任何干预之前：Model C 必须在 pool 签到基线（batch=1，mean candidate-token log-prob margin）上表现出正的 Skill 条件化下一动作偏好：
+- 整体（pooled signed baseline > 0）；
+- 每个 task family；
+- 每个 wording（canonical/paraphrase）；
+- 每个 label（label0/label1 均须正，即双向）。
+
+闸门失败 ⇒ 记录 **BEHAVIORAL GATE FAILURE**，不解释任何电路空结果，实验终止（阴性仍归档）。
+
+## 任务 / 数据
+
+复用 EXP12 的 64 任务受控基准（4 family × 16：test_edit/search_edit/config_command/docs_code；label=0→action0 skill，label=1→action1 skill）与确定性 family-wisely 平衡的 32/32 discovery/confirmation split（任务为单元，不重叠）。EXP15 只改随机种子（seed=5515，与 EXP14 不同以明确独立）；family_split 函数沿用 EXP14（保证 4 个 family 齐整分割）。
+
+## Discovery（仅 discovery split；所有组件搜索只在此阶段）
+
+### Stage A — writer/接口定位（相对深度粗网格 → 局部细化）
+
+- 相对深度网格：10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 96%（映射到层 L，取整、去重、1 ≤ L ≤ L_max−1）；
+- 每层 × 每个 KV/value group k：测 {USER_END, FINAL_INSTRUCTION_END} 两个 anchor 的 V 充分性与必要性（donor=opposite-same-wording，两 label 各自聚合）；
+- **选择 score = min(suff_label0, suff_label1, nec_label0, nec_label1)**（四个分桶均须为正的保守 score）；
+- 在粗网格最优层 L\* 附近局部细化：**L\*−2 … L\*+2**（同 score 同 KV 组），取最优 (L\*, k\*)。
+- 只细化一个局部窗口（radius=2），不跨窗口跳跃补搜。
+
+### Stage B — schema writer 位点（在冻结 (L\*, k\*)）
+
+每个 family × wording stratum（8 个）内，在 9 个语义 anchor 上搜索：
+SKILL_END / SYSTEM_END / ISSUE_END / DETAIL_END / ACTION0_END / ACTION1_END / FINAL_INSTRUCTION_END / USER_END / GENERATION_BOUNDARY
+（direct wording 无 SKILL_END，允许缺省；anchor 一律从渲染后的 message 文本推导，不硬编码 Qwen 特殊 token 偏移。）
+
+每 stratum 用与 Stage A 相同的双向 score（min of 4 buckets）选 top anchor 冻结；记录 runner-up（供 selected−runner_up 对照）。
+
+### Stage C — reader register（在冻结 (L\*, k\*, anchor)）
+
+- 每个 query head q 测 path 充分性与必要性（含需要被充分性/必要性两条证据）；
+- **positive score = min(mean_suff, mean_nec)**（取最高 3 head 冻结为正 reader 集合）；
+- **negative score = max(mean_suff, mean_nec)**（在排除正集合后取最低 3 head 冻结为抑读集合）。
+
+## 冻结产物 / 确认（held-out confirmation，零组件重选）
+
+`selected_homolog.json` 冻结后进入 confirmation，全部组件不再搜索。报告：
+
+1. selected V 充分性 / 必要性（+ CI）；
+2. 双向 label0 / label1；
+3. cross-wording（同 family 不同措辞迁移）；
+4. 正 reader register suff/nec；
+5. 负 reader register suff/nec；
+6. positive minus negative reader 对照（paired bootstrap CI）；
+7. all-reader 重建（suff）与全移除（nec）；
+8. same-state 控制（同 state 反向 donor = 污染指示，期望 CI 含 0）；
+9. matched negative anchor 对照（同结构不相关语义位点，期望无效）；
+10. reader leakage（register 外 query heads 的转移量，期望 ≈ 0）；
+11. selected−runner_up V suff/nec（期望正）；
+12. old absolute 对照（负向控制，延续 EXP12/13）。
+
+统计规则不变：task 为推断单元；task-level paired bootstrap 95% CI（seed 派生固定）；batch=1；度量 = mean candidate-token log-prob margin。
+
+## 判据（Verdict）
+
+- **STRONG HOMOLOG**：writer + V/KV 接口 + reader-register 组织全部确认；核心 endpoint CI 下界 >0；fidelity 控制不污染。
+- **PARTIAL / ALGORITHMIC HOMOLOG**：部分层级复现，或保真度控制降级（same-state CI 不含 0 / leakage > 0.10 / selected−runner_up 异常），或 endpoint 存活数 ≥ 3。
+- **NO V-MEDIATED HOMOLOG**：行为闸门过但主要 endpoint 不存活（含数 < 3）。
+- **BEHAVIORAL GATE FAILURE**：闸门失败，机制层不可解释。
+
+**RED ZONE**：判据在此写入后永不修改；不得以事后视角重选组件、重定义 score、补跑搜索来"救"结果。阴性结果有效且必须归档保留。
+
+## 结果（待实验完成后更新）
+（预注册占位——实验完成后回填）
 
 此措辞应保留，直到 EXP09 定位到各层内部投影（Q/K/V/MLP）的 causal handoff 结构。
