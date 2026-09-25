@@ -31,6 +31,7 @@
 | EXP11 | B5 内精确 offset + KV0 reader heads？ | 完成，收敛到边界标记 | **offset -5（`<|im_end|>`）即 56% full、-1（assistant 起始）21%**；reader heads **Q0 73% / Q3 37% / Q5 14%**（Q2/4/6 负）；sanity 全过（Q7–Q27 delta=0、leakage ratio=0、all7 重建=full 逐位）；**1 KV head × 2 边界 token × 3 query heads** | `6b48aee` |
 | EXP12 | 冻结电路在新 family 独立复制？ | 完成，分层（confirmatory=FALSE） | **reader register 复制成功**：frozen readers {Q0,Q3,Q5} 4/4 新 family 显著正（suff +0.076/nec +0.062）、negative readers {Q2,Q4,Q6} 显著负、contrast +0.16/+0.17、措辞稳定；**writer 层未按冻结位点复制**：frozen offsets V suff −0.013（方向反）、负对照为正、cross 负、措辞间翻转；**非 absolute-position artifact**（同 token 同位置符号随 context 翻转）；3 硬 sanity 全 bit-exact；specificity：skill−direct 全正（procedural specificity） | `0d5d6c8` |
 | EXP13 | 上下文条件化 schema 写点能否重映射？ | 完成，confirmatory=TRUE（Pattern A） | **writer 高度 schema-stable：USER_END 7/8 strata 选中**（唯一例外 config_command::canonical=FINAL_INSTRUCTION_END，其 runner-up 即 USER_END）；held-out 双向 V suff/nec 全正（+0.0473/+0.0465，CI>0）、selected−old_absolute +0.061/+0.066、selected−runner_up +0.028/+0.031、cross-wording +0.044/+0.049、target reader 0.067 vs negative −0.028（contrast +0.095/+0.098）；old absolute 再次为负（−0.014）；sanity 全过（all7=selected=verified 精确相等、Q7..Q27 泄漏 0、non-KV0 0）；label0/label1 均正 → bidirectional_writer_pass | `d706328` |
+| EXP14 | 跨模型功能同构复现（冻结机制定义、不冻结索引）？ | 完成，**PARTIAL SUCCESS** | Model B=Qwen2-7B-Instruct（同 Qwen2 架构、独立权重、通用域）。discovery 冻结 **L=20,KV0**（自由搜索下与 Model A 的 H20/KV0 **逐索引一致**）、reader **{1,3,5}+/{2,4,6}−**（负集合与 Model A 完全一致）；held-out：selected V suff/nec +0.025/+0.027（CI>0）、label0/1 双向正、cross-wording +0.019、reader pos +0.038 vs neg −0.012（contrast +0.050）、non-set≈0、all28==verified 精确、skill≫direct specificity、old-absolute 仍负；**但 same-state 控制 −0.012 显著负（Model A=0）、leakage 0.153（Model A=0）、selected−runner_up nec −0.108 反常** → 结构同构复现、保真度降低 | `（待提交）` |
 
 ---
 
@@ -1931,6 +1932,136 @@ python experiments/exp13_contextual_write_remap/run.py --phase confirmation  # �
 
 ---
 
+# EXP14 — Cross-Model Functional Homolog Replication（跨模型功能同构复现）
+
+## 状态
+PREREGISTERED（2026-09-25，设计先行）→ **已执行，判定 PARTIAL SUCCESS**。本机只有 Qwen2.5-Coder-7B-Instruct 与 Qwen2-7B-Instruct 两个模型（无跨架构模型，且约束离线不下载），故"跨模型"= 同 Qwen2 架构、独立权重、不同预训练域（通用 instruct vs Coder）的**第二个 checkpoint**。跨架构（Llama/Mistral/Gemma）复现留作未来工作（需额外模型）。
+
+## 动机
+EXP12/13 在同模型上把机制收敛为「schema-anchored writer（USER_END 族）→ 单 block 的 V(KV) 接口 → stable reader register（正/抑）→ 行为」。尚未验证的最大 generalization gap 是**跨模型**：该功能结构是否存在于独立训练、不同域的模型中。EXP14 冻结机制定义、不冻结数字索引，在 Model B 的 discovery split 上搜索功能同构组件，在 held-out confirmation 上冻结验证。
+
+## 冻结的机制定义 M（不允许改）
+在 procedural skill 任务中动作偏好由以下功能结构控制：
+- **W1 writer**：recipient 上下文中的 schema 锚定 token 窗（语义边界；Model A 中 USER_END 族）在残差流中携带 donor 条件化状态；
+- **W2 causal interface**：该状态经**单个 decoder block** 的 V 投影、由**单一高效 KV head** 写入（Model A：H20 残差 → block20 V-proj → KV0）；
+- **W3 reader register**：少量 query heads **正读**（suff>0）、少量**抑读**（suff<0），其余 ≈0（Model A：3 正 + 3 负）；
+- **W4 behavior**：V 状态移动 mean candidate-token log-prob margin 至 donor 偏好；procedural skill 条件强于 direct 指令（specificity）。
+
+## 不冻结的（在 Model B discovery split 上搜索；选点后于 confirmation 全部冻结）
+- source block **L ∈ {16..27}**（deep band，12 层）；
+- KV head **k ∈ {0..3}**（4 头全搜）；
+- 每 strata 的 **writer anchor**（9 个候选，同 EXP13 选择式）；
+- **reader register**（28 个 query heads 中按 discovery suff 取 top-3 正 / bottom-3 负；集合尺寸 3+3 由 Model A 结构先验预注册，不按数据优化）。
+
+## Split
+精确复用 EXP12 64 任务与 EXP13 split（seed 5313，per-family RNG = 5313 + family index）→ **32 discovery / 32 confirmation**。task 为统计推断单位（bootstrap 在 task 级）。
+
+## 阶段与选择规则（全部只使用 discovery split；无 post-hoc 挑选冒充 confirmatory）
+- **Phase 0 gate（参与度门）**：全 64 任务 skill entries 的 signed baseline margin（label=1 取 +、label=0 取 −）pooled bootstrap CI 排除 0 且 4 family 均值同号 → 通过才继续。**gate FAIL → 报告 null**（Model B 不参与该任务族 → 机制在此模型上不可判定，如实报告，不换指标救）。
+- **Phase A（L,k）粗选**：锚定 **{USER_END, FINAL_INSTRUCTION_END}**（Model A 指令边界功能族，两 anchor 均存在于全部 prompt），donor = opposite_same_wording；`score(L,k) = max_{a∈2} min(mean_suff_label0, mean_suff_label1)`（128 discovery entries）；选最大 → (L*,k*)；tie-break 按 (L 升序, k 升序)。
+- **Phase B anchor 细选**：冻结 (L*,k*)；每 strata（family×wording）9 anchor 的 `score(a) = min(S0,S1,N0,N1)`（EXP13 同式，S/N = 该 strata discovery entries 的 suff/nec 均值）；选最高 + runner-up（双双冻结）。
+- **Phase C reader 搜索**：冻结 (L*,k*) + 各 strata anchor；对 discovery entries 捕获 base/patched oproj 输入，逐 head 替换测量 signed suff；**pos_set = suff 最大 3 头，neg_set = 最小 3 头**。
+
+## Held-out confirmation（32 任务，全部冻结）
+- selected V suff/nec（pooled CI>0）；
+- label0 / label1 分开（双向要求）；
+- cross-wording（recipient 与 donor 各自用自己 wording 的 selected anchor = 功能位置映射）；
+- same-state 控制（同 label 跨 wording donor，期望 ≈0）；
+- matched-negative 控制（ISSUE_END 内容窗，diagnostic）；
+- old-absolute {-13,-5,-3,-1}（historical diagnostic，Model A 上为负，预期仍负/≈0）；
+- reader register：pos_set suff/nec CI>0、neg_set suff/nec CI<0、pos−neg contrast CI>0、all28 suff == verified（精确）、non-set ≈0（diagnostic）、leakage ≈0；
+- procedural specificity：direct 条件 V suff（USER_END）与 skill 条件 V suff 的 contrast（diagnostic）。
+
+## 判定（预注册）
+- **SUCCESS**：gate 过；Phase A/B/C 全部产生非退化选择；confirmation 硬端点全过（selected V suff/nec CI>0、cross-wording CI>0、pos−neg contrast CI>0、same-state≈0、all28==verified 精确、label0/label1 均正）；且 writer anchor 属于**同一功能族**（指令边界：USER_END / FINAL_INSTRUCTION_END / SYSTEM_END / GENERATION_BOUNDARY 之一，而非内容位置）→ 跨模型功能同构复现成功，证据链升级为 model-general functional mechanism（同架构域内）。
+- **PARTIAL**：reader register 复现（pos>0/neg<0/contrast）而 writer V 单向、或 anchor 偏离功能族、或 cross-wording 失败、或 specificity 翻转 → 部分同构；区分哪些组件泛化。
+- **FAIL**：gate 不过、或 Phase A 最佳 (L,k) 无正效应、或 confirmation 硬端点半数不过 → 机制为 Model-A（Coder 域）特异；**修正机制模型**为「coder-family-specialized writer protocol」；reader register 的跨模型泛化性单独裁定（可能仍复现）。
+
+## Exploratory（明确标注非预注册）
+- 相邻 (L,k) 的 effect 剖面（确认非孤立点）；
+- 各 anchor family 的得分排名（了解 writer 功能族的域转移）；
+- family × wording × label 分层细表；
+- 若 confirmation 失败，以 (L*,k*) 邻近选择做 exploratory 再检（不构成 confirmatory）。
+
+## 输出
+`outputs/exp14_cross_model_homolog/`：gate_report.json、discovery_results.csv、discovery_summary.csv、selected_homolog.json、confirmation_results.csv、confirmation_summary.csv、paired_contrasts.csv、directional_confirmation.csv、family_wording_confirmation.csv、summary.json、run_manifest.json。
+
+## 运行
+```bash
+CUDA_VISIBLE_DEVICES=0 python experiments/exp14_cross_model_homolog/run.py \
+  --model_dir /data/mzb/ar2_scratch/models/Qwen2-7B-Instruct --phase gate
+CUDA_VISIBLE_DEVICES=0 python experiments/exp14_cross_model_homolog/run.py \
+  --model_dir /data/mzb/ar2_scratch/models/Qwen2-7B-Instruct --phase discovery
+CUDA_VISIBLE_DEVICES=0 python experiments/exp14_cross_model_homolog/run.py \
+  --model_dir /data/mzb/ar2_scratch/models/Qwen2-7B-Instruct --phase confirmation
+```
+
+## 实验结果（2026-09-25，PARTIAL SUCCESS）
+
+### Hypothesis
+EXP13 在 Coder 域上确认的功能结构 M（schema-anchored writer → 单 block V(KV) 接口 → 正/抑 reader register → 行为）是否存在于独立训练、通用域的 Qwen2-7B-Instruct 上。
+
+### Design（按预注册执行）
+- 64 EXP12 任务，seed 5313 split → 32 discovery / 32 held-out；task 为推断单位（task 级 paired bootstrap CI，5000 draws）。
+- Phase 0 gate：**通过**（pooled signed baseline +1.50，CI [1.40, 1.60]；4 family 均值全正；label0 +2.03 / label1 +0.98 均正）——通用模型完全参与任务。
+- Phase A（12 层 × 4 KV × {USER_END, FINAL_INSTRUCTION_END}，48 组合）：**唯一显著正分 L=20,k=0 = +0.0157**（次位 L=19,k=3 = +0.0154；其余 44 组合 ≈0/负）→ **冻结 (20,0)**。与 Model A 的 H20/KV0 **逐索引一致**，尽管搜索完全自由。
+- Phase B（每 strata 9 anchor，双向 min 得分）：config_command::canonical→USER_END (0.0258)、paraphrase→FINAL_INSTRUCTION_END (0.0198)、docs_code::paraphrase→FINAL_INSTRUCTION_END (0.0173)、search_edit::paraphrase→FINAL_INSTRUCTION_END (0.0181) 为有效选择（指令边界功能族 ✓）；test_edit::canonical→ACTION1_END (0.00005)、search_edit::canonical→DETAIL_END (0.0013)、docs_code::canonical→ACTION1_END (0.0016) 退化（≈0）。
+- Phase C（28 头逐头 suff）：**pos_set={1,3,5}、neg_set={2,4,6}**（Model A 为 {0,3,Q5}+/{Q2,Q4,Q6}−；负集合完全一致，正集合 2/3 重叠）。
+
+### Preregistered endpoints（held-out confirmation，32 任务全冻结）
+| 端点 | mean | CI | pass |
+|---|---|---|---|
+| selected_V_sufficiency | +0.0254 | [0.0182, 0.0331] | ✅ |
+| selected_V_necessity_loss | +0.0266 | [0.0206, 0.0327] | ✅ |
+| cross_selected_V_sufficiency | +0.0195 | [0.0139, 0.0254] | ✅ |
+| same_state_selected_V_control | **−0.0119** | **[−0.0181, −0.0066]** | ❌ 期望 ≈0 |
+| matched_negative_ISSUE_V_suff | +0.0010 | [−0.0017, 0.0039] | ✅ |
+| old_absolute_V_sufficiency | −0.1228 | [−0.1688, −0.0813] | 负（与 Model A 一致）|
+| reader_target_pos suff/nec | +0.0380 / +0.0375 | [0.0278, 0.0492] / [0.0281, 0.0477] | ✅ |
+| reader_negative_neg suff/nec | −0.0119 / −0.0120 | [−0.0153, −0.0086] / [−0.0160, −0.0085] | ✅ |
+| reader_non_set suff/nec | −0.0016 / +0.0007 | [−0.0037, +0.0005] / [−0.0013, +0.0029] | ✅ |
+| reader_all28 == verified == selected | 精确相等（+0.0254） | — | ✅ |
+| reader_leakage_ratio | **0.153** | [0.135, 0.169] | ⚠️ Model A=0.0 |
+| target−negative reader suff | +0.0499 | [0.0379, 0.0633] | ✅ |
+| selected−old_absolute suff | +0.1482 | [0.1050, 0.1943] | ✅ |
+| selected−runner_up suff | +0.0114 | [0.0081, 0.0150] | ✅ |
+| selected−runner_up nec | **−0.1078** | **[−0.1540, −0.0645]** | ⚠️ 反常 |
+| label0 / label1 selected V suff | +0.0165 / +0.0343 | 均 CI>0 | ✅ 双向 |
+| direct_V_sufficiency（specificity） | +0.0035 | [0.0005, 0.0064] | ✅ skill(0.0254)≫direct |
+
+**Verdict：PARTIAL SUCCESS**（`outputs/exp14_cross_model_homolog/summary.json`）。
+
+### Null / negative findings（如实报告）
+1. Phase A 在指令边界 anchor 上 pooled 近零：48 组合仅 2 个正分——writer V 接口在 Model B 上同样高度局部化（单点），但整体幅度约减半（+0.025 vs Model A +0.047）。
+2. **same-state 控制显著为负**（−0.012）——Model B 的 (20,0) V-code 混入 wording 条件成分（Model A 上为 0）。此为保真度降低的直接证据。
+3. **leakage 0.153**——oproj delta 能量约 2.3% 落在注册集外（Model A 精确 0）；行为上 non-set≈0 不受影响。
+4. **selected−runner_up necessity 反常**（−0.108）：runner-up anchor 的 V 必要性（+0.134）远大于 selected（+0.027），而 suff 相反——Model B 写点在必要性维度分布更广。
+5. 3/8 strata 的 anchor 选择退化（≈0.0001–0.0016）：test_edit::canonical、search_edit::canonical、docs_code::canonical 在 (20,0) 下无可辨别的 writer 位点。
+
+### Bugs / fixes（如实记录）
+- discovery Phase C `KeyError ('family','wording')`：Phase B 写字符串 key `"family::wording"`，Phase C 用元组查询 → 改字符串。
+- confirmation cross/same donor stratum `KeyError`：查询漏 `["strata"]` 层级 → 补全。
+- confirmation direct `compute_schema KeyError 'direct'`：direct entries 无 skill 文本，SKILL_TEXT 查询失败 → compute_schema 容错（缺失段跳过，仅 direct 允许无 SKILL_END）。
+
+### Interpretation
+- **结构同构确认**：自由搜索下 Model B 选出 (20,0) —— 与 Model A 的 H20/KV0 完全一致；reader register 负集合 {2,4,6} 与 Model A 完全一致、正集合 {1,3,5} 2/3 重叠；分解恒等式、cross-wording、双向性、specificity、old-absolute 失败模式全部复现。**writer 接口的层/头位点与 reader register 的符号结构不是 Coder 域特异**。
+- **保真度降低**：效应减半 + same-state 污染 + leakage 0.15 + runner-up nec 反常 → Model B 的 (20,0) V-code 标签纯度低于 Model A（wording 成分共存），写点必要性在语义邻近位点分布更广。机制是"同构但更松散"的实现。
+
+### Claim boundary
+- **可声明**：Qwen2 架构家族内、域分歧 checkpoint（通用 vs Coder）上，功能结构 M 以 (L=20, KV0, +{1,3,5}/−{2,4,6} reader) 复现——跨模型 functional homolog（同架构域内）。
+- **不可声明**：跨架构泛化（Llama/Mistral/Gemma 未测，需第三模型）；保真度等同（Model B 效应减半、控制污染）。
+
+### Next decision
+1. **首选**：跨架构 homolog 复现（Llama-3-8B / Mistral-7B / Gemma-2-9B 任一即可运行现有 run.py——架构参数全部来自 config.json；仅需该模型加入本地 `models/`）。这是把 claim 从"Qwen2 家族内"升级为"架构无关功能机制"的决定性一步。
+2. **并行可选**：exploratory 调查 same-state 污染——(20,0) V-code 的 label/wording 混合是否集中在特定 wording 对，能否经 writer 位点微调恢复纯度。
+3. reader register 的 1-head 位移（Q1 vs Q0）是否具功能意义，可在跨架构复现中一并观察。
+
+## 输出（EXP14）
+
+`outputs/exp14_cross_model_homolog/`：gate_report.json/csv、discovery_phaseA.csv、discovery_results.csv、discovery_reader_heads.csv、discovery_summary.csv、selected_homolog.json、confirmation_results.csv、confirmation_summary.csv、paired_contrasts.csv、directional_confirmation.csv、family_wording_confirmation.csv、summary.json、run_manifest.json（+ gate/discovery/confirmation 日志）。
+
+---
+
 # 当前证据总结
 
 EXP01–EXP04 逐步建立：
@@ -2039,7 +2170,7 @@ EXP10 之后，可辩护的项目级声明：
 尚未完成的验证：
 
 1. ~~**EXP13：context-conditioned schema write-site remapping**（预注册，已完成 → d706328）~~——writer 高度 schema-stable（USER_END 7/8 strata），其 V 因果效应双向显著正、优于 old absolute 与 runner-up、cross-wording 迁移正；reader register {Q0,Q3,Q5} 全部冻结保持。**结论：不升级为"跨上下文可移植的固定位点 writer"**——writer 位点基本稳定但效应幅度随 family×wording 波动，机制更接近 "schema-stable writer + stable reader"（Pattern B 倾向），已触发下一检验：EXP14 应识别 reader register 消耗的功能性隐变量或测试 USER_END 位点分辨率，而非继续 token-position scan。
-2. **reader register 的跨模型复现**：将 {Q0,Q3,Q5} 正读 / {Q2,Q4,Q6} 抑读 + procedural specificity 在另一个模型家族上预注册复制（writer 层不冻结）；
+2. ~~**reader register 与 writer 接口的跨模型复现**（EXP14，已完成 → PARTIAL SUCCESS）~~——Qwen2-7B-Instruct（通用域，独立权重）上冻结机制定义、不冻结索引：discovery 选出与 Model A **逐索引一致**的 (L=20, KV0)，reader register {1,3,5}+/{2,4,6}−（负集合与 Q2/Q4/Q6 完全一致，正集合 2/3 重叠）；held-out 双向 V suff/nec、cross-wording、分解恒等式、procedural specificity 全部复现；但 same-state 控制 −0.012（Model A=0）、leakage 0.153、效应减半 → 结构同构、保真度降。**跨架构复现（Llama/Mistral/Gemma）仍未验证**（需第三本地模型）。
 3. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
 4. H18–H20 状态的维度分解（SAE/SNMF）；
 5. 跨真实 agent 泛化。

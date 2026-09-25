@@ -1,0 +1,61 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+============================================================================================
+EXP14: Cross-Model Functional Homolog Replication
+Model B: /data/mzb/ar2_scratch/models/Qwen2-7B-Instruct
+Model A reference: /data/mzb/skills4s/models/Qwen2.5-Coder-7B-Instruct
+Tasks: 64 | split seed: 5313 | phase: confirmation
+Layer sweep: (16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27) | KV sweep: (0, 1, 2, 3)
+============================================================================================
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:00<01:18,  4.33it/s]Loading weights:   1%|          | 2/339 [00:00<01:25,  3.94it/s]Loading weights:   2%|▏         | 6/339 [00:00<00:27, 12.07it/s]Loading weights:   5%|▌         | 17/339 [00:00<00:08, 36.23it/s]Loading weights:   9%|▊         | 29/339 [00:00<00:05, 53.19it/s]Loading weights:  12%|█▏        | 41/339 [00:01<00:04, 63.61it/s]Loading weights:  16%|█▌        | 53/339 [00:01<00:03, 71.54it/s]Loading weights:  19%|█▉        | 64/339 [00:01<00:03, 75.47it/s]Loading weights:  22%|██▏       | 75/339 [00:01<00:03, 79.41it/s]Loading weights:  26%|██▋       | 89/339 [00:01<00:02, 88.98it/s]Loading weights:  30%|██▉       | 101/339 [00:01<00:02, 90.67it/s]Loading weights:  33%|███▎      | 113/339 [00:01<00:02, 92.00it/s]Loading weights:  37%|███▋      | 125/339 [00:01<00:02, 90.45it/s]Loading weights:  40%|████      | 136/339 [00:02<00:02, 86.63it/s]Loading weights:  44%|████▎     | 148/339 [00:02<00:02, 88.23it/s]Loading weights:  47%|████▋     | 161/339 [00:02<00:01, 92.79it/s]Loading weights:  51%|█████     | 172/339 [00:02<00:01, 89.93it/s]Loading weights:  55%|█████▍    | 185/339 [00:02<00:01, 91.31it/s]Loading weights:  58%|█████▊    | 197/339 [00:02<00:01, 92.28it/s]Loading weights:  62%|██████▏   | 209/339 [00:02<00:01, 93.60it/s]Loading weights:  65%|██████▌   | 221/339 [00:02<00:01, 91.27it/s]Loading weights:  69%|██████▊   | 233/339 [00:03<00:01, 89.48it/s]Loading weights:  72%|███████▏  | 245/339 [00:03<00:01, 88.28it/s]Loading weights:  76%|███████▌  | 257/339 [00:03<00:00, 87.31it/s]Loading weights:  79%|███████▉  | 267/339 [00:03<00:00, 82.38it/s]Loading weights:  83%|████████▎ | 281/339 [00:03<00:00, 89.97it/s]Loading weights:  86%|████████▋ | 293/339 [00:03<00:00, 91.52it/s]Loading weights:  90%|████████▉ | 305/339 [00:03<00:00, 90.59it/s]Loading weights:  94%|█████████▎| 317/339 [00:04<00:00, 91.83it/s]Loading weights:  97%|█████████▋| 329/339 [00:04<00:00, 91.02it/s]Loading weights: 100%|██████████| 339/339 [00:04<00:00, 79.96it/s]
+[confirmation 001/032] exp12_test_edit_02 (test_edit)
+[confirmation 002/032] exp12_test_edit_04 (test_edit)
+[confirmation 003/032] exp12_test_edit_06 (test_edit)
+[confirmation 004/032] exp12_test_edit_10 (test_edit)
+[confirmation 005/032] exp12_test_edit_11 (test_edit)
+[confirmation 006/032] exp12_test_edit_12 (test_edit)
+[confirmation 007/032] exp12_test_edit_13 (test_edit)
+[confirmation 008/032] exp12_test_edit_14 (test_edit)
+[confirmation 009/032] exp12_search_edit_00 (search_edit)
+[confirmation 010/032] exp12_search_edit_02 (search_edit)
+[confirmation 011/032] exp12_search_edit_04 (search_edit)
+[confirmation 012/032] exp12_search_edit_06 (search_edit)
+[confirmation 013/032] exp12_search_edit_07 (search_edit)
+[confirmation 014/032] exp12_search_edit_08 (search_edit)
+[confirmation 015/032] exp12_search_edit_11 (search_edit)
+[confirmation 016/032] exp12_search_edit_14 (search_edit)
+[confirmation 017/032] exp12_config_command_00 (config_command)
+[confirmation 018/032] exp12_config_command_01 (config_command)
+[confirmation 019/032] exp12_config_command_02 (config_command)
+[confirmation 020/032] exp12_config_command_04 (config_command)
+[confirmation 021/032] exp12_config_command_07 (config_command)
+[confirmation 022/032] exp12_config_command_13 (config_command)
+[confirmation 023/032] exp12_config_command_14 (config_command)
+[confirmation 024/032] exp12_config_command_15 (config_command)
+[confirmation 025/032] exp12_docs_code_02 (docs_code)
+[confirmation 026/032] exp12_docs_code_04 (docs_code)
+[confirmation 027/032] exp12_docs_code_05 (docs_code)
+[confirmation 028/032] exp12_docs_code_06 (docs_code)
+[confirmation 029/032] exp12_docs_code_07 (docs_code)
+[confirmation 030/032] exp12_docs_code_10 (docs_code)
+[confirmation 031/032] exp12_docs_code_13 (docs_code)
+[confirmation 032/032] exp12_docs_code_15 (docs_code)
+             relation                               metric      mean    ci_low   ci_high  num_tasks
+direct_opposite_label                 direct_V_sufficiency  0.003517  0.000467  0.006442         32
+opposite_same_wording         cross_selected_V_sufficiency  0.019452  0.013866  0.025412         32
+opposite_same_wording matched_negative_ISSUE_V_sufficiency  0.000990 -0.001691  0.003871         32
+opposite_same_wording           old_absolute_V_sufficiency -0.122778 -0.168785 -0.081309         32
+opposite_same_wording               reader_all28_necessity  0.025398  0.018224  0.033105         32
+opposite_same_wording             reader_all28_sufficiency  0.025398  0.018224  0.033105         32
+opposite_same_wording                 reader_leakage_ratio  0.152932  0.135099  0.169084         32
+opposite_same_wording        reader_negative_neg_necessity -0.012023 -0.016002 -0.008454         32
+opposite_same_wording      reader_negative_neg_sufficiency -0.011922 -0.015288 -0.008590         32
+opposite_same_wording             reader_non_set_necessity  0.000741 -0.001316  0.002857         32
+opposite_same_wording           reader_non_set_sufficiency -0.001625 -0.003669  0.000469         32
+opposite_same_wording          reader_target_pos_necessity  0.037470  0.028124  0.047691         32
+opposite_same_wording        reader_target_pos_sufficiency  0.038023  0.027845  0.049209         32
+opposite_same_wording             reader_verified_v_effect  0.025398  0.018224  0.033105         32
+opposite_same_wording           runner_up_V_necessity_loss  0.134326  0.093162  0.179424         32
+opposite_same_wording              runner_up_V_sufficiency  0.014022  0.009213  0.019299         32
+opposite_same_wording        same_state_selected_V_control -0.011952 -0.018132 -0.006590         32
+opposite_same_wording            selected_V_necessity_loss  0.026568  0.020559  0.032694         32
+opposite_same_wording               selected_V_sufficiency  0.025398  0.018224  0.033105         32
