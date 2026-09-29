@@ -34,7 +34,7 @@
 | EXP14 | 跨模型功能同构复现（冻结机制定义、不冻结索引）？ | 完成，**PARTIAL SUCCESS** | Model B=Qwen2-7B-Instruct（同 Qwen2 架构、独立权重、通用域）。discovery 冻结 **L=20,KV0**（自由搜索下与 Model A 的 H20/KV0 **逐索引一致**）、reader **{1,3,5}+/{2,4,6}−**（负集合与 Model A 完全一致）；held-out：selected V suff/nec +0.025/+0.027（CI>0）、label0/1 双向正、cross-wording +0.019、reader pos +0.038 vs neg −0.012（contrast +0.050）、non-set≈0、all28==verified 精确、skill≫direct specificity、old-absolute 仍负；**但 same-state 控制 −0.012 显著负（Model A=0）、leakage 0.153（Model A=0）、selected−runner_up nec −0.108 反常** → 结构同构复现、保真度降低 | `79388ea` |
 | EXP15 | 跨架构功能同构复现（冻结机制定义、不冻结索引）？ | 完成，**PARTIAL / ALGORITHMIC HOMOLOG** | Model C=Mistral-7B-Instruct-v0.3（Mistral 架构：32L/32Q/**8KV**/128，与 Qwen2 GQA 不同族）。闸门 PASSED（pooled +1.230，4 family/双 label/双措辞全正）；discovery 冻结 **L=30,KV4、GENERATION_BOUNDARY（8/8 strata，=提示词尾 `action now . [/INST]`）、reader {0,16,18}+/{1,17,19}−（活跃 16+/19−）**——与 Model A/B 的 L20/KV0/USER_END/{0,3,5}/{2,4,6} **索引实现全部不同**（功能冻结、索引不冻结）；held-out：selected V suff/nec **+0.140/+0.151**、cross-wording +0.141（=same-wording，完全迁移）、reader pos +0.165 vs neg −0.020/−0.025（contrast +0.185）、non-set=0、leakage **0.0**、all32==verified 精确、skill≫direct（6.2×）、matched-negative 干净 null、label0/1 双向正、4 family 全正；**但 same-state +0.002 CI 不含 0（1.4% 污染）、runner_up nec +2.37 为原实现无效控制（EXP16 前置诊断修正为 +0.0038 [0.0027,0.0051]，见 EXP15 段修正）** → **功能组织跨架构复制成功、索引实现不同、保真度轻微降级** | `3c19971` |
 | EXP16 | 第二跨架构同构复现（writer anchor 参与最终接口定位）？ | 完成，**PARTIAL / ALGORITHMIC HOMOLOG** | Model D 最终 = **ibm-granite/granite-3.0-8b-instruct**（gemma-2/Llama-3.x 均 gated/403，Phi-3/SmolLM2/OLMo2 为 MHA，Phi-3-medium 为融合 qkv 需切片——决策记录见 EXP16 段，冻结于行为门控前）。闸门 PASSED（+0.562）；B 阶段 **8/8 strata = GENERATION_BOUNDARY**；C 阶段最终 **(L39, KV2)** score **+0.099**（anchor-conditioned 修复验证：EXP15 式 USER_END 冻结只有 ~+0.002，约 50× 差）；reader **{10,11}+，抑读集 ∅**（最负 −0.0008 > 阈值，按规则记空不伪造）；held-out selected V suff/nec **+0.120/+0.120**、cross-wording +0.120（=same-wording）、reader pos +0.119/+0.119、all-readers==verified 精确、matched-negative 干净 null、selected−runner +0.120/+0.120（runner 用自身残差参考）、label 双向正、4 family 全正；**但 same-state −0.006 显著负 + leakage 0.348** ⇒ PARTIAL（非 STRONG：无抑读集 + 保真度降级）。四模型对比：writer=USER_END(Qwen A/B) vs GENERATION_BOUNDARY(Mistral/Granite)；L/KV 每次不同（20,0→30,4→39,2）；reader 每次不同（{0,3,5}→{1,3,5}→{16}→{10,11}）；**抑读 register 非架构普适** | `93891ee` |
-| EXP17 | 对话交接式写点迁移的证伪（writer 跟随语义/绝对位置/用户内容末/模板终止符/生成交接中的哪一个）？ | **预注册（2026-09-29），待运行** | 全部组件冻结（layer/KV/reader 一律不重选、不重发现）：Qwen2.5-Coder L20/KV0/{0,3,5}+，Mistral L30/KV4/{16,18}+（Q0 因 EXP15 精确零分排除），Granite L39/KV2/{10,11}+。48 个全新任务（4 family × 12，前 8/族 = 32 confirmatory，后 4/族 = 16 reserve，**primary verdict 写完前不得触碰 reserve**）。四个 label/wording 中性的 topology 条件：native / suffix_short / suffix_long / instruction_early。五个 6-token site：FINAL_INSTRUCTION_END、USER_CONTENT_END、TEMPLATE_TERMINATOR、GENERATION_BOUNDARY、NATIVE_ABSOLUTE（后者取该条目 native prompt 中原冻结写点的绝对下标）。主端点：每个 model×condition×site 的 V/KV 充分性 + 局部必要性；reader 确证仅在 native/suffix_long 的三个 site；对照在真实生成边界（同措辞反状态 / 跨措辞反状态 / 同状态跨措辞 / direct-choice 反标签，direct 为描述性 specificity、不预设方向）。判据：HANDOFF_TRACKING / SEMANTIC_INSTRUCTION / ABSOLUTE_POSITION / USER_END_TRACKING / MIXED，**TEMPLATE_TERMINATOR 与 GENERATION_BOUNDARY 的 Jaccard ≥ 0.8 时按预注册报 HANDOFF_OR_TEMPLATE_BOUNDARY**。RED ZONE：不改判据、不重选 layer/KV/reader、不删 condition/site/family；工程兼容（路径/chat template/offset 映射/显存/resume）可修 | 待回填 |
+| EXP17 | 对话交接式写点迁移的证伪（writer 跟随语义/绝对位置/用户内容末/模板终止符/生成交接中的哪一个）？ | **confirm 完成（2026-09-29），reserve 待跑** | 冻结组件全部复用（qwen L20/KV0/{0,3,5}；mistral L30/KV4/{16,18}，Q0 因 EXP15 精确零排除；granite L39/KV2/{10,11}）。audit：**TEMPLATE_TERMINATOR≡GENERATION_BOUNDARY（全模型全条件 Jaccard=1.0，模板闭合+assistant 起始即生成边界）**，suffix_long 位移 11~23 token，无 site bug。**Primary verdict：** mistral→**HANDOFF_OR_TEMPLATE_BOUNDARY**（suffix_long GEN V suff/nec +0.138/+0.153、reader ps/pn +0.155/+0.152 随写点迁移，NATIVE_ABS 衰减 +0.1412→−0.0001，instruction_early 写点仍钉生成边界 +0.132）；granite→**HANDOFF_OR_TEMPLATE_BOUNDARY**（suff/nec +0.106/+0.108、reader +0.104、NATIVE_ABS 衰减到 +0.004）；qwen→**MIXED:SEMANTIC_INSTRUCTION+ABSOLUTE_POSITION**（suffix_long 生成边界 V **强负 −0.064**、最终指令 +0.019 正、NATIVE_ABS +0.018 正、USER_END 归零——Qwen 写点**不**跟随生成交接，留在语义最终指令+旧绝对位置；其 "USER_END" 首次拓扑级刻画为语义+位置追随）。direct specificity：mistral procedural≫direct（+0.078/+0.094）、qwen procedural>direct、**granite suffix_long direct≥procedural（−0.012 CI<0，描述性如实记录）**；same-state granite 负污染延续；cross-wording mistral/granite 完全迁移 | 待回填 |
 
 ---
 
@@ -2677,3 +2677,83 @@ EXP17 只**区分已冻结 V/KV 子路径的多种迁移假设**。它**不**证
 
 ## RED ZONE
 判据、条件、site、family、冻结组件在预注册后一律不变；reserve 在 primary verdict 前不触碰；direct-choice 方向不预设；TEMPLATE_TERMINATOR/GENERATION_BOUNDARY 高重叠时按预注册报 HANDOFF_OR_TEMPLATE_BOUNDARY 而不强行解释。
+
+## 结果（EXP17 — confirm 阶段；preliminary_confirmed）
+
+### 日期
+2026-09-29（confirm 运行；`--model all --phase confirm`，SEED 5717，N_BOOT 5000）
+
+### 提交
+预注册 `cb34e94`、hash 回填 `36d5dfe`；本 confirm 结果 commit 待 reserve 后回填。
+
+### 状态
+**PRIMARY VERDICT 已写（confirm 32 任务×3 模型全完成）**；reserve 16 任务待运行（此时尚未触碰，预注册顺序满足）。
+
+### 运行说明（工程记录）
+- 三个模型全部用预注册冻结组件（qwen L20/KV0/{0,3,5}；mistral L30/KV4/{16,18}，Q0 排除；granite L39/KV2/{10,11}），本地 checkpoint 未更换。
+- **audit 阶段**（无权重）：`site_overlap_audit.csv` 核对全部通过——TEMPLATE_TERMINATOR 与 GENERATION_BOUNDARY 在**所有模型×所有条件 Jaccard=1.0**（渲染后 prompt 最后 6 token 正是 `.<|im_end|>\n<|im_start|>assistant\n` / `single next action now.[/INST]` / `.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>`——模板闭合标记+assistant 起始即生成边界，模板结构使二者同一位点）；native 下 Mistral/Granite 的 NATIVE_ABSOLUTE（=其 native GENERATION_BOUNDARY）与 GENERATION_BOUNDARY 相同窗口（算术距离 −5.0）；suffix_long 位移 +11~+23 token；instruction_early 把最终指令推到生成边界前 53~65 token。无 site 定义 bug，未改定义。
+- **显存工程修复**（允许范围）：首次 confirm 启动时 GPU1 被无关 Qwen-VL 微调任务（pid 84092，30.9GB）占满，`device_map="auto"` 把模型拆到 GPU0+GPU1 两卡、逐层跨卡传输致单 task >15 分钟；改为 `CUDA_VISIBLE_DEVICES=0` 单卡加载后（15GB < 48GB A6000），96 任务（3 模型×32）约 17+13+25=55 分钟完成（~32-47s/task）。**未改任何冻结组件/判据/条件/site。**
+- 早期"无进度输出"为 stdout 块缓冲（重定向文件 4-8KB 才 flush），非卡死。
+
+### Site audit 结论（复制 audit 摘要）
+| model | suffix_long: final→gen | native: template/gen Jaccard | native: template tokens |
+|---|---|---|---|
+| qwen | +21.0 | 1.0 | `.<|im_end|>\n<|im_start|>assistant\n` |
+| mistral | +20.0 | 1.0 | `single next action now.[/INST]` |
+| granite | +23.0 | 1.0 | `.<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>` |
+
+### 主端点（skill cohort，task-level paired bootstrap 95% CI，N=32 tasks）
+
+**V_sufficiency（冻结 V/KV 组）**
+
+| model | cond | FINAL_INSTR_END | USER_CONTENT_END | TEMPLATE(=GEN) | NATIVE_ABS |
+|---|---|---|---|---|---|
+| qwen | native | +0.0139 | +0.0139 | −0.0157 | +0.0453 |
+| qwen | suffix_long | **+0.0188** | +0.0000 | **−0.0635** | **+0.0177** |
+| mistral | native | +0.0022 | +0.0022 | +0.1412 | +0.1412 |
+| mistral | suffix_long | +0.0001 | +0.0002 | **+0.1384** | −0.0001 |
+| granite | native | +0.0001 | +0.0001 | +0.1212 | +0.1212 |
+| granite | suffix_long | −0.0002 | −0.0001 | **+0.1060** | +0.0040 |
+
+（mistral native TEMPLATE=GEN=NATIVE_ABS 同为 +0.1412 因三窗口同位置，非矛盾；audit 已证。）
+
+**V_necessity（局部）**：qwen suffix_long FINAL +0.0150/GEN −0.0984/NATIVE_ABS +0.0154；mistral suffix_long FINAL +0.0008/GEN +0.1534/NATIVE_ABS +0.0011；granite suffix_long FINAL −0.0002/GEN +0.1078/NATIVE_ABS +0.0052（suff/nec 方向一致）。
+
+### 关键对比（relocation_contrasts，V_sufficiency，suffix_long 下）
+| contrast | qwen | mistral | granite |
+|---|---|---|---|
+| handoff − NATIVE_ABS | **−0.0812** CI<0 | +0.1385 CI>0 | +0.1020 CI>0 |
+| handoff − FINAL_INSTR | −0.0823 CI<0 | +0.1384 CI>0 | +0.1062 CI>0 |
+| handoff − USER_END | −0.0635 CI<0 | +0.1382 CI>0 | +0.1061 CI>0 |
+| handoff − TEMPLATE | +0.0000 ns | +0.0000 ns | +0.0000 ns |
+| NATIVE_ABS native−long | +0.0276 CI>0 | +0.1412 CI>0 | +0.1171 CI>0 |
+| handoff native−long | +0.0478 CI>0 | +0.0027 CI>0 | +0.0152 CI>0 |
+
+（TEMPLATE=GEN 同窗口 ⇒ handoff−TEMPLATE 恒为 0，按预注册 Jaccard≥0.8 → HANDOFF_OR_TEMPLATE_BOUNDARY 折叠。）
+
+### Reader 确证（冻结正读 register@三 site，native/suffix_long）
+- mistral：GEN_BOUNDARY ps/pn = +0.165/+0.161（native）、**+0.155/+0.152（suffix_long）**；FINAL_INSTR_END ≈ +0.004/+0.002；NATIVE_ABS native +0.165（=GEN 同窗口）→ suffix_long 衰减到 +0.006/+0.007 → **reader path 随 V 一同迁移到生成边界**。
+- granite：GEN_BOUNDARY ps/pn +0.119/+0.120 → **+0.104/+0.104（suffix_long）**；FINAL ≈ +0.000；NATIVE_ABS 衰减到 +0.005 → 同上。
+- qwen：GEN_BOUNDARY ps/pn +0.090/+0.072（native）→ suffix_long 仍有 +0.038/+0.031（正，与 V suff 负号不同——reader 路径在生成边界仍正）；FINAL_INSTR_END +0.025→+0.031、NATIVE_ABS +0.064→+0.029 双向正。
+- leakage_ratio（suffix_long, GB）：qwen 1.85（非零，register 外也有能量）、mistral 0.34、granite 0.27。
+
+### 对照
+- **cross-wording**（GENERATION_BOUNDARY）：mistral +0.1412→+0.1389（=同措辞，完全迁移）、granite +0.1203→+0.1057（=同措辞）、qwen −0.0169→−0.0631（方向随 V 一致负）。措辞无关性在 mistral/granite 上成立。
+- **same-state**：mistral native +0.0013 CI>0（1.3% 污染）suffix_long +0.0007 ns（干净）；granite native −0.0038 CI<0 / suffix_long −0.0022 CI<0（显著负污染，与 EXP16 same-state −0.006 同号）；qwen native −0.0026 CI<0 / suffix_long +0.0001 ns。
+- **direct specificity**（skill − direct, V_suff@GB，描述性不预设方向）：qwen +0.0271/+0.0152 CI>0（procedural>direct）；mistral +0.0784/+0.0944 CI>0（procedural>direct，与 EXP15 6.2× 一致）；granite native −0.0093（ns）/ suffix_long **−0.0123 CI<0（direct≥procedural）**——方向如实记录，不预设。
+
+### 判据裁定（`classify_model` 自动，冻结规则）
+- **qwen → `MIXED:SEMANTIC_INSTRUCTION+ABSOLUTE_POSITION`**：suffix_long FINAL_INSTR suff/nec CI>0 且不弱于 handoff（handoff 本身强负）→ SEMANTIC ✓；NATIVE_ABS suff/nec CI>0 且不弱于 handoff → ABSOLUTE ✓；USER_END 归零（−0.0000）→ USER_END ✗；GENERATION_BOUNDARY 强负 → HANDOFF ✗（suffix_long 写点完全不跟随生成交接）。
+- **mistral → `HANDOFF_OR_TEMPLATE_BOUNDARY`**：suffix_long GEN suff/nec CI>0 ✓ + handoff−NATIVE_ABS CI>0 ✓ + NATIVE_ABS 衰减 CI>0 ✓ → HANDOFF_TRACKING 满足；TEMPLATE/GEN Jaccard=1.0 ⇒ 按预注册折叠为 HANDOFF_OR_TEMPLATE_BOUNDARY（不声称二者可分离）。
+- **granite → `HANDOFF_OR_TEMPLATE_BOUNDARY`**：同上（suff/nec、handoff−NABS、NABS 衰减三条件全过；Jaccard=1.0 折叠）。
+
+### Primary verdict（三种写点迁移解释的判别）
+1. **Mistral 与 Granite 的冻结 writer 跟随"生成交接/模板边界"**：suffix_long 把语义内容整体后推 ~20 token 时，写点（V suff/nec + reader path）**完整迁移到新的 prompt 末尾**；NATIVE_ABSOLUTE 从 native 的 +0.14/+0.12 衰减到 ≈0；instruction_early 把最终指令移到 53~65 token 之外时写点仍钉在生成边界（mistral +0.132、granite +0.125）。语义最终指令、用户内容末、绝对位置假设在这两个架构上**被否决**。
+2. **Qwen2.5-Coder 的冻结 writer 恰好相反**：suffix_long 下生成边界 V 效应**强负**（−0.064），写点留在**最终指令语义**（+0.019）与**旧绝对位置**（+0.018，=EXP13 的 USER_END/FINAL_INSTRUCTION_END 历史下标）。即 Qwen 的 "USER_END" 在 EXP17 的拓扑操控下表现为主**语义指令追随+绝对位置**，不是生成交接追随。这是 EXP13 冻结位点语义的首次拓扑级刻画。
+3. **TEMPLATE_TERMINATOR 与 GENERATION_BOUNDARY 在所有模型不可分离**（Jaccard=1.0）——模板闭合标记+assistant 起始与生成边界同一位点；按预注册不强行解释二者谁为主。
+
+### Claim boundary（不变式）
+EXP17 判别的是**已冻结 V/KV 子路径**的迁移假设，不证明该子路径是 procedural-control 的唯一机制；TEMPLATE/GEN 高重叠按预注册报 HANDOFF_OR_TEMPLATE_BOUNDARY；granite 的 direct≥procedural 与 same-state 负污染是描述性记录，不作方向主张；reserve 结果待补充。
+
+### RED ZONE 遵守
+预注册后未改判据/条件/site/family/冻结组件；audit-发现-修复只涉及**路径、chat template、offset 映射、显存**四类工程兼容（预注册允许）；site 定义未追结果修改；direct 方向如实记录未预设；TEMPLATE/GEN 按预注册折叠；reserve 在 verdict 写出前未触碰。
