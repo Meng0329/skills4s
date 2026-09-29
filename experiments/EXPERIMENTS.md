@@ -2558,7 +2558,7 @@ per query head：`positive=min(mean_suff, mean_nec)`、`inhibitory=max(mean_suff
 2026-09-29
 
 ## 提交
-预注册 `PENDING`（本段在读取任何 EXP17 activation 结果之前写入）；主结果 commit 待回填。
+预注册 `cb34e94`（结果之前）；主结果 commit 待回填。
 
 ## 状态
 **预注册（PREREGISTERED）**——本段在运行 `--phase audit` / `--phase confirm` / `--phase reserve` 之前写入。完成本跑后按结果更新；不得事后修改判据。
