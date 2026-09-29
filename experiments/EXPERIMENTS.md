@@ -33,7 +33,8 @@
 | EXP13 | 上下文条件化 schema 写点能否重映射？ | 完成，confirmatory=TRUE（Pattern A） | **writer 高度 schema-stable：USER_END 7/8 strata 选中**（唯一例外 config_command::canonical=FINAL_INSTRUCTION_END，其 runner-up 即 USER_END）；held-out 双向 V suff/nec 全正（+0.0473/+0.0465，CI>0）、selected−old_absolute +0.061/+0.066、selected−runner_up +0.028/+0.031、cross-wording +0.044/+0.049、target reader 0.067 vs negative −0.028（contrast +0.095/+0.098）；old absolute 再次为负（−0.014）；sanity 全过（all7=selected=verified 精确相等、Q7..Q27 泄漏 0、non-KV0 0）；label0/label1 均正 → bidirectional_writer_pass | `d706328` |
 | EXP14 | 跨模型功能同构复现（冻结机制定义、不冻结索引）？ | 完成，**PARTIAL SUCCESS** | Model B=Qwen2-7B-Instruct（同 Qwen2 架构、独立权重、通用域）。discovery 冻结 **L=20,KV0**（自由搜索下与 Model A 的 H20/KV0 **逐索引一致**）、reader **{1,3,5}+/{2,4,6}−**（负集合与 Model A 完全一致）；held-out：selected V suff/nec +0.025/+0.027（CI>0）、label0/1 双向正、cross-wording +0.019、reader pos +0.038 vs neg −0.012（contrast +0.050）、non-set≈0、all28==verified 精确、skill≫direct specificity、old-absolute 仍负；**但 same-state 控制 −0.012 显著负（Model A=0）、leakage 0.153（Model A=0）、selected−runner_up nec −0.108 反常** → 结构同构复现、保真度降低 | `79388ea` |
 | EXP15 | 跨架构功能同构复现（冻结机制定义、不冻结索引）？ | 完成，**PARTIAL / ALGORITHMIC HOMOLOG** | Model C=Mistral-7B-Instruct-v0.3（Mistral 架构：32L/32Q/**8KV**/128，与 Qwen2 GQA 不同族）。闸门 PASSED（pooled +1.230，4 family/双 label/双措辞全正）；discovery 冻结 **L=30,KV4、GENERATION_BOUNDARY（8/8 strata，=提示词尾 `action now . [/INST]`）、reader {0,16,18}+/{1,17,19}−（活跃 16+/19−）**——与 Model A/B 的 L20/KV0/USER_END/{0,3,5}/{2,4,6} **索引实现全部不同**（功能冻结、索引不冻结）；held-out：selected V suff/nec **+0.140/+0.151**、cross-wording +0.141（=same-wording，完全迁移）、reader pos +0.165 vs neg −0.020/−0.025（contrast +0.185）、non-set=0、leakage **0.0**、all32==verified 精确、skill≫direct（6.2×）、matched-negative 干净 null、label0/1 双向正、4 family 全正；**但 same-state +0.002 CI 不含 0（1.4% 污染）、runner_up nec +2.37 为原实现无效控制（EXP16 前置诊断修正为 +0.0038 [0.0027,0.0051]，见 EXP15 段修正）** → **功能组织跨架构复制成功、索引实现不同、保真度轻微降级** | `3c19971` |
-| EXP16 | 第二跨架构同构复现（writer anchor 参与最终接口定位）？ | **预注册（2026-09-29），待运行** | Model D=google/gemma-2-9b-it（优先；GQA 16Q/8KV、42 层，第二非 Qwen 架构）。预注册设计：A1 残差粗候选（10%,...,96% × 9 anchor，score=min(label0,label1) 残差效应，取 top2 (L,anchor)）→ A2 暂定 V/KV 接口（候选 L 全 KV 扫 top4 + ±2 层细化，score=min(suff0,suff1,nec0,nec1)）→ B 上下文 writer（暂定 (L,KV) 下 8 stratum × 9 anchor 双向 score，冻结 winner+runner-up）→ **C 最终 anchor-conditioned 接口（用 B 冻结 anchors 重扫 KV top4 + ±2 层细化）**（修复 EXP15 的 USER_END/FINAL_INSTRUCTION_END 冻结与 GENERATION_BOUNDARY 强 writer 的搜索错配）→ D reader（正阈值=max(0.002, 0.05×best_pos)、抑阈值=min(−0.002, 0.05×best_neg)，各 ≤4 头，**零分头绝不填入**，可空抑读集）；确认端点含 selected V suff/nec、cross-wording、label0/1、正读、抑读（若有）+contrast、all-reader 重建、matched negative（ISSUE_END，选定则 DETAIL_END）、same-state、**runner-up 用自身残差参考**、leakage；判据 STRONG RECURRING / PARTIAL-ALGORITHMIC / ARCHITECTURE-DIVERGENT / BEHAVIORAL GATE FAILURE。EXP15 runner-up nec +2.37 原实现无效（复用 selected 的 res_ref），先跑诊断修正再解读 EXP16。GQA 强制（MHA 仅 exploratory）。RED ZONE：不改判据、不重选组件、不因阴性换模型 | `93891ee` |
+| EXP16 | 第二跨架构同构复现（writer anchor 参与最终接口定位）？ | 完成，**PARTIAL / ALGORITHMIC HOMOLOG** | Model D 最终 = **ibm-granite/granite-3.0-8b-instruct**（gemma-2/Llama-3.x 均 gated/403，Phi-3/SmolLM2/OLMo2 为 MHA，Phi-3-medium 为融合 qkv 需切片——决策记录见 EXP16 段，冻结于行为门控前）。闸门 PASSED（+0.562）；B 阶段 **8/8 strata = GENERATION_BOUNDARY**；C 阶段最终 **(L39, KV2)** score **+0.099**（anchor-conditioned 修复验证：EXP15 式 USER_END 冻结只有 ~+0.002，约 50× 差）；reader **{10,11}+，抑读集 ∅**（最负 −0.0008 > 阈值，按规则记空不伪造）；held-out selected V suff/nec **+0.120/+0.120**、cross-wording +0.120（=same-wording）、reader pos +0.119/+0.119、all-readers==verified 精确、matched-negative 干净 null、selected−runner +0.120/+0.120（runner 用自身残差参考）、label 双向正、4 family 全正；**但 same-state −0.006 显著负 + leakage 0.348** ⇒ PARTIAL（非 STRONG：无抑读集 + 保真度降级）。四模型对比：writer=USER_END(Qwen A/B) vs GENERATION_BOUNDARY(Mistral/Granite)；L/KV 每次不同（20,0→30,4→39,2）；reader 每次不同（{0,3,5}→{1,3,5}→{16}→{10,11}）；**抑读 register 非架构普适** | `93891ee` |
+| EXP17 | 对话交接式写点迁移的证伪（writer 跟随语义/绝对位置/用户内容末/模板终止符/生成交接中的哪一个）？ | **预注册（2026-09-29），待运行** | 全部组件冻结（layer/KV/reader 一律不重选、不重发现）：Qwen2.5-Coder L20/KV0/{0,3,5}+，Mistral L30/KV4/{16,18}+（Q0 因 EXP15 精确零分排除），Granite L39/KV2/{10,11}+。48 个全新任务（4 family × 12，前 8/族 = 32 confirmatory，后 4/族 = 16 reserve，**primary verdict 写完前不得触碰 reserve**）。四个 label/wording 中性的 topology 条件：native / suffix_short / suffix_long / instruction_early。五个 6-token site：FINAL_INSTRUCTION_END、USER_CONTENT_END、TEMPLATE_TERMINATOR、GENERATION_BOUNDARY、NATIVE_ABSOLUTE（后者取该条目 native prompt 中原冻结写点的绝对下标）。主端点：每个 model×condition×site 的 V/KV 充分性 + 局部必要性；reader 确证仅在 native/suffix_long 的三个 site；对照在真实生成边界（同措辞反状态 / 跨措辞反状态 / 同状态跨措辞 / direct-choice 反标签，direct 为描述性 specificity、不预设方向）。判据：HANDOFF_TRACKING / SEMANTIC_INSTRUCTION / ABSOLUTE_POSITION / USER_END_TRACKING / MIXED，**TEMPLATE_TERMINATOR 与 GENERATION_BOUNDARY 的 Jaccard ≥ 0.8 时按预注册报 HANDOFF_OR_TEMPLATE_BOUNDARY**。RED ZONE：不改判据、不重选 layer/KV/reader、不删 condition/site/family；工程兼容（路径/chat template/offset 映射/显存/resume）可修 | 待回填 |
 
 ---
 
@@ -2548,3 +2549,131 @@ per query head：`positive=min(mean_suff, mean_nec)`、`inhibitory=max(mean_suff
 
 ### RED ZONE 遵守
 判据冻结于预注册 `6342dfc`；结果全部如实记录；空抑读集按规则记录而不伪造；未修改任何 endpoint/threshold/verdict。
+
+---
+
+# EXP17 — Dialogue-Handoff Writer Relocation Falsification（对话交接式写点迁移的证伪）
+
+## 日期
+2026-09-29
+
+## 提交
+预注册 `PENDING`（本段在读取任何 EXP17 activation 结果之前写入）；主结果 commit 待回填。
+
+## 状态
+**预注册（PREREGISTERED）**——本段在运行 `--phase audit` / `--phase confirm` / `--phase reserve` 之前写入。完成本跑后按结果更新；不得事后修改判据。
+
+## 为什么是 EXP17（问题）
+
+EXP13–16 在四个 checkpoint / 三个架构族上确立了同一条功能链：**末段提示写点 → 单 block V/KV 接口 → 稀疏正读 register → 下一动作偏好**。但四模型的**写点位置并不一致**：Qwen2.5-Coder / Qwen2-7B 选 **USER_END**（用户内容结束），Mistral-7B-v0.3 / Granite-3.0-8B 选 **GENERATION_BOUNDARY**（模板末尾 / 生成交接处）。
+
+"末段"是一个**几何描述**，不是一个**机制主张**。至少五种互不相同的解释都能产生"写点在末段"这一观察：
+
+1. **语义指令**：writer 写的是最终指令（`Choose the single next action now.`）的含义；
+2. **用户内容末**：writer 写的是"用户消息结束"这个事件；
+3. **模板终止符**：writer 写的是渲染后 chat template 的闭合标记本身；
+4. **生成交接 / 对话交接**：writer 写的是"模型即将开始生成"这一边界事件；
+5. **绝对位置**：writer 根本不看语义，只是被钉在 native prompt 里的**固定 token 下标**（纯位置 artifact）。
+
+前四项在现有实验里**完全混叠**：所有下游实验（EXP13/15/16）都保持模板与位置不变，因此"USER_END" 与 "GENERATION_BOUNDARY" 的差别从未被真正操控过。EXP17 通过**只改 prompt topology、不改任何语义内容**来分离它们。
+
+## 冻结组件（禁止重选 / 禁止重发现）
+
+| 模型 | 架构 | L | KV/value 组 | 正读 register | 来源 |
+|---|---|---:|---:|---|---|
+| Qwen2.5-Coder-7B-Instruct | Qwen2 (GQA 28/4) | 20 | 0 | {0,3,5} | EXP10/11/13 |
+| Mistral-7B-Instruct-v0.3 | Mistral (GQA 32/8) | 30 | 4 | {16,18} | EXP15 |
+| Granite-3.0-8B-Instruct | Granite (GQA 32/8) | 39 | 2 | {10,11} | EXP16 |
+
+- **Mistral Q0 被排除**：其在 EXP15 的 reader 分数**精确为零**（零分头绝不填入任何 register，沿用 EXP16 规则）。
+- Mistral/Granite 的 `NATIVE_ABSOLUTE` = 其 native prompt 的 GENERATION_BOUNDARY（即其自身原冻结写点的绝对下标）。
+- Qwen 的 `NATIVE_ABSOLUTE` = EXP13 `selected_schema.json` 中该 family×wording stratum 的历史选中 anchor 的绝对下标（USER_END 走 `<|im_end|>` 定位；唯一例外 config_command::canonical = FINAL_INSTRUCTION_END）。
+- **不换模型**：三个 checkpoint 全部沿用 EXP13/15/16 已冻结的本地快照。缺失可恢复同一 checkpoint；不得替换为其它权重。
+
+## 数据与统计
+
+- **48 个全新任务**（4 family × 12）：test_edit / search_edit / config_command / docs_code，每 family 12 个不同 module/symbol/package。
+- 数据划分：`index 0..7` = **confirmatory（32 任务）**；`index 8..11` = **reserve（16 任务）**。
+- **Reserve 在 primary verdict 写完之前不得运行、不得查看。**（预注册时 reserve 任务的任何结果都不存在于 outputs。）
+- task 为推断单元；mean candidate-token log-prob margin（action0 vs action1）；**task-level paired bootstrap 95% CI**（N_BOOT = 5000，SEED = 5717）；batch = 1。
+- 全部条件与 site 对 label（0/1）和措辞（canonical/paraphrase）**中性**；donor 为同条件同任务的**反标签**条目。
+
+## Topology 条件（4 个）
+
+| 条件 | user content 结构 | 语义改变 |
+|---|---|---|
+| `native` | `prefix + actions + "\n\n" + "Choose the single next action now."` | 无（基线） |
+| `suffix_short` | `native + "\n\n" + "Reference note: protocol marker R17."` | 仅新增中性元文本 |
+| `suffix_long` | `native + "\n\n" + "Reference note: protocol marker R17. Session metadata: channel standard; priority normal; checksum stable."` | 仅新增中性元文本（约 +18 token） |
+| `instruction_early` | `prefix + "Choose the single next action now." + "\n\n" + actions + "\n\n" + LONG_SUFFIX` | **最终指令移到动作列表之前**；结尾为同一中性元文本 |
+
+`suffix_*` 把语义内容**整体后推**（绝对位置改变、语义不变）；`instruction_early` 把最终指令从末段**移到前段**（语义位置改变、结尾仍有中性元文本）。两者共同构成对"末段几何"的正交操控。
+
+## 候选 site（全部固定 6-token 窗口，ANCHOR_WIDTH = 6）
+
+| site | 定义 | 测的是 |
+|---|---|---|
+| `FINAL_INSTRUCTION_END` | `Choose the single next action now.` 最后一个 token 起的 6-token 窗口 | 语义指令 |
+| `USER_CONTENT_END` | 渲染后 user content 最后一个 token 起的 6-token 窗口 | 用户内容末 |
+| `TEMPLATE_TERMINATOR` | user content 结束之后、prompt 结束之前的首个 6-token 窗口（chat template 闭合标记） | 模板终止符 |
+| `GENERATION_BOUNDARY` | prompt 最后 6 个 token | 生成 / 对话交接 |
+| `NATIVE_ABSOLUTE` | 该条目在 **native prompt** 中原冻结写点所占的绝对下标（见上表） | 绝对位置 |
+
+- 每个 site 在每个条件里都重新定位（除 NATIVE_ABSOLUTE 固定为 native 绝对下标——这正是绝对位置假设的定义）。
+- **Site 定义在跑 audit 之前冻结**；audit 只用于**核对映射是否正确**（token 文本、位移量、overlap），发现工程映射 bug 可修；**不得为追结果而改 site 定义**。
+
+## 主端点
+
+在**每个** model × condition × site 上：
+- **V/KV sufficiency**（suff）
+- **局部 V/KV necessity**（nec）
+
+全部使用该模型冻结的 (L, KV) 组与 6-token 窗口。
+
+## Reader 确证
+
+仅对 `native` 与 `suffix_long` 两个条件，在 `GENERATION_BOUNDARY`、`FINAL_INSTRUCTION_END`、`NATIVE_ABSOLUTE` 三个 site 上，用**冻结的正读 register**（含 nec）测量 reader path 效应：`reader_positive_sufficiency` / `reader_positive_necessity` / `reader_verified_V` / `reader_leakage_ratio`。
+
+## 对照（全部在真实 `GENERATION_BOUNDARY` 上，仅 native / suffix_long）
+
+| 对照 | donor | 作用 |
+|---|---|---|
+| opposite same-wording | 反标签、同措辞 | 主对照（= V suff/nec 的默认定义） |
+| opposite cross-wording | 反标签、跨措辞 | 措辞无关性 |
+| same-state cross-wording | 同标签、跨措辞 | 词形污染（应 ≈ 0） |
+| direct-choice opposite-label | 无 skill、system 直接固定动作、反标签 | **描述性 specificity** |
+
+**direct-choice 是描述性 specificity control**：预注册**不预设** procedural 一定强于 direct，只报告 `skill − direct` 的 paired CI，方向如实记录。
+
+## 判据（冻结规则，run.py `classify_model` 自动执行）
+
+全部判据在 `suffix_long` 条件下评估（"writer 是否随 topology 位移而迁移"）：
+
+- **HANDOFF_TRACKING**（跟随生成交接）：
+  1. `suffix_long` 的 GENERATION_BOUNDARY suff CI_low > 0 **且** nec CI_low > 0；
+  2. `handoff − NATIVE_ABSOLUTE` 的 paired CI_low > 0（交接点显著强于旧绝对位置）；
+  3. `NATIVE_ABSOLUTE` 的效应从 `native` 到 `suffix_long` **衰减**（`native − suffix_long` CI_low > 0）。
+- **SEMANTIC_INSTRUCTION**（跟随语义指令）：FINAL_INSTRUCTION_END suff/nec CI>0，且**不显著弱于** handoff（`handoff − final` CI_low ≤ 0）。
+- **ABSOLUTE_POSITION**（跟随绝对位置）：NATIVE_ABSOLUTE suff/nec CI>0，且不显著弱于 handoff（`handoff − native_absolute` CI_low ≤ 0）。
+- **USER_END_TRACKING**（跟随用户内容末）：USER_CONTENT_END suff/nec CI>0，且不显著弱于 handoff（`handoff − user_content_end` CI_low ≤ 0）。
+- **HANDOFF_OR_TEMPLATE_BOUNDARY**：若 `TEMPLATE_TERMINATOR` 与 `GENERATION_BOUNDARY` 的 **Jaccard ≥ 0.8**（在 suffix_long 上按 task 平均），则**不声称二者可分离**，改报本模式（并从 active 列表中移除 HANDOFF_TRACKING）。
+- **MIXED**：多个非等价 site 同时满足各自判据 → `MIXED:<模式列表>`。
+- **NO_CLEAR_RELOCATION_PATTERN**：无任何模式满足。
+
+判据无事后救援：不给 null 补显著性、不为阴性换判据、不删 site。
+
+## 审计（先于任何 activation 结果）
+
+`python experiments/exp17_handoff_relocation/run.py --model all --phase audit` —— 只做 token/site 审计（不加载模型权重），输出 `site_overlap_audit.csv`，逐条核对：
+- topology 位移量（final/user/native_abs 到 generation boundary 的距离）；
+- 五个 site 各自的**实际 token 文本**；
+- 各 site 两两 Jaccard。
+
+审计发现的工程映射 bug（offset mapping、fast tokenizer 特殊 token offset）可修；**site 定义不可改**。
+
+## Claim boundary
+
+EXP17 只**区分已冻结 V/KV 子路径的多种迁移假设**。它**不**证明被测子路径是 procedural-control 的**唯一**机制，也不排除残差通道在其它 site 承担更大份额（EXP15/16 已证：Mistral ≈2.37、Granite ≈1.04 残差 vs V ≈12%）。direct-choice 的 specificity 是描述性的，不构成"procedural 特异性"的普适证据。
+
+## RED ZONE
+判据、条件、site、family、冻结组件在预注册后一律不变；reserve 在 primary verdict 前不触碰；direct-choice 方向不预设；TEMPLATE_TERMINATOR/GENERATION_BOUNDARY 高重叠时按预注册报 HANDOFF_OR_TEMPLATE_BOUNDARY 而不强行解释。
