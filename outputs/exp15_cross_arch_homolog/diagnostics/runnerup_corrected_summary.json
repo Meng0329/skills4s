@@ -1,0 +1,41 @@
+{
+  "diagnostic": "EXP15 runner-up residual-reference correction",
+  "bug": "original runner-up necessity reused selected-anchor res_ref",
+  "original_summary_rows": [
+    {
+      "relation": "opposite_same_wording",
+      "metric": "runner_up_V_necessity_loss",
+      "mean": 2.373511022255116,
+      "ci_low": 2.189966506820929,
+      "ci_high": 2.5577283142816665,
+      "num_tasks": 32
+    },
+    {
+      "relation": "opposite_same_wording",
+      "metric": "runner_up_V_sufficiency",
+      "mean": 0.0030873122886987,
+      "ci_low": 0.0024126571312081,
+      "ci_high": 0.0037693146095989,
+      "num_tasks": 32
+    }
+  ],
+  "corrected": {
+    "suff": {
+      "mean": 0.0030873122886987403,
+      "ci_low": 0.002429715953257983,
+      "ci_high": 0.0037899865747021973
+    },
+    "nec": {
+      "mean": 0.0038122226105770096,
+      "ci_low": 0.0026854146552068416,
+      "ci_high": 0.005089943117127404
+    },
+    "residual": {
+      "mean": 0.004197853937512264,
+      "ci_low": 0.003332209553991561,
+      "ci_high": 0.005085120155490585
+    }
+  },
+  "primary_exp15_endpoints_affected": false,
+  "note": "Update EXPERIMENTS.md: original runner-up necessity is invalid; use this diagnostic instead."
+}
