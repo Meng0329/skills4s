@@ -1,0 +1,895 @@
+{
+  "experiment": "EXP16_second_cross_arch",
+  "model_dir": "/data/mzb/skills4s/models/granite-3.0-8b-instruct",
+  "architecture": {
+    "layer_path": "model.layers",
+    "num_layers": 40,
+    "num_attention_heads": 32,
+    "num_key_value_heads": 8,
+    "head_dim": 128,
+    "attention_kind": "GQA",
+    "model_type": "granite",
+    "architectures": [
+      "GraniteForCausalLM"
+    ]
+  },
+  "selected": {
+    "L_star": 39,
+    "k_star": 2,
+    "reader_pos_set": [
+      10,
+      11
+    ],
+    "reader_neg_set": [],
+    "reader_positive_threshold": 0.003265851638570894,
+    "reader_inhibitory_threshold": -0.002,
+    "head_summary": {
+      "0": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "1": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "2": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "3": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "4": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "5": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "6": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "7": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "8": {
+        "mean_suff": -0.0007674296502955258,
+        "mean_nec": -0.0012932857207488269,
+        "positive_score": -0.0012932857207488269,
+        "inhibitory_score": -0.0007674296502955258
+      },
+      "9": {
+        "mean_suff": 0.00259955448564142,
+        "mean_nec": 0.0017628289642743766,
+        "positive_score": 0.0017628289642743766,
+        "inhibitory_score": 0.00259955448564142
+      },
+      "10": {
+        "mean_suff": 0.06531703277141787,
+        "mean_nec": 0.06679395062383264,
+        "positive_score": 0.06531703277141787,
+        "inhibitory_score": 0.06679395062383264
+      },
+      "11": {
+        "mean_suff": 0.05216202660812996,
+        "mean_nec": 0.05317108187591657,
+        "positive_score": 0.05216202660812996,
+        "inhibitory_score": 0.05317108187591657
+      },
+      "12": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "13": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "14": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "15": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "16": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "17": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "18": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "19": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "20": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "21": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "22": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "23": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "24": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "25": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "26": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "27": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "28": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "29": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "30": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "31": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      }
+    },
+    "strata": {
+      "test_edit::canonical": {
+        "family": "test_edit",
+        "wording": "canonical",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ACTION1_END",
+        "selected_score": 0.11611835099756718,
+        "runner_up_score": 0.00017447862774133682,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": 0.0001651383936405182,
+            "suff0": 0.0011362051591277122,
+            "suff1": 0.0010226070880889893,
+            "nec0": 0.0007214313372969627,
+            "nec1": 0.0001651383936405182
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0005458816885948181,
+            "suff0": 0.0005237888544797897,
+            "suff1": 6.545335054397583e-05,
+            "nec0": 0.0003629680722951889,
+            "nec1": -0.0005458816885948181
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0017615444958209991,
+            "suff0": 0.0004721200093626976,
+            "suff1": 1.8600374460220337e-05,
+            "nec0": 0.00013886857777833939,
+            "nec1": -0.0017615444958209991
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0010333657264709473,
+            "suff0": 0.000590544193983078,
+            "suff1": 0.001207113265991211,
+            "nec0": -0.00022454652935266495,
+            "nec1": -0.0010333657264709473
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -4.451349377632141e-05,
+            "suff0": 0.0015431251376867294,
+            "suff1": 0.0007064975798130035,
+            "nec0": 0.0005294512957334518,
+            "nec1": -4.451349377632141e-05
+          },
+          "ACTION1_END": {
+            "bidirectional_score": 0.00017447862774133682,
+            "suff0": 0.0007463311776518822,
+            "suff1": 0.0012098513543605804,
+            "nec0": 0.00017447862774133682,
+            "nec1": 0.000707920640707016
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0027841664850711823,
+            "suff0": 0.0017880536615848541,
+            "suff1": 0.0008622370660305023,
+            "nec0": 0.00039804819971323013,
+            "nec1": -0.0027841664850711823
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0027841664850711823,
+            "suff0": 0.0017880536615848541,
+            "suff1": 0.0008622370660305023,
+            "nec0": 0.00039804819971323013,
+            "nec1": -0.0027841664850711823
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.11611835099756718,
+            "suff0": 0.11826436594128609,
+            "suff1": 0.13289398327469826,
+            "nec0": 0.13999690115451813,
+            "nec1": 0.11611835099756718
+          }
+        }
+      },
+      "test_edit::paraphrase": {
+        "family": "test_edit",
+        "wording": "paraphrase",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ISSUE_END",
+        "selected_score": 0.13086359202861786,
+        "runner_up_score": -0.0019203005358576775,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.0028347745537757874,
+            "suff0": -0.0016407845541834831,
+            "suff1": -0.0028347745537757874,
+            "nec0": 0.00010361475870013237,
+            "nec1": -0.0007982850074768066
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0019377581775188446,
+            "suff0": -1.3160984963178635e-05,
+            "suff1": -0.0019377581775188446,
+            "nec0": -0.0006364271976053715,
+            "nec1": -3.30023467540741e-05
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0019203005358576775,
+            "suff0": -0.0019203005358576775,
+            "suff1": -0.0004706867039203644,
+            "nec0": 0.0004088650457561016,
+            "nec1": -0.0014688223600387573
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0028180740773677826,
+            "suff0": -0.0018891338258981705,
+            "suff1": -0.0028180740773677826,
+            "nec0": 0.00011700717732310295,
+            "nec1": 0.00018880143761634827
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.003925040364265442,
+            "suff0": -0.0025597536005079746,
+            "suff1": -0.00341077521443367,
+            "nec0": -0.00026609981432557106,
+            "nec1": -0.003925040364265442
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.002675417810678482,
+            "suff0": -0.002341947052627802,
+            "suff1": -0.002675417810678482,
+            "nec0": 0.00039120111614465714,
+            "nec1": 0.003817785531282425
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0023623635061085224,
+            "suff0": -0.0023623635061085224,
+            "suff1": -0.000799126923084259,
+            "nec0": -8.187070488929749e-05,
+            "nec1": -0.0016795918345451355
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0023623635061085224,
+            "suff0": -0.0023623635061085224,
+            "suff1": -0.000799126923084259,
+            "nec0": -8.187070488929749e-05,
+            "nec1": -0.0016795918345451355
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.13086359202861786,
+            "suff0": 0.22993633430451155,
+            "suff1": 0.14134734869003296,
+            "nec0": 0.13086359202861786,
+            "nec1": 0.23855573264881968
+          }
+        }
+      },
+      "search_edit::canonical": {
+        "family": "search_edit",
+        "wording": "canonical",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ISSUE_END",
+        "selected_score": 0.11471891915425658,
+        "runner_up_score": 0.00040739867836236954,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.001943696290254593,
+            "suff0": 0.0011874968186020851,
+            "suff1": -0.001943696290254593,
+            "nec0": 0.0011478094384074211,
+            "nec1": 0.0019577518105506897
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0009271353483200073,
+            "suff0": 0.0004403381608426571,
+            "suff1": -0.000918995589017868,
+            "nec0": -0.00039744889363646507,
+            "nec1": -0.0009271353483200073
+          },
+          "ISSUE_END": {
+            "bidirectional_score": 0.00040739867836236954,
+            "suff0": 0.0004104399122297764,
+            "suff1": 0.0006577633321285248,
+            "nec0": 0.00040739867836236954,
+            "nec1": 0.0004493333399295807
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0029582567512989044,
+            "suff0": 0.00041329115629196167,
+            "suff1": -0.0029582567512989044,
+            "nec0": 0.0016872575506567955,
+            "nec1": -0.0008929222822189331
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.0013475492596626282,
+            "suff0": 0.0013039978221058846,
+            "suff1": -0.0013475492596626282,
+            "nec0": 0.002176491543650627,
+            "nec1": -7.6070427894592285e-06
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0032351575791835785,
+            "suff0": 0.0019842935726046562,
+            "suff1": -0.0006531104445457458,
+            "nec0": 0.0007661911658942699,
+            "nec1": -0.0032351575791835785
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0019091852009296417,
+            "suff0": 1.874566078186035e-05,
+            "suff1": -0.0019091852009296417,
+            "nec0": -2.7101486921310425e-05,
+            "nec1": 0.0029541030526161194
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0019091852009296417,
+            "suff0": 1.874566078186035e-05,
+            "suff1": -0.0019091852009296417,
+            "nec0": -2.7101486921310425e-05,
+            "nec1": 0.0029541030526161194
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.11471891915425658,
+            "suff0": 0.11471891915425658,
+            "suff1": 0.17685731872916222,
+            "nec0": 0.1718581970781088,
+            "nec1": 0.11798850586637855
+          }
+        }
+      },
+      "search_edit::paraphrase": {
+        "family": "search_edit",
+        "wording": "paraphrase",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ISSUE_END",
+        "selected_score": 0.0373288094997406,
+        "runner_up_score": -0.0006732726469635963,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.0007172618061304092,
+            "suff0": -0.0007172618061304092,
+            "suff1": 0.0018261577934026718,
+            "nec0": -6.177183240652084e-05,
+            "nec1": 0.00023600459098815918
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0011098384857177734,
+            "suff0": -0.0011098384857177734,
+            "suff1": 0.001970577985048294,
+            "nec0": 0.0007767844945192337,
+            "nec1": -2.6786699891090393e-05
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0006732726469635963,
+            "suff0": -0.0006732726469635963,
+            "suff1": 0.00174638070166111,
+            "nec0": 0.0007830904796719551,
+            "nec1": 9.428709745407104e-06
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0011127106845378876,
+            "suff0": -0.0011127106845378876,
+            "suff1": 0.002022234722971916,
+            "nec0": 0.0009676581248641014,
+            "nec1": -4.163011908531189e-06
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.0016040392220020294,
+            "suff0": -0.0007175682112574577,
+            "suff1": 0.0017770584672689438,
+            "nec0": 0.0007594069465994835,
+            "nec1": -0.0016040392220020294
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0010555749759078026,
+            "suff0": -0.0010555749759078026,
+            "suff1": 0.0003324728459119797,
+            "nec0": -0.0002792011946439743,
+            "nec1": 0.0001360177993774414
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.003363034687936306,
+            "suff0": -0.003363034687936306,
+            "suff1": 0.001940254122018814,
+            "nec0": 0.0005916915833950043,
+            "nec1": -0.0008325297385454178
+          },
+          "USER_END": {
+            "bidirectional_score": -0.003363034687936306,
+            "suff0": -0.003363034687936306,
+            "suff1": 0.001940254122018814,
+            "nec0": 0.0005916915833950043,
+            "nec1": -0.0008325297385454178
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.0373288094997406,
+            "suff0": 0.09170511271804571,
+            "suff1": 0.042490310966968536,
+            "nec0": 0.0373288094997406,
+            "nec1": 0.09963658824563026
+          }
+        }
+      },
+      "config_command::canonical": {
+        "family": "config_command",
+        "wording": "canonical",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ACTION0_END",
+        "selected_score": 0.11195609159767628,
+        "runner_up_score": -2.0060688257217407e-06,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.002181418240070343,
+            "suff0": -0.0009164744988083839,
+            "suff1": -0.002181418240070343,
+            "nec0": 0.002166314050555229,
+            "nec1": 0.00336267426609993
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.001024492084980011,
+            "suff0": 0.0004851650446653366,
+            "suff1": -0.0007887072861194611,
+            "nec0": 0.0022103535011410713,
+            "nec1": -0.001024492084980011
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0013915561139583588,
+            "suff0": -0.00085397157818079,
+            "suff1": -0.0013915561139583588,
+            "nec0": -0.0009073307737708092,
+            "nec1": -0.0007876884192228317
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0021014846861362457,
+            "suff0": 0.0005899546667933464,
+            "suff1": 9.10833477973938e-07,
+            "nec0": -0.0021014846861362457,
+            "nec1": -2.4605542421340942e-06
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -2.0060688257217407e-06,
+            "suff0": 0.0004928400740027428,
+            "suff1": -2.0060688257217407e-06,
+            "nec0": 0.00011327303946018219,
+            "nec1": 0.0001644417643547058
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.000799400731921196,
+            "suff0": 0.001959660090506077,
+            "suff1": 6.545335054397583e-06,
+            "nec0": -1.0617077350616455e-07,
+            "nec1": -0.000799400731921196
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.000985473394393921,
+            "suff0": 0.0012042345479130745,
+            "suff1": -0.000985473394393921,
+            "nec0": 0.0012289732694625854,
+            "nec1": 0.0013854186981916428
+          },
+          "USER_END": {
+            "bidirectional_score": -0.000985473394393921,
+            "suff0": 0.0012042345479130745,
+            "suff1": -0.000985473394393921,
+            "nec0": 0.0012289732694625854,
+            "nec1": 0.0013854186981916428
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.11195609159767628,
+            "suff0": 0.21961385663598776,
+            "suff1": 0.11195609159767628,
+            "nec0": 0.1331169456243515,
+            "nec1": 0.19837606698274612
+          }
+        }
+      },
+      "config_command::paraphrase": {
+        "family": "config_command",
+        "wording": "paraphrase",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "FINAL_INSTRUCTION_END",
+        "selected_score": 0.07258643954992294,
+        "runner_up_score": 0.00048813968896865845,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.0014555659145116806,
+            "suff0": -0.0014555659145116806,
+            "suff1": -0.0007639005780220032,
+            "nec0": -9.075924754142761e-05,
+            "nec1": 0.0002773068845272064
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.001363910734653473,
+            "suff0": 0.0022118370980024338,
+            "suff1": -0.00017491355538368225,
+            "nec0": 0.0017299465835094452,
+            "nec1": -0.001363910734653473
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0014602821320295334,
+            "suff0": -0.0014602821320295334,
+            "suff1": 0.0012895241379737854,
+            "nec0": 0.0013725608587265015,
+            "nec1": 0.000676911324262619
+          },
+          "DETAIL_END": {
+            "bidirectional_score": 0.00014425255358219147,
+            "suff0": 0.0006269607692956924,
+            "suff1": 0.0014587640762329102,
+            "nec0": 0.00014425255358219147,
+            "nec1": 0.0007883384823799133
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.0014406219124794006,
+            "suff0": 7.919780910015106e-05,
+            "suff1": 0.000711590051651001,
+            "nec0": 0.0014486666768789291,
+            "nec1": -0.0014406219124794006
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0001318175345659256,
+            "suff0": 2.5408342480659485e-05,
+            "suff1": -6.879866123199463e-05,
+            "nec0": -0.0001318175345659256,
+            "nec1": 0.0014557726681232452
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": 0.00048813968896865845,
+            "suff0": 0.0011459458619356155,
+            "suff1": 0.0018920078873634338,
+            "nec0": 0.0010414347052574158,
+            "nec1": 0.00048813968896865845
+          },
+          "USER_END": {
+            "bidirectional_score": 0.00048813968896865845,
+            "suff0": 0.0011459458619356155,
+            "suff1": 0.0018920078873634338,
+            "nec0": 0.0010414347052574158,
+            "nec1": 0.00048813968896865845
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.07258643954992294,
+            "suff0": 0.10459926165640354,
+            "suff1": 0.07258643954992294,
+            "nec0": 0.08170654624700546,
+            "nec1": 0.09211463294923306
+          }
+        }
+      },
+      "docs_code::canonical": {
+        "family": "docs_code",
+        "wording": "canonical",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "SKILL_END",
+        "selected_score": 0.06068525370210409,
+        "runner_up_score": -1.802109181880951e-06,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -1.802109181880951e-06,
+            "suff0": 0.0015458553098142147,
+            "suff1": 0.000277860090136528,
+            "nec0": -1.802109181880951e-06,
+            "nec1": 0.0009152013808488846
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.00156333576887846,
+            "suff0": 0.00037922151386737823,
+            "suff1": -0.00156333576887846,
+            "nec0": -1.6738194972276688e-05,
+            "nec1": 7.040798664093018e-06
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0007825503125786781,
+            "suff0": 0.0007773218676447868,
+            "suff1": -0.0007825503125786781,
+            "nec0": -4.5190099626779556e-05,
+            "nec1": 0.0009219041094183922
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.001177668571472168,
+            "suff0": 0.0007800827734172344,
+            "suff1": 2.305954694747925e-06,
+            "nec0": -0.001177668571472168,
+            "nec1": -5.929265171289444e-05
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.0015840055420994759,
+            "suff0": 0.00037380587309598923,
+            "suff1": -0.0015840055420994759,
+            "nec0": 2.993689849972725e-05,
+            "nec1": 2.8398819267749786e-05
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0007633841596543789,
+            "suff0": -6.8517401814460754e-06,
+            "suff1": 4.087761044502258e-05,
+            "nec0": -0.0007633841596543789,
+            "nec1": 0.001322912983596325
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0005654385313391685,
+            "suff0": 0.0015512453392148018,
+            "suff1": -1.0134652256965637e-05,
+            "nec0": 0.000781879760324955,
+            "nec1": -0.0005654385313391685
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0005654385313391685,
+            "suff0": 0.0015512453392148018,
+            "suff1": -1.0134652256965637e-05,
+            "nec0": 0.000781879760324955,
+            "nec1": -0.0005654385313391685
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.06068525370210409,
+            "suff0": 0.126606950070709,
+            "suff1": 0.06068525370210409,
+            "nec0": 0.06669015344232321,
+            "nec1": 0.1224592668004334
+          }
+        }
+      },
+      "docs_code::paraphrase": {
+        "family": "docs_code",
+        "wording": "paraphrase",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ACTION0_END",
+        "selected_score": 0.04822561051696539,
+        "runner_up_score": 1.143990084528923e-05,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.002451273612678051,
+            "suff0": 0.001027766615152359,
+            "suff1": 0.0007165912538766861,
+            "nec0": 0.0009889793582260609,
+            "nec1": -0.002451273612678051
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0010028202086687088,
+            "suff0": 0.0010343627072870731,
+            "suff1": -0.0008169999346137047,
+            "nec0": -2.084299921989441e-06,
+            "nec1": -0.0010028202086687088
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0007229670882225037,
+            "suff0": 0.0014429395087063313,
+            "suff1": -0.0007229670882225037,
+            "nec0": -0.00040022190660238266,
+            "nec1": 0.0009855777025222778
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0010620728135108948,
+            "suff0": -0.00039090169593691826,
+            "suff1": 0.0008475305512547493,
+            "nec0": -5.9194862842559814e-05,
+            "nec1": -0.0010620728135108948
+          },
+          "ACTION0_END": {
+            "bidirectional_score": 1.143990084528923e-05,
+            "suff0": 0.001566032413393259,
+            "suff1": 0.0008089011535048485,
+            "nec0": 1.143990084528923e-05,
+            "nec1": 0.0014243721961975098
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0003903256729245186,
+            "suff0": 5.757436156272888e-06,
+            "suff1": -0.0001916429027915001,
+            "nec0": -0.0003903256729245186,
+            "nec1": 4.4871121644973755e-05
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0008613583631813526,
+            "suff0": 0.0007107439450919628,
+            "suff1": 0.0008820826187729836,
+            "nec0": -0.0008613583631813526,
+            "nec1": 0.002394257113337517
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0008613583631813526,
+            "suff0": 0.0007107439450919628,
+            "suff1": 0.0008820826187729836,
+            "nec0": -0.0008613583631813526,
+            "nec1": 0.002394257113337517
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.04822561051696539,
+            "suff0": 0.12022746494039893,
+            "suff1": 0.05293465033173561,
+            "nec0": 0.04822561051696539,
+            "nec1": 0.11526424996554852
+          }
+        }
+      }
+    },
+    "A1_top_candidates": [
+      {
+        "L": 37,
+        "anchor": "GENERATION_BOUNDARY",
+        "score": 1.0421941436361521,
+        "label0": 1.0421941436361521,
+        "label1": 1.065408060210757
+      },
+      {
+        "L": 35,
+        "anchor": "GENERATION_BOUNDARY",
+        "score": 0.8874072667094879,
+        "label0": 0.8874072667094879,
+        "label1": 0.9213668931042776
+      }
+    ],
+    "A2_provisional": {
+      "L": 39,
+      "k": 2,
+      "anchor": "GENERATION_BOUNDARY",
+      "score": 0.09896892460528761,
+      "suff0": 0.1407090331776999,
+      "suff1": 0.09896892460528761,
+      "nec0": 0.10122334444895387,
+      "nec1": 0.1375641743070446
+    },
+    "C_final": {
+      "L": 39,
+      "k": 2,
+      "score": 0.09896892460528761,
+      "suff0": 0.1407090331776999,
+      "suff1": 0.09896892460528761,
+      "nec0": 0.10122334444895387,
+      "nec1": 0.1375641743070446
+    }
+  },
+  "verdict": {
+    "verdict": "PARTIAL / ALGORITHMIC HOMOLOG",
+    "core_endpoint_flags": {
+      "selected_V_sufficiency": true,
+      "selected_V_necessity_loss": true,
+      "cross_selected_V_sufficiency": true,
+      "reader_target_pos_sufficiency": true,
+      "reader_target_pos_necessity": true
+    },
+    "directional_flags": {
+      "0": true,
+      "1": true
+    },
+    "inhibitory_register_exists": false,
+    "inhibitory_register_pass": false,
+    "reader_contrast_pass": true,
+    "fidelity": {
+      "same_state_clean": false,
+      "leakage_clean": false,
+      "selected_over_runner_clean": true,
+      "matched_negative_clean": true,
+      "all_reader_reconstruction_clean": true,
+      "same_state": {
+        "relation": "opposite_same_wording",
+        "metric": "same_state_selected_V_control",
+        "mean": -0.006044188718078658,
+        "ci_low": -0.008693791084078839,
+        "ci_high": -0.0035388918397075047,
+        "num_tasks": 32
+      },
+      "reader_leakage": {
+        "relation": "opposite_same_wording",
+        "metric": "reader_leakage_ratio",
+        "mean": 0.34815782340676815,
+        "ci_low": 0.3305658807763089,
+        "ci_high": 0.36439982971697155,
+        "num_tasks": 32
+      },
+      "matched_negative": {
+        "relation": "opposite_same_wording",
+        "metric": "matched_negative_anchor_V_sufficiency",
+        "mean": -0.00016264159057755023,
+        "ci_low": -0.0009541232335323001,
+        "ci_high": 0.0005535371394216775,
+        "num_tasks": 32
+      }
+    }
+  },
+  "methodological_repairs": [
+    "final (L,KV) is localized using the actually selected stratum-specific anchors",
+    "reader register uses causal-effect thresholds rather than forced zero-score quota filling",
+    "runner-up necessity uses runner-up-specific residual reference"
+  ]
+}

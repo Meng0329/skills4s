@@ -1,0 +1,53 @@
+Loading weights:   0%|          | 0/362 [00:00<?, ?it/s]Loading weights:   1%|          | 2/362 [00:00<00:19, 18.12it/s]Loading weights:   3%|▎         | 11/362 [00:00<00:06, 58.34it/s]Loading weights:   5%|▍         | 17/362 [00:00<00:06, 55.14it/s]Loading weights:   6%|▋         | 23/362 [00:00<00:06, 53.48it/s]Loading weights:   9%|▉         | 32/362 [00:00<00:05, 58.77it/s]Loading weights:  11%|█         | 40/362 [00:00<00:04, 64.79it/s]Loading weights:  14%|█▎        | 49/362 [00:00<00:04, 68.16it/s]Loading weights:  16%|█▌        | 58/362 [00:00<00:04, 71.24it/s]Loading weights:  19%|█▊        | 67/362 [00:01<00:04, 72.19it/s]Loading weights:  21%|██▏       | 77/362 [00:01<00:03, 73.12it/s]Loading weights:  24%|██▍       | 86/362 [00:01<00:03, 74.73it/s]Loading weights:  26%|██▌       | 95/362 [00:01<00:03, 74.77it/s]Loading weights:  29%|██▊       | 104/362 [00:01<00:03, 75.16it/s]Loading weights:  31%|███       | 113/362 [00:01<00:03, 76.80it/s]Loading weights:  34%|███▎      | 122/362 [00:01<00:03, 77.27it/s]Loading weights:  36%|███▌      | 131/362 [00:01<00:03, 76.51it/s]Loading weights:  39%|███▊      | 140/362 [00:01<00:02, 76.91it/s]Loading weights:  41%|████      | 149/362 [00:02<00:02, 77.07it/s]Loading weights:  44%|████▎     | 158/362 [00:02<00:02, 77.08it/s]Loading weights:  46%|████▌     | 167/362 [00:02<00:02, 77.23it/s]Loading weights:  49%|████▊     | 176/362 [00:02<00:02, 76.56it/s]Loading weights:  51%|█████     | 185/362 [00:02<00:02, 79.50it/s]Loading weights:  54%|█████▎    | 194/362 [00:02<00:02, 82.09it/s]Loading weights:  57%|█████▋    | 206/362 [00:02<00:01, 91.01it/s]Loading weights:  60%|█████▉    | 216/362 [00:02<00:01, 90.94it/s]Loading weights:  62%|██████▏   | 226/362 [00:03<00:01, 84.61it/s]Loading weights:  65%|██████▍   | 235/362 [00:03<00:01, 80.54it/s]Loading weights:  67%|██████▋   | 244/362 [00:03<00:01, 78.01it/s]Loading weights:  70%|██████▉   | 252/362 [00:03<00:01, 74.91it/s]Loading weights:  72%|███████▏  | 260/362 [00:03<00:01, 73.82it/s]Loading weights:  74%|███████▍  | 268/362 [00:03<00:01, 75.34it/s]Loading weights:  77%|███████▋  | 278/362 [00:03<00:01, 80.23it/s]Loading weights:  79%|███████▉  | 287/362 [00:03<00:00, 81.58it/s]Loading weights:  82%|████████▏ | 296/362 [00:03<00:00, 79.22it/s]Loading weights:  84%|████████▍ | 304/362 [00:04<00:00, 77.49it/s]Loading weights:  86%|████████▌ | 312/362 [00:04<00:00, 77.01it/s]Loading weights:  88%|████████▊ | 320/362 [00:04<00:00, 77.14it/s]Loading weights:  91%|█████████ | 329/362 [00:04<00:00, 77.17it/s]Loading weights:  93%|█████████▎| 338/362 [00:04<00:00, 78.01it/s]Loading weights:  96%|█████████▌| 347/362 [00:04<00:00, 78.74it/s]Loading weights:  98%|█████████▊| 356/362 [00:04<00:00, 77.06it/s]Loading weights: 100%|██████████| 362/362 [00:04<00:00, 76.36it/s]
+[A1] L=4 done
+[A1] L=8 done
+[A1] L=12 done
+[A1] L=16 done
+[A1] L=20 done
+[A1] L=23 done
+[A1] L=27 done
+[A1] L=31 done
+[A1] L=35 done
+[A1] L=37 done
+{
+  "A1": [
+    {
+      "L": 37,
+      "anchor": "GENERATION_BOUNDARY",
+      "score": 1.0421941436361521,
+      "label0": 1.0421941436361521,
+      "label1": 1.065408060210757
+    },
+    {
+      "L": 35,
+      "anchor": "GENERATION_BOUNDARY",
+      "score": 0.8874072667094879,
+      "label0": 0.8874072667094879,
+      "label1": 0.9213668931042776
+    }
+  ],
+  "provisional": {
+    "L": 39,
+    "k": 2,
+    "anchor": "GENERATION_BOUNDARY",
+    "score": 0.09896892460528761,
+    "suff0": 0.1407090331776999,
+    "suff1": 0.09896892460528761,
+    "nec0": 0.10122334444895387,
+    "nec1": 0.1375641743070446
+  },
+  "final": {
+    "L": 39,
+    "k": 2,
+    "score": 0.09896892460528761,
+    "suff0": 0.1407090331776999,
+    "suff1": 0.09896892460528761,
+    "nec0": 0.10122334444895387,
+    "nec1": 0.1375641743070446
+  },
+  "positive_readers": [
+    10,
+    11
+  ],
+  "inhibitory_readers": []
+}

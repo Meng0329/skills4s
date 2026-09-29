@@ -33,7 +33,7 @@
 | EXP13 | 上下文条件化 schema 写点能否重映射？ | 完成，confirmatory=TRUE（Pattern A） | **writer 高度 schema-stable：USER_END 7/8 strata 选中**（唯一例外 config_command::canonical=FINAL_INSTRUCTION_END，其 runner-up 即 USER_END）；held-out 双向 V suff/nec 全正（+0.0473/+0.0465，CI>0）、selected−old_absolute +0.061/+0.066、selected−runner_up +0.028/+0.031、cross-wording +0.044/+0.049、target reader 0.067 vs negative −0.028（contrast +0.095/+0.098）；old absolute 再次为负（−0.014）；sanity 全过（all7=selected=verified 精确相等、Q7..Q27 泄漏 0、non-KV0 0）；label0/label1 均正 → bidirectional_writer_pass | `d706328` |
 | EXP14 | 跨模型功能同构复现（冻结机制定义、不冻结索引）？ | 完成，**PARTIAL SUCCESS** | Model B=Qwen2-7B-Instruct（同 Qwen2 架构、独立权重、通用域）。discovery 冻结 **L=20,KV0**（自由搜索下与 Model A 的 H20/KV0 **逐索引一致**）、reader **{1,3,5}+/{2,4,6}−**（负集合与 Model A 完全一致）；held-out：selected V suff/nec +0.025/+0.027（CI>0）、label0/1 双向正、cross-wording +0.019、reader pos +0.038 vs neg −0.012（contrast +0.050）、non-set≈0、all28==verified 精确、skill≫direct specificity、old-absolute 仍负；**但 same-state 控制 −0.012 显著负（Model A=0）、leakage 0.153（Model A=0）、selected−runner_up nec −0.108 反常** → 结构同构复现、保真度降低 | `79388ea` |
 | EXP15 | 跨架构功能同构复现（冻结机制定义、不冻结索引）？ | 完成，**PARTIAL / ALGORITHMIC HOMOLOG** | Model C=Mistral-7B-Instruct-v0.3（Mistral 架构：32L/32Q/**8KV**/128，与 Qwen2 GQA 不同族）。闸门 PASSED（pooled +1.230，4 family/双 label/双措辞全正）；discovery 冻结 **L=30,KV4、GENERATION_BOUNDARY（8/8 strata，=提示词尾 `action now . [/INST]`）、reader {0,16,18}+/{1,17,19}−（活跃 16+/19−）**——与 Model A/B 的 L20/KV0/USER_END/{0,3,5}/{2,4,6} **索引实现全部不同**（功能冻结、索引不冻结）；held-out：selected V suff/nec **+0.140/+0.151**、cross-wording +0.141（=same-wording，完全迁移）、reader pos +0.165 vs neg −0.020/−0.025（contrast +0.185）、non-set=0、leakage **0.0**、all32==verified 精确、skill≫direct（6.2×）、matched-negative 干净 null、label0/1 双向正、4 family 全正；**但 same-state +0.002 CI 不含 0（1.4% 污染）、runner_up nec +2.37 为原实现无效控制（EXP16 前置诊断修正为 +0.0038 [0.0027,0.0051]，见 EXP15 段修正）** → **功能组织跨架构复制成功、索引实现不同、保真度轻微降级** | `3c19971` |
-| EXP16 | 第二跨架构同构复现（writer anchor 参与最终接口定位）？ | **预注册（2026-09-29），待运行** | Model D=google/gemma-2-9b-it（优先；GQA 16Q/8KV、42 层，第二非 Qwen 架构）。预注册设计：A1 残差粗候选（10%,...,96% × 9 anchor，score=min(label0,label1) 残差效应，取 top2 (L,anchor)）→ A2 暂定 V/KV 接口（候选 L 全 KV 扫 top4 + ±2 层细化，score=min(suff0,suff1,nec0,nec1)）→ B 上下文 writer（暂定 (L,KV) 下 8 stratum × 9 anchor 双向 score，冻结 winner+runner-up）→ **C 最终 anchor-conditioned 接口（用 B 冻结 anchors 重扫 KV top4 + ±2 层细化）**（修复 EXP15 的 USER_END/FINAL_INSTRUCTION_END 冻结与 GENERATION_BOUNDARY 强 writer 的搜索错配）→ D reader（正阈值=max(0.002, 0.05×best_pos)、抑阈值=min(−0.002, 0.05×best_neg)，各 ≤4 头，**零分头绝不填入**，可空抑读集）；确认端点含 selected V suff/nec、cross-wording、label0/1、正读、抑读（若有）+contrast、all-reader 重建、matched negative（ISSUE_END，选定则 DETAIL_END）、same-state、**runner-up 用自身残差参考**、leakage；判据 STRONG RECURRING / PARTIAL-ALGORITHMIC / ARCHITECTURE-DIVERGENT / BEHAVIORAL GATE FAILURE。EXP15 runner-up nec +2.37 原实现无效（复用 selected 的 res_ref），先跑诊断修正再解读 EXP16。GQA 强制（MHA 仅 exploratory）。RED ZONE：不改判据、不重选组件、不因阴性换模型 | 待定 |
+| EXP16 | 第二跨架构同构复现（writer anchor 参与最终接口定位）？ | **预注册（2026-09-29），待运行** | Model D=google/gemma-2-9b-it（优先；GQA 16Q/8KV、42 层，第二非 Qwen 架构）。预注册设计：A1 残差粗候选（10%,...,96% × 9 anchor，score=min(label0,label1) 残差效应，取 top2 (L,anchor)）→ A2 暂定 V/KV 接口（候选 L 全 KV 扫 top4 + ±2 层细化，score=min(suff0,suff1,nec0,nec1)）→ B 上下文 writer（暂定 (L,KV) 下 8 stratum × 9 anchor 双向 score，冻结 winner+runner-up）→ **C 最终 anchor-conditioned 接口（用 B 冻结 anchors 重扫 KV top4 + ±2 层细化）**（修复 EXP15 的 USER_END/FINAL_INSTRUCTION_END 冻结与 GENERATION_BOUNDARY 强 writer 的搜索错配）→ D reader（正阈值=max(0.002, 0.05×best_pos)、抑阈值=min(−0.002, 0.05×best_neg)，各 ≤4 头，**零分头绝不填入**，可空抑读集）；确认端点含 selected V suff/nec、cross-wording、label0/1、正读、抑读（若有）+contrast、all-reader 重建、matched negative（ISSUE_END，选定则 DETAIL_END）、same-state、**runner-up 用自身残差参考**、leakage；判据 STRONG RECURRING / PARTIAL-ALGORITHMIC / ARCHITECTURE-DIVERGENT / BEHAVIORAL GATE FAILURE。EXP15 runner-up nec +2.37 原实现无效（复用 selected 的 res_ref），先跑诊断修正再解读 EXP16。GQA 强制（MHA 仅 exploratory）。RED ZONE：不改判据、不重选组件、不因阴性换模型 | `待回填` |
 
 ---
 
@@ -2174,7 +2174,7 @@ EXP10 之后，可辩护的项目级声明：
 1. ~~**EXP13：context-conditioned schema write-site remapping**（预注册，已完成 → d706328）~~——writer 高度 schema-stable（USER_END 7/8 strata），其 V 因果效应双向显著正、优于 old absolute 与 runner-up、cross-wording 迁移正；reader register {Q0,Q3,Q5} 全部冻结保持。**结论：不升级为"跨上下文可移植的固定位点 writer"**——writer 位点基本稳定但效应幅度随 family×wording 波动，机制更接近 "schema-stable writer + stable reader"（Pattern B 倾向），已触发下一检验：EXP14 应识别 reader register 消耗的功能性隐变量或测试 USER_END 位点分辨率，而非继续 token-position scan。
 2. ~~**reader register 与 writer 接口的跨模型复现**（EXP14，已完成 → PARTIAL SUCCESS）~~——Qwen2-7B-Instruct（通用域，独立权重）上冻结机制定义、不冻结索引：discovery 选出与 Model A **逐索引一致**的 (L=20, KV0)，reader register {1,3,5}+/{2,4,6}−（负集合与 Q2/Q4/Q6 完全一致，正集合 2/3 重叠）；held-out 双向 V suff/nec、cross-wording、分解恒等式、procedural specificity 全部复现；但 same-state 控制 −0.012（Model A=0）、leakage 0.153、效应减半 → 结构同构、保真度降。**跨架构复现（Llama/Mistral/Gemma）仍未验证**（需第三本地模型）。
 3. ~~**EXP15：跨架构功能同构复现**（预注册 2026-09-25 → 完成，**PARTIAL / ALGORITHMIC HOMOLOG**）~~——Model C=Mistral-7B-Instruct-v0.3（非 Qwen2 系：32L/32Q/8KV/128、不同宽度深度模板词表）。闸门 PASSED（pooled +1.230，4 family / label0+1.152 / label1+1.308 / canonical+paraphrase 全正）；discovery 自由搜索冻结 **L=30,KV4、GENERATION_BOUNDARY（8/8 strata，提示词尾 `action now . [/INST]`）、reader {0,16,18}+/{1,17,19}−（活跃 head 16 +0.148 主导正读 / head 19 −0.018 抑读；0/1 为 score=0 tie）**；held-out（32 任务，task-level paired bootstrap）：selected V suff/nec **+0.140/+0.151**、cross-wording **+0.141**（措辞完全迁移）、reader pos **+0.165/+0.160** vs neg −0.020/−0.025（contrast **+0.185**）、non-set 精确 0、**leakage 0.0**、all32==verified 精确、matched-negative（ISSUE）干净 null、skill≫direct（6.2×）、4 family 与 label0/1 双向全正；**偏差：same-state +0.002 CI 不含 0（1.4%，效应同号）、runner_up nec +2.37 为原实现无效控制（复用 selected res_ref；2026-09-29 EXP16 前置诊断修正为 +0.0038，runner-up 自身残差效应仅 +0.0042→ 非边界位点双通道近零）、old-absolute ≈ selected（偏移与边界窗口重叠）**。**结论：Qwen 系 V/KV 介导的功能组织在独立架构中以完全不同的索引实现复制成功**（层/KV/heads/anchor 全不同 vs EXP14 的逐索引巧合）——支持**功能级同构**；边界写点处残差（≈2.37）与 V/KV（≈0.29）双通道并存、V 通道承担约 12% 负荷（Qwen 的 USER_END 处 V≈89%）。
-4. **EXP16：第二跨架构同构复现**（预注册 2026-09-29，待运行 → 关联提交待定）——Model D=google/gemma-2-9b-it（优先，GQA 16Q/8KV/42 层）；若官方访问/许可阻断下载，门控前允许换另一非 Qwen2、非 Mistral 的 GQA instruct decoder（优先 Llama-3.x-8B-Instruct），必须先记录原因，不得因机制结果差换模型；GQA 强制（MHA 如 OLMo2 仅做 architecture-adapted exploratory，不冒充 confirmatory 几何）。两大方法论修复 vs EXP15：① **最终 (L,KV) 由实际选中的 stratum anchors 定位**（C 阶段；EXP15 用 USER_END/FINAL_INSTRUCTION_END 冻结而强 writer 是 GENERATION_BOUNDARY，搜索错配）；② **reader 用因果阈值**（正 ≥max(0.002, 0.05×best)、抑 ≤min(−0.002, 0.05×best_neg)，各 ≤4 头，零分 tie 绝不进 register，抑读集可空并削弱判据而非伪造）。确认端点与判据见文末 EXP16 段。**前置诊断**：EXP15 runner-up necessity +2.37 原实现无效（复用了 selected 的 res_ref），以自身残差参考重算并写新诊断文件（不覆盖原 outputs）；若修正改变 EXP15 解释则更新日志；EXP15 的 PARTIAL 判据仅在冻结判据真受影响时才可变。
+4. ~~**EXP16：第二跨架构同构复现**（预注册 2026-09-29 → 完成，**PARTIAL / ALGORITHMIC HOMOLOG**）~~——Model D=**Granite-3.0-8B-Instruct**（IBM 家族，GQA 32Q/8KV、40L、hidden 4096；Gemma-2 与 Llama-3.x 均 gated 不可得，理由门控前记录）。闸门 PASSED（pooled **+0.562**，4 family/canonical+paraphrase 全正；label0 +0.927 vs label1 +0.198 均正但 label1 偏弱）。**anchor-conditioned 接口定位修复生效**：A1 残差粗候选即命中 **GENERATION_BOUNDARY**（top2=(L37/35, GEN_BOUND)，residual score +1.04/+0.89——与 Mistral 相同写点族）；B 冻结 8/8 strata 全部 GENERATION_BOUNDARY（runner≈0）；**C 最终 (L,KV)=(39,2)（score +0.099，suff0 +0.141/suff1 +0.099/nec0 +0.101/nec1 +0.138）**——若沿用 EXP15 的 USER_END/FINAL_INSTRUCTION_END 冻结法会与 Mistral 一样漏掉该接口（score≈0.002 级）。reader：**positive {10,11}（头 10 +0.065/头 11 +0.052；其余头 0–8、12–31 贡献精确 0）、inhibitory ∅（无头通过 −0.002 阈值，最负 head 8 = −0.0008）**。held-out（32 任务全正）：selected V suff/nec **+0.120/+0.120**、cross-wording +0.120（=same-wording）、reader pos +0.119/+0.119、non-set +0.0014（小但显著）、all32==verified 精确、matched-negative（ISSUE）−0.0002 干净 null、selected−runner **+0.120/+0.120**（CI>0）；**偏差：inhibitory 空、same-state −0.006 [−0.0087,−0.0035]（显著负，Model B 同向）、leakage 0.348（>0.10）** → **functional 组织第三架构族复发（端点全过）、无抑读集 + fidelity 降级**。**跨四模型模式**：Qwen(A/B) 写点 USER_END、Mistral+Granite 写点 GENERATION_BOUNDARY（都是"末段写入"）；层/KV/reader 索引每次都不同（20,0→{0,3,5}→30,4→{16,18}→39,2→{10,11}）支持功能级同构。
 5. V 投影状态之后 attention 加权聚合→MLP 的剩余归因；
 6. H18–H20 状态的维度分解（SAE/SNMF）；
 7. 跨真实 agent 泛化。
@@ -2406,6 +2406,13 @@ EXP16 回答两个问题：
 - 若仅 MHA 可用（如 OLMo2）：**暂停主 confirmatory run**——MHA 的 1:1 V-head/read-head 几何与 shared-KV reader-register 定义不同，只能做单独 architecture-adapted exploratory branch，不得冒充 EXP16 confirmatory 几何（run.py 对非 GQA 直接 raise）。
 - 模型选择在行为门控前冻结；**绝不因机制结果负面换模型**。
 
+### Model D 决策记录（2026-09-29，行为门控之前；原因全部为访问/工程，非结果）
+
+1. `google/gemma-2-9b-it`（首选）——**下载失败**：HF 对该库手动许可（gated），当前 token 未授权（hf-mirror 403 "not in the authorized list"），本地无快照。
+2. `meta-llama/Llama-3.1-8B-Instruct`、`Llama-3.2-3B-Instruct`——**同样 gated/403**（token 未授权）。
+3. 已探测其他开放 instruct decoder：Phi-3-mini / SmolLM2-1.7B / OLMo-2 为 **MHA**（按预注册仅能做 exploratory，不冒充 confirmatory）；Phi-3-medium 为 GQA 但 14B 且 transformers 5.17 用融合 `qkv_proj`（需张量切片适配，工程风险次选）。
+4. **选定 `ibm-granite/granite-3.0-8b-instruct`**：开放（gated=False）、`GraniteForCausalLM` 原生支持 transformers 5.17、**GQA 32Q/8KV / 40L / hidden 4096 / head_dim 128（=hidden//q）**、独立 `v_proj+o_proj`（零 hook 适配）、instruct 模型（chat-template 可用）。IBM Granite 为第三个非 Qwen2、非 Mistral 架构族，符合预注册"另一非 Qwen/Mistral 的 GQA instruct decoder"fallback。
+
 ## 数据与统计
 
 - 复用受控 64 任务基准（4 family × 16）与确定性 32/32 discovery/confirmation split（family_split 沿用 EXP14/15，保证四 family 齐整、跨模型可比）；仅统计种子为 5616（门控 bootstrap 等）。
@@ -2460,5 +2467,84 @@ per query head：`positive=min(mean_suff, mean_nec)`、`inhibitory=max(mean_suff
 
 **RED ZONE**：判据冻结于本段；禁止事后重选组件、改 score/threshold/endpoint/verdict；阴性结果有效且必须保留；`selected_homolog.json` 生成后**禁止人工修改**。
 
-## 结果（待实验完成后更新）
-（预注册占位——实验完成后回填）
+## 结果（EXP16 — 已完成）
+
+### 日期
+2026-09-29（discovery 11:14–14:30，confirmation 14:30–14:36）
+
+### 提交
+预注册 `6342dfc`；EXP15 前置诊断修正 `41de2a4`；主实验见索引表（hash 回填提交）。
+
+### 状态
+完成，**PARTIAL / ALGORITHMIC HOMOLOG**（功能组织在第三个架构族复发、anchor-conditioned 接口定位修复验证成功；无抑读集 + fidelity 降级）。
+
+### 目标模型（Model D）
+**`ibm-granite/granite-3.0-8b-instruct`**（IBM Granite 家族：`GraniteForCausalLM`，40L / 32Q / **8KV GQA** / hidden 4096 / head_dim 128；独立 `v_proj/o_proj`，零 hook 适配；原生支持 transformers 5.17；开放非 gated）。**选型记录（门控前，原因均访问/工程）**：Gemma-2-9B-it 与 Llama-3.1/3.2-8B gated/403（token 未授权）；Phi-3-mini/SmolLM2/OLMo-2 为 MHA（预注册仅 exploratory）；Phi-3-medium GQA 但 14B+融合 qkv。选择在行为门控前冻结。下载经 hf-mirror（16GB），正式实验离线（local_files_only）。
+
+### 行为闸门
+**PASSED**：pooled **+0.562** [0.506, 0.621]；4 family 全正（config_command +0.415 / docs_code +0.617 / search_edit +0.729 / test_edit +0.488）；canonical +0.642 / paraphrase +0.483；**label0 +0.927 [0.877, 0.977] vs label1 +0.198 [0.146, 0.253]**（双向 CI>0 通过，但 label1 明显偏弱——三模型中偏斜最大，已在诊断注明，可能与 Granite 指令遵循偏向首个动作有关）。
+
+### Discovery（discovery split 32 任务；A1→A2→B→C→D）
+
+- **A1 残差粗候选**：top2 = **(L=37, GENERATION_BOUNDARY)** score +1.042（label0 +1.042/label1 +1.065）、**(L=35, GENERATION_BOUNDARY)** +0.887——与 Mistral 相同：GENERATION_BOUNDARY 是残差强 writer（residual≫V），且 label0/label1 双向大。
+- **A2 暂定接口**：refine L37±2 后全局最优 (L=39, k=2)（GEN_BOUND anchor），score +0.099。
+- **B 上下文 writer**：8/8 strata 全部 **GENERATION_BOUNDARY**（score 0.037–0.131；runner-up ≈0(−0.0019~+0.0005)）——第二个非 Qwen 架构再次收敛到边界写点。
+- **C 最终 anchor-conditioned 接口**：(L,KV)=**(39,2)**，score **+0.09897**（suff0 +0.1407 / suff1 +0.0990 / nec0 +0.1012 / nec1 +0.1376）；**方法论修复生效**：若沿用 EXP15 的 USER_END/FINAL_INSTRUCTION_END 冻结法，Granite 接口会与 Mistral 一样被漏检（该两 anchor 上 V 效应≈0.002 级）。
+- **D reader**：**positive = {10, 11}**（head10 positive_score +0.0653 / head11 +0.0522；head9 +0.0018 低于阈值 0.00327；头 0–8、12–31 **贡献精确 0**）；**inhibitory = ∅**（最负 head8 = −0.0008 > −0.002 阈值，无头合格 → 记录空集，不伪造）。
+
+### Confirmation（held-out 32 任务，零组件重选；task-level paired bootstrap 95% CI）
+
+| 端点 | mean | CI | 32 任务 |
+|---|---|---|---|
+| selected V suff | **+0.1203** | [0.1134, 0.1276] | 全正 ✓（min +0.085） |
+| selected V nec | **+0.1200** | [0.1124, 0.1280] | 全正 ✓ |
+| cross-wording V suff | **+0.1196** | [0.113, 0.127] | 全正 ✓（= same-wording，完全迁移；canonical 0.1195≈paraphrase 0.1197） |
+| reader pos {10,11} suff | **+0.1185** | [0.1118, 0.1257] | 全正 ✓ |
+| reader pos nec | **+0.1189** | [0.1122, 0.1261] | 全正 ✓ |
+| reader neg（空集） | 0 | — | 不存在 |
+| reader non-set suff/nec | +0.0014/+0.0018 | CI 不含 0（小但显著） | 泄漏来源 |
+| all-readers == verified | **+0.1203 / +0.1203** | 精确相等（重建干净） | ✓ |
+
+- 对照与 fidelity：
+  - selected−runner_up：**+0.120 / +0.120**（CI>0，干净；runner_up suff/nec ≈ −0.0001/0，含 0）——runner-up 用自身残差参考（EXP16 修复），无 EXP15 式假异常；
+  - matched negative（ISSUE_END）**−0.0002** [−0.0010, +0.0006]——**干净 null** ✓；
+  - **same-state −0.0060** [−0.0087, −0.0035]——**显著负污染**（Model B 同向、量值一半；Model A=0、Mistral≈+0.002）；
+  - **leakage 0.348** [0.331, 0.364]——**>0.10**（register 外头 delta 能量为 register 的 34.8%，虽净效应仅 +0.0014）；
+  - non-set 小正（+0.0014）：register 外头有微小正贡献（与 Mistral/Qwen 的精确 0 不同）；
+  - 无 direct specificity / old-absolute 测试（EXP16 预注册未含，不新增）。
+- family 全正：test_edit +0.149 / config_command +0.127 / search_edit +0.105 / docs_code +0.100（CI_low ≥0.084）；label0 +0.141 [0.132,0.150] / label1 +0.100 [0.091,0.108]（**双向正**，label1 弱同闸门）。
+
+### 判据裁定（冻结规则自动）
+
+- core 5/5（selected suff/nec、cross、reader pos suff/nec）CI>0 ✓；label0/1 双向 ✓。
+- **inhibitory register 不存在**（`inhibitory_register_exists=false`）⇒ STRONG 第一前置不满足（冻结判据：STRONG 需 neg_exists ∧ neg_pass ∧ 全部 fidelity 干净）；
+- fidelity：same_state_clean=false、leakage_clean=false（0.348>0.10）、matched_clean=true、runner_clean=true、reconstruction=true。
+- ⇒ **PARTIAL / ALGORITHMIC HOMOLOG**（非 ARCHITECTURE-DIVERGENT：核心组织复发；非 STRONG：无抑读集+保真度降级）。无事后救援。
+
+### 四模型功能组织对比
+
+| 维度 | A=Qwen2.5-Coder | B=Qwen2-7B | C=Mistral | D=Granite-3.0-8B |
+|---|---|---|---|---|
+| 家族 | Qwen2 (GQA 28/4) | Qwen2 (28/4) | Mistral (GQA 32/8) | **Granite (GQA 32/8)** |
+| writer anchor | USER_END 族 | USER_END 族 | GENERATION_BOUNDARY | **GENERATION_BOUNDARY** |
+| L / KV | 20/0 | 20/0 | 30/4 | **39/2** |
+| reader + | Q0,3,5 | {1,3,5} | {0,16,18}(16 活跃) | **{10,11}** |
+| reader − | Q2,4,6 | {2,4,6} | {1,17,19}(19) | **∅（无头过阈值）** |
+| gate pooled | （EXP14 前无同格式） | +1.501 | +1.230 | +0.562 |
+| selected V suff | +0.047 | +0.025 | +0.140 | **+0.120** |
+| cross-wording | +0.044 | +0.019 | +0.141 | +0.120 |
+| same-state | 0 | −0.012 | +0.002 | **−0.006（显著负）** |
+| leakage | 0.0 | 0.153 | 0.0 | **0.348** |
+
+### 解释与 claim boundary
+
+**功能组织在三个独立架构族复发**：末段写点（Qwen=USER_END 族；Mistral+Granite=GENERATION_BOUNDARY，二者同为提示词末段/生成边界）→ 单 block V/KV 接口 → 稀疏正读 register（每模型不同：{0,3,5}→{1,3,5}→{16}→{10,11}，多数时候 register 外头精确 0）→ 下一动作偏好；held-out 效应全部正且大（+0.02~+0.14）、cross-wording 完全迁移、matched-negative 干净、selected≫runner-up。**层/KV/reader/anchor 索引每次实现均不同**——功能级同构（与 EXP14 的索引巧合对照，与 EXP15 一致）。
+
+**EXP16 特有的新证据**：① **anchor-conditioned 接口定位的方法论修复被验证**——两个非 Qwen 架构上 USER_END/FINAL_INSTRUCTION_END 的 V 效应都≈0，而 GENERATION_BOUNDARY 的 V 接口强（Mistral +0.14、Granite +0.12）；EXP15 的搜索错配是真实的，修复后接口 score 提升约 50 倍（+0.002→+0.099）；② **抑读 register 非架构普适**：Qwen/Mistral 有（Q2/4/6、19），Granite 上没有任何头通过冻结阈值（最负 −0.0008）→ "正/抑二元 reader 组织"在第三架构降级为"仅正读"；③ 残差 vs V 负荷分配再次偏向残差（Granite A1 残差 +1.04 vs V 接口 +0.12，≈12%），与 Mistral 一致、与 Qwen（V≈89%）相反——该分配是架构依赖的。
+
+**不可声称**：① 非 STRONG（无抑读集 + same-state 显著负 + leakage 0.348）；② 不声称抑读机制是普适组织成分（Granite 缺席）；③ 不声称索引对（39,2/{10,11}）在其它模型再现；④ 不声称"V/KV 是唯一或主导接口"（残差通道在边界处效应更大：Mistral ≈2.37、Granite ≈1.04）；⑤ label1 弱于 label0 的具体机制未调查（闸门即偏斜，非确认期新问题）；⑥ 无 direct specificity 检验（预注册外），"procedural specificity"跨架构普遍性仍由 EXP12/13（Model A）与 EXP15（Mistral 6.2×）支持。
+
+**对证据链的意义**：V/KV 介导的末段写点→稀疏 reader 组织升级为**三架构族（Qwen2 系×2 权重 + Mistral + Granite）功能级普适**；但保真度（抑读集有无、same-state、泄漏）因模型而异 → "算法级同构、实例级差异"。下一步：① Llama-3.1-8B 授权后补测（gated 现不可得）；② 机制化"为何 Qwen 写 USER_END 而 Mistral/Granite 写 GENERATION_BOUNDARY"（模板结构/训练分布差异检验）；③ same-state 负污染的来源（Model B/Granite 相似，Mistral 不同）。
+
+### RED ZONE 遵守
+判据冻结于预注册 `6342dfc`；结果全部如实记录；空抑读集按规则记录而不伪造；未修改任何 endpoint/threshold/verdict。

@@ -1,0 +1,928 @@
+Loading weights:   0%|          | 0/362 [00:00<?, ?it/s]Loading weights:   0%|          | 1/362 [00:04<28:13,  4.69s/it]Loading weights:   1%|▏         | 5/362 [00:05<04:56,  1.20it/s]Loading weights:   2%|▏         | 8/362 [00:05<02:57,  2.00it/s]Loading weights:   2%|▏         | 9/362 [00:05<02:35,  2.28it/s]Loading weights:   3%|▎         | 12/362 [00:06<02:20,  2.50it/s]Loading weights:   4%|▎         | 13/362 [00:08<03:08,  1.85it/s]Loading weights:   4%|▍         | 14/362 [00:09<03:31,  1.65it/s]Loading weights:   4%|▍         | 15/362 [00:09<02:58,  1.94it/s]Loading weights:   4%|▍         | 16/362 [00:09<02:35,  2.22it/s]Loading weights:   5%|▍         | 17/362 [00:09<02:27,  2.33it/s]Loading weights:   5%|▍         | 18/362 [00:10<02:13,  2.58it/s]Loading weights:   5%|▌         | 19/362 [00:10<02:26,  2.35it/s]Loading weights:   6%|▌         | 21/362 [00:11<02:52,  1.97it/s]Loading weights:   6%|▌         | 22/362 [00:12<03:27,  1.64it/s]Loading weights:   6%|▋         | 23/362 [00:13<03:54,  1.45it/s]Loading weights:   7%|▋         | 26/362 [00:14<02:13,  2.52it/s]Loading weights:   7%|▋         | 27/362 [00:14<02:06,  2.64it/s]Loading weights:   8%|▊         | 30/362 [00:15<01:49,  3.02it/s]Loading weights:   9%|▊         | 31/362 [00:15<02:12,  2.49it/s]Loading weights:   9%|▉         | 32/362 [00:16<02:34,  2.14it/s]Loading weights:   9%|▉         | 34/362 [00:16<01:51,  2.95it/s]Loading weights:  10%|▉         | 35/362 [00:17<02:01,  2.69it/s]Loading weights:  10%|█         | 37/362 [00:17<01:24,  3.84it/s]Loading weights:  11%|█         | 39/362 [00:18<01:41,  3.17it/s]Loading weights:  11%|█         | 40/362 [00:18<01:57,  2.74it/s]Loading weights:  11%|█▏        | 41/362 [00:19<02:18,  2.31it/s]Loading weights:  12%|█▏        | 43/362 [00:19<01:33,  3.40it/s]Loading weights:  12%|█▏        | 44/362 [00:19<01:26,  3.66it/s]Loading weights:  12%|█▏        | 45/362 [00:20<01:27,  3.60it/s]Loading weights:  13%|█▎        | 48/362 [00:21<01:40,  3.14it/s]Loading weights:  14%|█▎        | 49/362 [00:22<02:23,  2.18it/s]Loading weights:  14%|█▍        | 50/362 [00:23<03:07,  1.67it/s]Loading weights:  14%|█▍        | 52/362 [00:23<02:06,  2.44it/s]Loading weights:  15%|█▍        | 53/362 [00:23<01:52,  2.74it/s]Loading weights:  15%|█▍        | 54/362 [00:24<01:58,  2.60it/s]Loading weights:  15%|█▌        | 55/362 [00:24<01:58,  2.59it/s]Loading weights:  16%|█▌        | 57/362 [00:25<01:54,  2.67it/s]Loading weights:  16%|█▌        | 58/362 [00:26<02:25,  2.09it/s]Loading weights:  16%|█▋        | 59/362 [00:27<02:49,  1.79it/s]Loading weights:  17%|█▋        | 60/362 [00:27<02:16,  2.21it/s]Loading weights:  17%|█▋        | 63/362 [00:27<01:16,  3.91it/s]Loading weights:  18%|█▊        | 64/362 [00:27<01:19,  3.73it/s]Loading weights:  18%|█▊        | 66/362 [00:28<01:40,  2.94it/s]Loading weights:  19%|█▊        | 67/362 [00:29<02:12,  2.23it/s]Loading weights:  19%|█▉        | 68/362 [00:30<02:55,  1.68it/s]Loading weights:  20%|█▉        | 72/362 [00:32<02:16,  2.13it/s]Loading weights:  21%|██        | 76/362 [00:32<01:34,  3.03it/s]Loading weights:  21%|██▏       | 77/362 [00:33<02:02,  2.33it/s]Loading weights:  22%|██▏       | 80/362 [00:34<01:23,  3.39it/s]Loading weights:  22%|██▏       | 81/362 [00:34<01:17,  3.62it/s]Loading weights:  23%|██▎       | 82/362 [00:34<01:18,  3.56it/s]Loading weights:  23%|██▎       | 83/362 [00:34<01:14,  3.74it/s]Loading weights:  23%|██▎       | 84/362 [00:35<01:20,  3.45it/s]Loading weights:  23%|██▎       | 85/362 [00:35<01:50,  2.51it/s]Loading weights:  24%|██▍       | 86/362 [00:36<02:00,  2.30it/s]Loading weights:  25%|██▍       | 89/362 [00:36<01:02,  4.37it/s]Loading weights:  25%|██▍       | 90/362 [00:36<00:57,  4.70it/s]Loading weights:  26%|██▌       | 93/362 [00:37<00:58,  4.60it/s]Loading weights:  26%|██▌       | 94/362 [00:37<01:15,  3.56it/s]Loading weights:  26%|██▌       | 95/362 [00:38<01:49,  2.44it/s]Loading weights:  27%|██▋       | 98/362 [00:39<01:14,  3.55it/s]Loading weights:  27%|██▋       | 99/362 [00:39<01:17,  3.39it/s]Loading weights:  28%|██▊       | 102/362 [00:40<01:15,  3.46it/s]Loading weights:  28%|██▊       | 103/362 [00:41<01:37,  2.65it/s]Loading weights:  29%|██▊       | 104/362 [00:42<02:05,  2.05it/s]Loading weights:  29%|██▉       | 106/362 [00:42<01:24,  3.03it/s]Loading weights:  30%|██▉       | 107/362 [00:42<01:18,  3.24it/s]Loading weights:  30%|██▉       | 108/362 [00:42<01:18,  3.23it/s]Loading weights:  31%|███       | 111/362 [00:43<01:14,  3.37it/s]Loading weights:  31%|███       | 112/362 [00:44<01:25,  2.91it/s]Loading weights:  31%|███       | 113/362 [00:44<01:45,  2.37it/s]Loading weights:  32%|███▏      | 116/362 [00:45<01:12,  3.40it/s]Loading weights:  33%|███▎      | 120/362 [00:46<01:02,  3.87it/s]Loading weights:  33%|███▎      | 121/362 [00:46<01:18,  3.09it/s]Loading weights:  34%|███▎      | 122/362 [00:47<01:31,  2.61it/s]Loading weights:  34%|███▍      | 123/362 [00:47<01:22,  2.91it/s]Loading weights:  35%|███▍      | 125/362 [00:47<00:58,  4.07it/s]Loading weights:  35%|███▍      | 126/362 [00:48<00:55,  4.27it/s]Loading weights:  36%|███▌      | 129/362 [00:48<00:56,  4.13it/s]Loading weights:  36%|███▌      | 130/362 [00:50<01:43,  2.24it/s]Loading weights:  36%|███▌      | 131/362 [00:50<01:56,  1.98it/s]Loading weights:  37%|███▋      | 134/362 [00:51<01:10,  3.24it/s]Loading weights:  37%|███▋      | 135/362 [00:51<01:12,  3.14it/s]Loading weights:  38%|███▊      | 138/362 [00:52<01:10,  3.16it/s]Loading weights:  38%|███▊      | 139/362 [00:53<01:17,  2.86it/s]Loading weights:  39%|███▊      | 140/362 [00:53<01:31,  2.42it/s]Loading weights:  39%|███▉      | 142/362 [00:54<01:18,  2.81it/s]Loading weights:  40%|███▉      | 143/362 [00:54<01:09,  3.17it/s]Loading weights:  40%|███▉      | 144/362 [00:54<01:07,  3.24it/s]Loading weights:  41%|████      | 147/362 [00:55<01:12,  2.98it/s]Loading weights:  41%|████      | 148/362 [00:56<01:29,  2.40it/s]Loading weights:  41%|████      | 149/362 [00:57<01:59,  1.78it/s]Loading weights:  42%|████▏     | 152/362 [00:57<01:11,  2.92it/s]Loading weights:  42%|████▏     | 153/362 [00:58<01:36,  2.16it/s]Loading weights:  43%|████▎     | 156/362 [00:59<01:11,  2.88it/s]Loading weights:  43%|████▎     | 157/362 [01:00<01:33,  2.19it/s]Loading weights:  44%|████▎     | 158/362 [01:01<02:09,  1.58it/s]Loading weights:  44%|████▍     | 159/362 [01:02<01:48,  1.87it/s]Loading weights:  45%|████▍     | 162/362 [01:02<01:07,  2.96it/s]Loading weights:  46%|████▌     | 165/362 [01:03<01:17,  2.55it/s]Loading weights:  46%|████▌     | 166/362 [01:05<01:53,  1.72it/s]Loading weights:  47%|████▋     | 170/362 [01:05<01:04,  2.95it/s]Loading weights:  47%|████▋     | 171/362 [01:06<01:05,  2.93it/s]Loading weights:  48%|████▊     | 174/362 [01:06<00:54,  3.47it/s]Loading weights:  48%|████▊     | 175/362 [01:07<01:12,  2.58it/s]Loading weights:  49%|████▊     | 176/362 [01:08<01:29,  2.07it/s]Loading weights:  50%|████▉     | 180/362 [01:08<00:47,  3.79it/s]Loading weights:  50%|█████     | 181/362 [01:09<00:55,  3.25it/s]Loading weights:  51%|█████     | 184/362 [01:09<00:39,  4.48it/s]Loading weights:  51%|█████     | 185/362 [01:10<00:48,  3.68it/s]Loading weights:  51%|█████▏    | 186/362 [01:10<00:45,  3.86it/s]Loading weights:  52%|█████▏    | 188/362 [01:10<00:33,  5.15it/s]Loading weights:  52%|█████▏    | 189/362 [01:11<00:48,  3.56it/s]Loading weights:  52%|█████▏    | 190/362 [01:11<00:57,  3.02it/s]Loading weights:  53%|█████▎    | 192/362 [01:12<00:51,  3.27it/s]Loading weights:  53%|█████▎    | 193/362 [01:13<01:33,  1.80it/s]Loading weights:  54%|█████▎    | 194/362 [01:15<02:30,  1.11it/s]Loading weights:  54%|█████▍    | 196/362 [01:15<01:36,  1.73it/s]Loading weights:  55%|█████▍    | 198/362 [01:15<01:06,  2.47it/s]Loading weights:  55%|█████▍    | 199/362 [01:16<01:01,  2.64it/s]Loading weights:  55%|█████▌    | 200/362 [01:16<00:56,  2.87it/s]Loading weights:  56%|█████▌    | 202/362 [01:17<01:06,  2.42it/s]Loading weights:  56%|█████▌    | 203/362 [01:18<01:10,  2.25it/s]Loading weights:  57%|█████▋    | 207/362 [01:19<01:00,  2.54it/s]Loading weights:  58%|█████▊    | 211/362 [01:20<00:44,  3.37it/s]Loading weights:  59%|█████▊    | 212/362 [01:21<00:56,  2.66it/s]Loading weights:  59%|█████▉    | 213/362 [01:21<00:50,  2.94it/s]Loading weights:  60%|█████▉    | 216/362 [01:21<00:32,  4.46it/s]Loading weights:  60%|█████▉    | 217/362 [01:21<00:35,  4.09it/s]Loading weights:  60%|██████    | 219/362 [01:23<00:52,  2.74it/s]Loading weights:  61%|██████    | 220/362 [01:24<01:08,  2.07it/s]Loading weights:  61%|██████    | 221/362 [01:24<01:09,  2.03it/s]Loading weights:  62%|██████▏   | 224/362 [01:24<00:41,  3.31it/s]Loading weights:  62%|██████▏   | 225/362 [01:24<00:37,  3.65it/s]Loading weights:  63%|██████▎   | 228/362 [01:25<00:35,  3.80it/s]Loading weights:  63%|██████▎   | 229/362 [01:26<00:45,  2.90it/s]Loading weights:  64%|██████▎   | 230/362 [01:27<00:54,  2.41it/s]Loading weights:  64%|██████▍   | 233/362 [01:27<00:33,  3.81it/s]Loading weights:  65%|██████▍   | 234/362 [01:27<00:40,  3.14it/s]Loading weights:  65%|██████▌   | 237/362 [01:28<00:31,  3.91it/s]Loading weights:  66%|██████▌   | 238/362 [01:30<01:02,  2.00it/s]Loading weights:  67%|██████▋   | 241/362 [01:30<00:37,  3.19it/s]Loading weights:  67%|██████▋   | 242/362 [01:30<00:34,  3.47it/s]Loading weights:  67%|██████▋   | 243/362 [01:30<00:37,  3.16it/s]Loading weights:  68%|██████▊   | 246/362 [01:31<00:34,  3.37it/s]Loading weights:  68%|██████▊   | 247/362 [01:32<00:42,  2.69it/s]Loading weights:  69%|██████▊   | 248/362 [01:33<00:51,  2.23it/s]Loading weights:  69%|██████▉   | 251/362 [01:33<00:29,  3.75it/s]Loading weights:  70%|██████▉   | 252/362 [01:33<00:31,  3.46it/s]Loading weights:  70%|██████▉   | 253/362 [01:34<00:30,  3.56it/s]Loading weights:  70%|███████   | 255/362 [01:34<00:31,  3.37it/s]Loading weights:  71%|███████   | 256/362 [01:35<00:36,  2.90it/s]Loading weights:  71%|███████   | 257/362 [01:36<00:47,  2.23it/s]Loading weights:  72%|███████▏  | 260/362 [01:36<00:26,  3.82it/s]Loading weights:  72%|███████▏  | 261/362 [01:36<00:26,  3.84it/s]Loading weights:  72%|███████▏  | 262/362 [01:36<00:26,  3.77it/s]Loading weights:  73%|███████▎  | 264/362 [01:37<00:25,  3.80it/s]Loading weights:  73%|███████▎  | 265/362 [01:37<00:27,  3.56it/s]Loading weights:  73%|███████▎  | 266/362 [01:38<00:31,  3.08it/s]Loading weights:  74%|███████▍  | 267/362 [01:38<00:27,  3.39it/s]Loading weights:  74%|███████▍  | 269/362 [01:38<00:19,  4.68it/s]Loading weights:  75%|███████▍  | 270/362 [01:38<00:17,  5.32it/s]Loading weights:  75%|███████▍  | 271/362 [01:39<00:23,  3.95it/s]Loading weights:  75%|███████▌  | 273/362 [01:39<00:17,  5.08it/s]Loading weights:  76%|███████▌  | 274/362 [01:40<00:28,  3.11it/s]Loading weights:  76%|███████▌  | 275/362 [01:40<00:31,  2.75it/s]Loading weights:  76%|███████▌  | 276/362 [01:40<00:29,  2.92it/s]Loading weights:  77%|███████▋  | 279/362 [01:41<00:18,  4.47it/s]Loading weights:  77%|███████▋  | 280/362 [01:41<00:23,  3.51it/s]Loading weights:  78%|███████▊  | 281/362 [01:42<00:29,  2.79it/s]Loading weights:  78%|███████▊  | 283/362 [01:43<00:36,  2.15it/s]Loading weights:  78%|███████▊  | 284/362 [01:43<00:33,  2.32it/s]Loading weights:  80%|███████▉  | 288/362 [01:44<00:17,  4.35it/s]Loading weights:  80%|███████▉  | 289/362 [01:44<00:19,  3.83it/s]Loading weights:  80%|████████  | 291/362 [01:44<00:16,  4.29it/s]Loading weights:  81%|████████  | 292/362 [01:45<00:23,  2.99it/s]Loading weights:  81%|████████  | 293/362 [01:45<00:21,  3.21it/s]Loading weights:  82%|████████▏ | 296/362 [01:46<00:12,  5.48it/s]Loading weights:  82%|████████▏ | 298/362 [01:46<00:11,  5.58it/s]Loading weights:  83%|████████▎ | 301/362 [01:46<00:09,  6.76it/s]Loading weights:  83%|████████▎ | 302/362 [01:48<00:26,  2.29it/s]Loading weights:  85%|████████▍ | 306/362 [01:50<00:24,  2.29it/s]Loading weights:  86%|████████▌ | 310/362 [01:52<00:23,  2.20it/s]Loading weights:  86%|████████▌ | 311/362 [01:54<00:33,  1.52it/s]Loading weights:  87%|████████▋ | 314/362 [01:54<00:22,  2.16it/s]Loading weights:  87%|████████▋ | 315/362 [01:54<00:20,  2.32it/s]Loading weights:  87%|████████▋ | 316/362 [01:55<00:18,  2.55it/s]Loading weights:  88%|████████▊ | 317/362 [01:55<00:16,  2.69it/s]Loading weights:  88%|████████▊ | 318/362 [01:55<00:16,  2.75it/s]Loading weights:  88%|████████▊ | 319/362 [01:56<00:20,  2.07it/s]Loading weights:  88%|████████▊ | 320/362 [01:57<00:19,  2.11it/s]Loading weights:  90%|████████▉ | 324/362 [01:57<00:08,  4.43it/s]Loading weights:  90%|█████████ | 327/362 [01:57<00:07,  4.38it/s]Loading weights:  91%|█████████ | 328/362 [01:58<00:07,  4.29it/s]Loading weights:  91%|█████████ | 329/362 [01:58<00:08,  3.71it/s]Loading weights:  92%|█████████▏| 333/362 [01:59<00:05,  5.56it/s]Loading weights:  93%|█████████▎| 336/362 [01:59<00:05,  4.69it/s]Loading weights:  93%|█████████▎| 337/362 [02:00<00:06,  3.79it/s]Loading weights:  93%|█████████▎| 338/362 [02:01<00:08,  2.94it/s]Loading weights:  94%|█████████▍| 341/362 [02:01<00:04,  4.33it/s]Loading weights:  94%|█████████▍| 342/362 [02:01<00:04,  4.71it/s]Loading weights:  95%|█████████▌| 345/362 [02:01<00:02,  5.69it/s]Loading weights:  96%|█████████▌| 347/362 [02:02<00:02,  7.03it/s]Loading weights:  98%|█████████▊| 355/362 [02:02<00:00, 14.77it/s]Loading weights: 100%|██████████| 362/362 [02:02<00:00,  2.96it/s]
+[confirmation 001/032] exp12_test_edit_02
+[confirmation 002/032] exp12_test_edit_04
+[confirmation 003/032] exp12_test_edit_06
+[confirmation 004/032] exp12_test_edit_10
+[confirmation 005/032] exp12_test_edit_11
+[confirmation 006/032] exp12_test_edit_12
+[confirmation 007/032] exp12_test_edit_13
+[confirmation 008/032] exp12_test_edit_14
+[confirmation 009/032] exp12_search_edit_00
+[confirmation 010/032] exp12_search_edit_02
+[confirmation 011/032] exp12_search_edit_04
+[confirmation 012/032] exp12_search_edit_06
+[confirmation 013/032] exp12_search_edit_07
+[confirmation 014/032] exp12_search_edit_08
+[confirmation 015/032] exp12_search_edit_11
+[confirmation 016/032] exp12_search_edit_14
+[confirmation 017/032] exp12_config_command_00
+[confirmation 018/032] exp12_config_command_01
+[confirmation 019/032] exp12_config_command_02
+[confirmation 020/032] exp12_config_command_04
+[confirmation 021/032] exp12_config_command_07
+[confirmation 022/032] exp12_config_command_13
+[confirmation 023/032] exp12_config_command_14
+[confirmation 024/032] exp12_config_command_15
+[confirmation 025/032] exp12_docs_code_02
+[confirmation 026/032] exp12_docs_code_04
+[confirmation 027/032] exp12_docs_code_05
+[confirmation 028/032] exp12_docs_code_06
+[confirmation 029/032] exp12_docs_code_07
+[confirmation 030/032] exp12_docs_code_10
+[confirmation 031/032] exp12_docs_code_13
+[confirmation 032/032] exp12_docs_code_15
+{
+  "experiment": "EXP16_second_cross_arch",
+  "model_dir": "/data/mzb/skills4s/models/granite-3.0-8b-instruct",
+  "architecture": {
+    "layer_path": "model.layers",
+    "num_layers": 40,
+    "num_attention_heads": 32,
+    "num_key_value_heads": 8,
+    "head_dim": 128,
+    "attention_kind": "GQA",
+    "model_type": "granite",
+    "architectures": [
+      "GraniteForCausalLM"
+    ]
+  },
+  "selected": {
+    "L_star": 39,
+    "k_star": 2,
+    "reader_pos_set": [
+      10,
+      11
+    ],
+    "reader_neg_set": [],
+    "reader_positive_threshold": 0.003265851638570894,
+    "reader_inhibitory_threshold": -0.002,
+    "head_summary": {
+      "0": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "1": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "2": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "3": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "4": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "5": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "6": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "7": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "8": {
+        "mean_suff": -0.0007674296502955258,
+        "mean_nec": -0.0012932857207488269,
+        "positive_score": -0.0012932857207488269,
+        "inhibitory_score": -0.0007674296502955258
+      },
+      "9": {
+        "mean_suff": 0.00259955448564142,
+        "mean_nec": 0.0017628289642743766,
+        "positive_score": 0.0017628289642743766,
+        "inhibitory_score": 0.00259955448564142
+      },
+      "10": {
+        "mean_suff": 0.06531703277141787,
+        "mean_nec": 0.06679395062383264,
+        "positive_score": 0.06531703277141787,
+        "inhibitory_score": 0.06679395062383264
+      },
+      "11": {
+        "mean_suff": 0.05216202660812996,
+        "mean_nec": 0.05317108187591657,
+        "positive_score": 0.05216202660812996,
+        "inhibitory_score": 0.05317108187591657
+      },
+      "12": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "13": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "14": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "15": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "16": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "17": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "18": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "19": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "20": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "21": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "22": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "23": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "24": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "25": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "26": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "27": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "28": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "29": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "30": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      },
+      "31": {
+        "mean_suff": 0.0,
+        "mean_nec": 0.0,
+        "positive_score": 0.0,
+        "inhibitory_score": 0.0
+      }
+    },
+    "strata": {
+      "test_edit::canonical": {
+        "family": "test_edit",
+        "wording": "canonical",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ACTION1_END",
+        "selected_score": 0.11611835099756718,
+        "runner_up_score": 0.00017447862774133682,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": 0.0001651383936405182,
+            "suff0": 0.0011362051591277122,
+            "suff1": 0.0010226070880889893,
+            "nec0": 0.0007214313372969627,
+            "nec1": 0.0001651383936405182
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0005458816885948181,
+            "suff0": 0.0005237888544797897,
+            "suff1": 6.545335054397583e-05,
+            "nec0": 0.0003629680722951889,
+            "nec1": -0.0005458816885948181
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0017615444958209991,
+            "suff0": 0.0004721200093626976,
+            "suff1": 1.8600374460220337e-05,
+            "nec0": 0.00013886857777833939,
+            "nec1": -0.0017615444958209991
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0010333657264709473,
+            "suff0": 0.000590544193983078,
+            "suff1": 0.001207113265991211,
+            "nec0": -0.00022454652935266495,
+            "nec1": -0.0010333657264709473
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -4.451349377632141e-05,
+            "suff0": 0.0015431251376867294,
+            "suff1": 0.0007064975798130035,
+            "nec0": 0.0005294512957334518,
+            "nec1": -4.451349377632141e-05
+          },
+          "ACTION1_END": {
+            "bidirectional_score": 0.00017447862774133682,
+            "suff0": 0.0007463311776518822,
+            "suff1": 0.0012098513543605804,
+            "nec0": 0.00017447862774133682,
+            "nec1": 0.000707920640707016
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0027841664850711823,
+            "suff0": 0.0017880536615848541,
+            "suff1": 0.0008622370660305023,
+            "nec0": 0.00039804819971323013,
+            "nec1": -0.0027841664850711823
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0027841664850711823,
+            "suff0": 0.0017880536615848541,
+            "suff1": 0.0008622370660305023,
+            "nec0": 0.00039804819971323013,
+            "nec1": -0.0027841664850711823
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.11611835099756718,
+            "suff0": 0.11826436594128609,
+            "suff1": 0.13289398327469826,
+            "nec0": 0.13999690115451813,
+            "nec1": 0.11611835099756718
+          }
+        }
+      },
+      "test_edit::paraphrase": {
+        "family": "test_edit",
+        "wording": "paraphrase",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ISSUE_END",
+        "selected_score": 0.13086359202861786,
+        "runner_up_score": -0.0019203005358576775,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.0028347745537757874,
+            "suff0": -0.0016407845541834831,
+            "suff1": -0.0028347745537757874,
+            "nec0": 0.00010361475870013237,
+            "nec1": -0.0007982850074768066
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0019377581775188446,
+            "suff0": -1.3160984963178635e-05,
+            "suff1": -0.0019377581775188446,
+            "nec0": -0.0006364271976053715,
+            "nec1": -3.30023467540741e-05
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0019203005358576775,
+            "suff0": -0.0019203005358576775,
+            "suff1": -0.0004706867039203644,
+            "nec0": 0.0004088650457561016,
+            "nec1": -0.0014688223600387573
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0028180740773677826,
+            "suff0": -0.0018891338258981705,
+            "suff1": -0.0028180740773677826,
+            "nec0": 0.00011700717732310295,
+            "nec1": 0.00018880143761634827
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.003925040364265442,
+            "suff0": -0.0025597536005079746,
+            "suff1": -0.00341077521443367,
+            "nec0": -0.00026609981432557106,
+            "nec1": -0.003925040364265442
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.002675417810678482,
+            "suff0": -0.002341947052627802,
+            "suff1": -0.002675417810678482,
+            "nec0": 0.00039120111614465714,
+            "nec1": 0.003817785531282425
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0023623635061085224,
+            "suff0": -0.0023623635061085224,
+            "suff1": -0.000799126923084259,
+            "nec0": -8.187070488929749e-05,
+            "nec1": -0.0016795918345451355
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0023623635061085224,
+            "suff0": -0.0023623635061085224,
+            "suff1": -0.000799126923084259,
+            "nec0": -8.187070488929749e-05,
+            "nec1": -0.0016795918345451355
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.13086359202861786,
+            "suff0": 0.22993633430451155,
+            "suff1": 0.14134734869003296,
+            "nec0": 0.13086359202861786,
+            "nec1": 0.23855573264881968
+          }
+        }
+      },
+      "search_edit::canonical": {
+        "family": "search_edit",
+        "wording": "canonical",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ISSUE_END",
+        "selected_score": 0.11471891915425658,
+        "runner_up_score": 0.00040739867836236954,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.001943696290254593,
+            "suff0": 0.0011874968186020851,
+            "suff1": -0.001943696290254593,
+            "nec0": 0.0011478094384074211,
+            "nec1": 0.0019577518105506897
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0009271353483200073,
+            "suff0": 0.0004403381608426571,
+            "suff1": -0.000918995589017868,
+            "nec0": -0.00039744889363646507,
+            "nec1": -0.0009271353483200073
+          },
+          "ISSUE_END": {
+            "bidirectional_score": 0.00040739867836236954,
+            "suff0": 0.0004104399122297764,
+            "suff1": 0.0006577633321285248,
+            "nec0": 0.00040739867836236954,
+            "nec1": 0.0004493333399295807
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0029582567512989044,
+            "suff0": 0.00041329115629196167,
+            "suff1": -0.0029582567512989044,
+            "nec0": 0.0016872575506567955,
+            "nec1": -0.0008929222822189331
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.0013475492596626282,
+            "suff0": 0.0013039978221058846,
+            "suff1": -0.0013475492596626282,
+            "nec0": 0.002176491543650627,
+            "nec1": -7.6070427894592285e-06
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0032351575791835785,
+            "suff0": 0.0019842935726046562,
+            "suff1": -0.0006531104445457458,
+            "nec0": 0.0007661911658942699,
+            "nec1": -0.0032351575791835785
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0019091852009296417,
+            "suff0": 1.874566078186035e-05,
+            "suff1": -0.0019091852009296417,
+            "nec0": -2.7101486921310425e-05,
+            "nec1": 0.0029541030526161194
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0019091852009296417,
+            "suff0": 1.874566078186035e-05,
+            "suff1": -0.0019091852009296417,
+            "nec0": -2.7101486921310425e-05,
+            "nec1": 0.0029541030526161194
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.11471891915425658,
+            "suff0": 0.11471891915425658,
+            "suff1": 0.17685731872916222,
+            "nec0": 0.1718581970781088,
+            "nec1": 0.11798850586637855
+          }
+        }
+      },
+      "search_edit::paraphrase": {
+        "family": "search_edit",
+        "wording": "paraphrase",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ISSUE_END",
+        "selected_score": 0.0373288094997406,
+        "runner_up_score": -0.0006732726469635963,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.0007172618061304092,
+            "suff0": -0.0007172618061304092,
+            "suff1": 0.0018261577934026718,
+            "nec0": -6.177183240652084e-05,
+            "nec1": 0.00023600459098815918
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0011098384857177734,
+            "suff0": -0.0011098384857177734,
+            "suff1": 0.001970577985048294,
+            "nec0": 0.0007767844945192337,
+            "nec1": -2.6786699891090393e-05
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0006732726469635963,
+            "suff0": -0.0006732726469635963,
+            "suff1": 0.00174638070166111,
+            "nec0": 0.0007830904796719551,
+            "nec1": 9.428709745407104e-06
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0011127106845378876,
+            "suff0": -0.0011127106845378876,
+            "suff1": 0.002022234722971916,
+            "nec0": 0.0009676581248641014,
+            "nec1": -4.163011908531189e-06
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.0016040392220020294,
+            "suff0": -0.0007175682112574577,
+            "suff1": 0.0017770584672689438,
+            "nec0": 0.0007594069465994835,
+            "nec1": -0.0016040392220020294
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0010555749759078026,
+            "suff0": -0.0010555749759078026,
+            "suff1": 0.0003324728459119797,
+            "nec0": -0.0002792011946439743,
+            "nec1": 0.0001360177993774414
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.003363034687936306,
+            "suff0": -0.003363034687936306,
+            "suff1": 0.001940254122018814,
+            "nec0": 0.0005916915833950043,
+            "nec1": -0.0008325297385454178
+          },
+          "USER_END": {
+            "bidirectional_score": -0.003363034687936306,
+            "suff0": -0.003363034687936306,
+            "suff1": 0.001940254122018814,
+            "nec0": 0.0005916915833950043,
+            "nec1": -0.0008325297385454178
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.0373288094997406,
+            "suff0": 0.09170511271804571,
+            "suff1": 0.042490310966968536,
+            "nec0": 0.0373288094997406,
+            "nec1": 0.09963658824563026
+          }
+        }
+      },
+      "config_command::canonical": {
+        "family": "config_command",
+        "wording": "canonical",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ACTION0_END",
+        "selected_score": 0.11195609159767628,
+        "runner_up_score": -2.0060688257217407e-06,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.002181418240070343,
+            "suff0": -0.0009164744988083839,
+            "suff1": -0.002181418240070343,
+            "nec0": 0.002166314050555229,
+            "nec1": 0.00336267426609993
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.001024492084980011,
+            "suff0": 0.0004851650446653366,
+            "suff1": -0.0007887072861194611,
+            "nec0": 0.0022103535011410713,
+            "nec1": -0.001024492084980011
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0013915561139583588,
+            "suff0": -0.00085397157818079,
+            "suff1": -0.0013915561139583588,
+            "nec0": -0.0009073307737708092,
+            "nec1": -0.0007876884192228317
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0021014846861362457,
+            "suff0": 0.0005899546667933464,
+            "suff1": 9.10833477973938e-07,
+            "nec0": -0.0021014846861362457,
+            "nec1": -2.4605542421340942e-06
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -2.0060688257217407e-06,
+            "suff0": 0.0004928400740027428,
+            "suff1": -2.0060688257217407e-06,
+            "nec0": 0.00011327303946018219,
+            "nec1": 0.0001644417643547058
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.000799400731921196,
+            "suff0": 0.001959660090506077,
+            "suff1": 6.545335054397583e-06,
+            "nec0": -1.0617077350616455e-07,
+            "nec1": -0.000799400731921196
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.000985473394393921,
+            "suff0": 0.0012042345479130745,
+            "suff1": -0.000985473394393921,
+            "nec0": 0.0012289732694625854,
+            "nec1": 0.0013854186981916428
+          },
+          "USER_END": {
+            "bidirectional_score": -0.000985473394393921,
+            "suff0": 0.0012042345479130745,
+            "suff1": -0.000985473394393921,
+            "nec0": 0.0012289732694625854,
+            "nec1": 0.0013854186981916428
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.11195609159767628,
+            "suff0": 0.21961385663598776,
+            "suff1": 0.11195609159767628,
+            "nec0": 0.1331169456243515,
+            "nec1": 0.19837606698274612
+          }
+        }
+      },
+      "config_command::paraphrase": {
+        "family": "config_command",
+        "wording": "paraphrase",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "FINAL_INSTRUCTION_END",
+        "selected_score": 0.07258643954992294,
+        "runner_up_score": 0.00048813968896865845,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.0014555659145116806,
+            "suff0": -0.0014555659145116806,
+            "suff1": -0.0007639005780220032,
+            "nec0": -9.075924754142761e-05,
+            "nec1": 0.0002773068845272064
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.001363910734653473,
+            "suff0": 0.0022118370980024338,
+            "suff1": -0.00017491355538368225,
+            "nec0": 0.0017299465835094452,
+            "nec1": -0.001363910734653473
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0014602821320295334,
+            "suff0": -0.0014602821320295334,
+            "suff1": 0.0012895241379737854,
+            "nec0": 0.0013725608587265015,
+            "nec1": 0.000676911324262619
+          },
+          "DETAIL_END": {
+            "bidirectional_score": 0.00014425255358219147,
+            "suff0": 0.0006269607692956924,
+            "suff1": 0.0014587640762329102,
+            "nec0": 0.00014425255358219147,
+            "nec1": 0.0007883384823799133
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.0014406219124794006,
+            "suff0": 7.919780910015106e-05,
+            "suff1": 0.000711590051651001,
+            "nec0": 0.0014486666768789291,
+            "nec1": -0.0014406219124794006
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0001318175345659256,
+            "suff0": 2.5408342480659485e-05,
+            "suff1": -6.879866123199463e-05,
+            "nec0": -0.0001318175345659256,
+            "nec1": 0.0014557726681232452
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": 0.00048813968896865845,
+            "suff0": 0.0011459458619356155,
+            "suff1": 0.0018920078873634338,
+            "nec0": 0.0010414347052574158,
+            "nec1": 0.00048813968896865845
+          },
+          "USER_END": {
+            "bidirectional_score": 0.00048813968896865845,
+            "suff0": 0.0011459458619356155,
+            "suff1": 0.0018920078873634338,
+            "nec0": 0.0010414347052574158,
+            "nec1": 0.00048813968896865845
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.07258643954992294,
+            "suff0": 0.10459926165640354,
+            "suff1": 0.07258643954992294,
+            "nec0": 0.08170654624700546,
+            "nec1": 0.09211463294923306
+          }
+        }
+      },
+      "docs_code::canonical": {
+        "family": "docs_code",
+        "wording": "canonical",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "SKILL_END",
+        "selected_score": 0.06068525370210409,
+        "runner_up_score": -1.802109181880951e-06,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -1.802109181880951e-06,
+            "suff0": 0.0015458553098142147,
+            "suff1": 0.000277860090136528,
+            "nec0": -1.802109181880951e-06,
+            "nec1": 0.0009152013808488846
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.00156333576887846,
+            "suff0": 0.00037922151386737823,
+            "suff1": -0.00156333576887846,
+            "nec0": -1.6738194972276688e-05,
+            "nec1": 7.040798664093018e-06
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0007825503125786781,
+            "suff0": 0.0007773218676447868,
+            "suff1": -0.0007825503125786781,
+            "nec0": -4.5190099626779556e-05,
+            "nec1": 0.0009219041094183922
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.001177668571472168,
+            "suff0": 0.0007800827734172344,
+            "suff1": 2.305954694747925e-06,
+            "nec0": -0.001177668571472168,
+            "nec1": -5.929265171289444e-05
+          },
+          "ACTION0_END": {
+            "bidirectional_score": -0.0015840055420994759,
+            "suff0": 0.00037380587309598923,
+            "suff1": -0.0015840055420994759,
+            "nec0": 2.993689849972725e-05,
+            "nec1": 2.8398819267749786e-05
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0007633841596543789,
+            "suff0": -6.8517401814460754e-06,
+            "suff1": 4.087761044502258e-05,
+            "nec0": -0.0007633841596543789,
+            "nec1": 0.001322912983596325
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0005654385313391685,
+            "suff0": 0.0015512453392148018,
+            "suff1": -1.0134652256965637e-05,
+            "nec0": 0.000781879760324955,
+            "nec1": -0.0005654385313391685
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0005654385313391685,
+            "suff0": 0.0015512453392148018,
+            "suff1": -1.0134652256965637e-05,
+            "nec0": 0.000781879760324955,
+            "nec1": -0.0005654385313391685
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.06068525370210409,
+            "suff0": 0.126606950070709,
+            "suff1": 0.06068525370210409,
+            "nec0": 0.06669015344232321,
+            "nec1": 0.1224592668004334
+          }
+        }
+      },
+      "docs_code::paraphrase": {
+        "family": "docs_code",
+        "wording": "paraphrase",
+        "selected_anchor": "GENERATION_BOUNDARY",
+        "runner_up_anchor": "ACTION0_END",
+        "selected_score": 0.04822561051696539,
+        "runner_up_score": 1.143990084528923e-05,
+        "anchors": {
+          "SKILL_END": {
+            "bidirectional_score": -0.002451273612678051,
+            "suff0": 0.001027766615152359,
+            "suff1": 0.0007165912538766861,
+            "nec0": 0.0009889793582260609,
+            "nec1": -0.002451273612678051
+          },
+          "SYSTEM_END": {
+            "bidirectional_score": -0.0010028202086687088,
+            "suff0": 0.0010343627072870731,
+            "suff1": -0.0008169999346137047,
+            "nec0": -2.084299921989441e-06,
+            "nec1": -0.0010028202086687088
+          },
+          "ISSUE_END": {
+            "bidirectional_score": -0.0007229670882225037,
+            "suff0": 0.0014429395087063313,
+            "suff1": -0.0007229670882225037,
+            "nec0": -0.00040022190660238266,
+            "nec1": 0.0009855777025222778
+          },
+          "DETAIL_END": {
+            "bidirectional_score": -0.0010620728135108948,
+            "suff0": -0.00039090169593691826,
+            "suff1": 0.0008475305512547493,
+            "nec0": -5.9194862842559814e-05,
+            "nec1": -0.0010620728135108948
+          },
+          "ACTION0_END": {
+            "bidirectional_score": 1.143990084528923e-05,
+            "suff0": 0.001566032413393259,
+            "suff1": 0.0008089011535048485,
+            "nec0": 1.143990084528923e-05,
+            "nec1": 0.0014243721961975098
+          },
+          "ACTION1_END": {
+            "bidirectional_score": -0.0003903256729245186,
+            "suff0": 5.757436156272888e-06,
+            "suff1": -0.0001916429027915001,
+            "nec0": -0.0003903256729245186,
+            "nec1": 4.4871121644973755e-05
+          },
+          "FINAL_INSTRUCTION_END": {
+            "bidirectional_score": -0.0008613583631813526,
+            "suff0": 0.0007107439450919628,
+            "suff1": 0.0008820826187729836,
+            "nec0": -0.0008613583631813526,
+            "nec1": 0.002394257113337517
+          },
+          "USER_END": {
+            "bidirectional_score": -0.0008613583631813526,
+            "suff0": 0.0007107439450919628,
+            "suff1": 0.0008820826187729836,
+            "nec0": -0.0008613583631813526,
+            "nec1": 0.002394257113337517
+          },
+          "GENERATION_BOUNDARY": {
+            "bidirectional_score": 0.04822561051696539,
+            "suff0": 0.12022746494039893,
+            "suff1": 0.05293465033173561,
+            "nec0": 0.04822561051696539,
+            "nec1": 0.11526424996554852
+          }
+        }
+      }
+    },
+    "A1_top_candidates": [
+      {
+        "L": 37,
+        "anchor": "GENERATION_BOUNDARY",
+        "score": 1.0421941436361521,
+        "label0": 1.0421941436361521,
+        "label1": 1.065408060210757
+      },
+      {
+        "L": 35,
+        "anchor": "GENERATION_BOUNDARY",
+        "score": 0.8874072667094879,
+        "label0": 0.8874072667094879,
+        "label1": 0.9213668931042776
+      }
+    ],
+    "A2_provisional": {
+      "L": 39,
+      "k": 2,
+      "anchor": "GENERATION_BOUNDARY",
+      "score": 0.09896892460528761,
+      "suff0": 0.1407090331776999,
+      "suff1": 0.09896892460528761,
+      "nec0": 0.10122334444895387,
+      "nec1": 0.1375641743070446
+    },
+    "C_final": {
+      "L": 39,
+      "k": 2,
+      "score": 0.09896892460528761,
+      "suff0": 0.1407090331776999,
+      "suff1": 0.09896892460528761,
+      "nec0": 0.10122334444895387,
+      "nec1": 0.1375641743070446
+    }
+  },
+  "verdict": {
+    "verdict": "PARTIAL / ALGORITHMIC HOMOLOG",
+    "core_endpoint_flags": {
+      "selected_V_sufficiency": true,
+      "selected_V_necessity_loss": true,
+      "cross_selected_V_sufficiency": true,
+      "reader_target_pos_sufficiency": true,
+      "reader_target_pos_necessity": true
+    },
+    "directional_flags": {
+      "0": true,
+      "1": true
+    },
+    "inhibitory_register_exists": false,
+    "inhibitory_register_pass": false,
+    "reader_contrast_pass": true,
+    "fidelity": {
+      "same_state_clean": false,
+      "leakage_clean": false,
+      "selected_over_runner_clean": true,
+      "matched_negative_clean": true,
+      "all_reader_reconstruction_clean": true,
+      "same_state": {
+        "relation": "opposite_same_wording",
+        "metric": "same_state_selected_V_control",
+        "mean": -0.006044188718078658,
+        "ci_low": -0.008693791084078839,
+        "ci_high": -0.0035388918397075047,
+        "num_tasks": 32
+      },
+      "reader_leakage": {
+        "relation": "opposite_same_wording",
+        "metric": "reader_leakage_ratio",
+        "mean": 0.34815782340676815,
+        "ci_low": 0.3305658807763089,
+        "ci_high": 0.36439982971697155,
+        "num_tasks": 32
+      },
+      "matched_negative": {
+        "relation": "opposite_same_wording",
+        "metric": "matched_negative_anchor_V_sufficiency",
+        "mean": -0.00016264159057755023,
+        "ci_low": -0.0009541232335323001,
+        "ci_high": 0.0005535371394216775,
+        "num_tasks": 32
+      }
+    }
+  },
+  "methodological_repairs": [
+    "final (L,KV) is localized using the actually selected stratum-specific anchors",
+    "reader register uses causal-effect thresholds rather than forced zero-score quota filling",
+    "runner-up necessity uses runner-up-specific residual reference"
+  ]
+}
