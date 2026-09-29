@@ -1,0 +1,95 @@
+{
+  "experiment": "EXP17_handoff_relocation",
+  "partition": "reserve",
+  "models": [
+    "qwen",
+    "mistral",
+    "granite"
+  ],
+  "verdicts": [
+    {
+      "model": "qwen",
+      "verdict": "MIXED:SEMANTIC_INSTRUCTION+ABSOLUTE_POSITION",
+      "template_generation_jaccard_suffix_long": 1.0,
+      "handoff_criteria": false,
+      "semantic_criteria": true,
+      "user_end_criteria": false,
+      "absolute_criteria": true
+    },
+    {
+      "model": "mistral",
+      "verdict": "HANDOFF_OR_TEMPLATE_BOUNDARY",
+      "template_generation_jaccard_suffix_long": 1.0,
+      "handoff_criteria": true,
+      "semantic_criteria": false,
+      "user_end_criteria": false,
+      "absolute_criteria": false
+    },
+    {
+      "model": "granite",
+      "verdict": "HANDOFF_OR_TEMPLATE_BOUNDARY",
+      "template_generation_jaccard_suffix_long": 1.0,
+      "handoff_criteria": true,
+      "semantic_criteria": false,
+      "user_end_criteria": false,
+      "absolute_criteria": false
+    }
+  ],
+  "specificity": [
+    {
+      "model": "qwen",
+      "condition": "native",
+      "contrast": "procedural_minus_direct_V_sufficiency",
+      "mean": 0.021044032437202986,
+      "ci_low": 0.007406840339899645,
+      "ci_high": 0.03479318632635113,
+      "num_tasks": 16
+    },
+    {
+      "model": "qwen",
+      "condition": "suffix_long",
+      "contrast": "procedural_minus_direct_V_sufficiency",
+      "mean": 0.015515688413870521,
+      "ci_low": 0.004157861290150323,
+      "ci_high": 0.026275470281689195,
+      "num_tasks": 16
+    },
+    {
+      "model": "mistral",
+      "condition": "native",
+      "contrast": "procedural_minus_direct_V_sufficiency",
+      "mean": 0.07525320036802441,
+      "ci_low": 0.06557908147951821,
+      "ci_high": 0.08386745355455787,
+      "num_tasks": 16
+    },
+    {
+      "model": "mistral",
+      "condition": "suffix_long",
+      "contrast": "procedural_minus_direct_V_sufficiency",
+      "mean": 0.09272887761471793,
+      "ci_low": 0.07927113778569037,
+      "ci_high": 0.10496015699172857,
+      "num_tasks": 16
+    },
+    {
+      "model": "granite",
+      "condition": "native",
+      "contrast": "procedural_minus_direct_V_sufficiency",
+      "mean": -0.012154584139352664,
+      "ci_low": -0.023221246757020707,
+      "ci_high": -0.0006658163780230302,
+      "num_tasks": 16
+    },
+    {
+      "model": "granite",
+      "condition": "suffix_long",
+      "contrast": "procedural_minus_direct_V_sufficiency",
+      "mean": -0.01088508462999016,
+      "ci_low": -0.019377525470918044,
+      "ci_high": -0.0024086679011816403,
+      "num_tasks": 16
+    }
+  ],
+  "claim_boundary": "EXP17 distinguishes semantic/position/handoff relocation hypotheses for already frozen V/KV subpaths; it does not establish that these subpaths are the only procedural-control mechanism."
+}

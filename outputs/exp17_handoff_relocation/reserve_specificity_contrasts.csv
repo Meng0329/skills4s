@@ -1,0 +1,7 @@
+model,condition,contrast,mean,ci_low,ci_high,num_tasks
+qwen,native,procedural_minus_direct_V_sufficiency,0.021044032437202986,0.007406840339899645,0.03479318632635113,16
+qwen,suffix_long,procedural_minus_direct_V_sufficiency,0.015515688413870521,0.004157861290150323,0.026275470281689195,16
+mistral,native,procedural_minus_direct_V_sufficiency,0.07525320036802441,0.06557908147951821,0.08386745355455787,16
+mistral,suffix_long,procedural_minus_direct_V_sufficiency,0.09272887761471793,0.07927113778569037,0.10496015699172857,16
+granite,native,procedural_minus_direct_V_sufficiency,-0.012154584139352664,-0.023221246757020707,-0.0006658163780230302,16
+granite,suffix_long,procedural_minus_direct_V_sufficiency,-0.01088508462999016,-0.019377525470918044,-0.0024086679011816403,16
